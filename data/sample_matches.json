@@ -1,0 +1,258 @@
+[
+  {
+    "match_id": "M001",
+    "round": "R1",
+    "favorite": {
+      "player_name": "D. Korhonen",
+      "ranking": 3,
+      "seed": 3,
+      "grass_win_pct": 0.81,
+      "recent_win_pct": 0.78,
+      "wimbledon_win_pct": 0.74,
+      "hold_rate_grass": 0.91,
+      "break_rate_grass": 0.22,
+      "tiebreak_win_pct": 0.63,
+      "last_10_record": "8-2",
+      "h2h_wins": 2,
+      "h2h_losses": 0
+    },
+    "underdog": {
+      "player_name": "T. Maddox",
+      "ranking": 78,
+      "seed": null,
+      "grass_win_pct": 0.52,
+      "recent_win_pct": 0.55,
+      "wimbledon_win_pct": 0.40,
+      "hold_rate_grass": 0.79,
+      "break_rate_grass": 0.14,
+      "tiebreak_win_pct": 0.58,
+      "last_10_record": "6-4",
+      "h2h_wins": 0,
+      "h2h_losses": 2
+    }
+  },
+  {
+    "match_id": "M002",
+    "round": "R1",
+    "favorite": {
+      "player_name": "A. Beaumont",
+      "ranking": 11,
+      "seed": 11,
+      "grass_win_pct": 0.68,
+      "recent_win_pct": 0.50,
+      "wimbledon_win_pct": 0.55,
+      "hold_rate_grass": 0.82,
+      "break_rate_grass": 0.18,
+      "tiebreak_win_pct": 0.49,
+      "last_10_record": "4-6",
+      "h2h_wins": 1,
+      "h2h_losses": 1
+    },
+    "underdog": {
+      "player_name": "J. Pellegrin",
+      "ranking": 64,
+      "seed": null,
+      "grass_win_pct": 0.66,
+      "recent_win_pct": 0.71,
+      "wimbledon_win_pct": 0.60,
+      "hold_rate_grass": 0.85,
+      "break_rate_grass": 0.20,
+      "tiebreak_win_pct": 0.67,
+      "last_10_record": "8-2",
+      "h2h_wins": 1,
+      "h2h_losses": 1
+    }
+  },
+  {
+    "match_id": "M003",
+    "round": "R2",
+    "favorite": {
+      "player_name": "S. Ohtsuka",
+      "ranking": 6,
+      "seed": 6,
+      "grass_win_pct": 0.74,
+      "recent_win_pct": 0.69,
+      "wimbledon_win_pct": 0.71,
+      "hold_rate_grass": 0.88,
+      "break_rate_grass": 0.19,
+      "tiebreak_win_pct": 0.55,
+      "last_10_record": "7-3",
+      "h2h_wins": 0,
+      "h2h_losses": 0
+    },
+    "underdog": {
+      "player_name": "R. Vandermeer",
+      "ranking": 102,
+      "seed": null,
+      "grass_win_pct": 0.59,
+      "recent_win_pct": 0.62,
+      "wimbledon_win_pct": 0.35,
+      "hold_rate_grass": 0.80,
+      "break_rate_grass": 0.16,
+      "tiebreak_win_pct": 0.60,
+      "last_10_record": "6-4",
+      "h2h_wins": 0,
+      "h2h_losses": 0
+    }
+  },
+  {
+    "match_id": "M004",
+    "round": "R2",
+    "favorite": {
+      "player_name": "P. Nakamura",
+      "ranking": 9,
+      "seed": 9,
+      "grass_win_pct": 0.62,
+      "recent_win_pct": 0.48,
+      "wimbledon_win_pct": 0.45,
+      "hold_rate_grass": 0.77,
+      "break_rate_grass": 0.13,
+      "tiebreak_win_pct": 0.44,
+      "last_10_record": "3-7",
+      "h2h_wins": 0,
+      "h2h_losses": 1
+    },
+    "underdog": {
+      "player_name": "L. Fontaine",
+      "ranking": 55,
+      "seed": null,
+      "grass_win_pct": 0.70,
+      "recent_win_pct": 0.73,
+      "wimbledon_win_pct": 0.50,
+      "hold_rate_grass": 0.84,
+      "break_rate_grass": 0.23,
+      "tiebreak_win_pct": 0.65,
+      "last_10_record": "8-2",
+      "h2h_wins": 1,
+      "h2h_losses": 0
+    }
+  },
+  {
+    "match_id": "M005",
+    "round": "R3",
+    "favorite": {
+      "player_name": "K. Wexler",
+      "ranking": 2,
+      "seed": 2,
+      "grass_win_pct": 0.85,
+      "recent_win_pct": 0.82,
+      "wimbledon_win_pct": 0.80,
+      "hold_rate_grass": 0.93,
+      "break_rate_grass": 0.25,
+      "tiebreak_win_pct": 0.70,
+      "last_10_record": "9-1",
+      "h2h_wins": 3,
+      "h2h_losses": 0
+    },
+    "underdog": {
+      "player_name": "B. Okafor",
+      "ranking": 41,
+      "seed": null,
+      "grass_win_pct": 0.57,
+      "recent_win_pct": 0.51,
+      "wimbledon_win_pct": 0.38,
+      "hold_rate_grass": 0.78,
+      "break_rate_grass": 0.12,
+      "tiebreak_win_pct": 0.50,
+      "last_10_record": "5-5",
+      "h2h_wins": 0,
+      "h2h_losses": 3
+    }
+  },
+  {
+    "match_id": "M006",
+    "round": "R4",
+    "favorite": {
+      "player_name": "M. Albrecht",
+      "ranking": 5,
+      "seed": 5,
+      "grass_win_pct": 0.66,
+      "recent_win_pct": 0.45,
+      "wimbledon_win_pct": 0.58,
+      "hold_rate_grass": 0.80,
+      "break_rate_grass": 0.15,
+      "tiebreak_win_pct": 0.40,
+      "last_10_record": "4-6",
+      "h2h_wins": 1,
+      "h2h_losses": 2
+    },
+    "underdog": {
+      "player_name": "G. Marchetti",
+      "ranking": 33,
+      "seed": null,
+      "grass_win_pct": 0.73,
+      "recent_win_pct": 0.76,
+      "wimbledon_win_pct": 0.62,
+      "hold_rate_grass": 0.86,
+      "break_rate_grass": 0.24,
+      "tiebreak_win_pct": 0.71,
+      "last_10_record": "8-2",
+      "h2h_wins": 2,
+      "h2h_losses": 1
+    }
+  },
+  {
+    "match_id": "M007",
+    "round": "QF",
+    "favorite": {
+      "player_name": "N. Castellan",
+      "ranking": 1,
+      "seed": 1,
+      "grass_win_pct": 0.88,
+      "recent_win_pct": 0.85,
+      "wimbledon_win_pct": 0.83,
+      "hold_rate_grass": 0.94,
+      "break_rate_grass": 0.27,
+      "tiebreak_win_pct": 0.72,
+      "last_10_record": "10-0",
+      "h2h_wins": 4,
+      "h2h_losses": 0
+    },
+    "underdog": {
+      "player_name": "H. Brennan",
+      "ranking": 19,
+      "seed": 19,
+      "grass_win_pct": 0.61,
+      "recent_win_pct": 0.58,
+      "wimbledon_win_pct": 0.48,
+      "hold_rate_grass": 0.81,
+      "break_rate_grass": 0.17,
+      "tiebreak_win_pct": 0.53,
+      "last_10_record": "6-4",
+      "h2h_wins": 0,
+      "h2h_losses": 4
+    }
+  },
+  {
+    "match_id": "M008",
+    "round": "SF",
+    "favorite": {
+      "player_name": "E. Solberg",
+      "ranking": 4,
+      "seed": 4,
+      "grass_win_pct": 0.71,
+      "recent_win_pct": 0.53,
+      "wimbledon_win_pct": 0.65,
+      "hold_rate_grass": 0.83,
+      "break_rate_grass": 0.16,
+      "tiebreak_win_pct": 0.46,
+      "last_10_record": "5-5",
+      "h2h_wins": 1,
+      "h2h_losses": 1
+    },
+    "underdog": {
+      "player_name": "C. Iwasaki",
+      "ranking": 27,
+      "seed": 27,
+      "grass_win_pct": 0.69,
+      "recent_win_pct": 0.80,
+      "wimbledon_win_pct": 0.55,
+      "hold_rate_grass": 0.85,
+      "break_rate_grass": 0.26,
+      "tiebreak_win_pct": 0.69,
+      "last_10_record": "9-1",
+      "h2h_wins": 1,
+      "h2h_losses": 1
+    }
+  }
+]
