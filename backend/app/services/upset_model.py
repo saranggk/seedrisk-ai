@@ -73,7 +73,12 @@ def _scaled_impact(diff: float, weight: float, cap: float) -> float:
 
 
 def _direction(impact: float) -> str:
-    return "increases_upset_risk" if impact >= 0 else "decreases_upset_risk"
+    # A factor with zero impact (e.g. an even head-to-head record) didn't
+    # push the score in either direction, so it shouldn't be mislabeled as
+    # "increases" just because 0 >= 0 — it gets its own neutral label.
+    if impact == 0:
+        return "neutral"
+    return "increases_upset_risk" if impact > 0 else "decreases_upset_risk"
 
 
 def _score_ranking_gap(match: Match) -> FeatureContribution:
@@ -205,9 +210,10 @@ def _determine_risk_label(upset_probability: float, ranking_gap: int) -> str:
 
 
 def _build_top_factors(contributions: list[FeatureContribution]) -> list[str]:
-    # "Most important" = largest absolute impact, regardless of direction —
-    # a factor that strongly protects the favorite is just as worth
-    # surfacing as one that strongly threatens them.
+    # These are the top MODEL FACTORS — the largest prediction drivers by
+    # absolute impact, regardless of direction. Some of them increase upset
+    # risk, but others (e.g. a ranking gap that protects the favorite)
+    # decrease it. "top_factors" should not be read as "top upset reasons."
     ranked = sorted(contributions, key=lambda c: abs(c.impact), reverse=True)
     return [c.reason for c in ranked[:3]]
 

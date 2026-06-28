@@ -26,6 +26,12 @@ The server starts at `http://127.0.0.1:8000`.
 | GET | `/health` | Liveness check |
 | GET | `/matches` | List all matches |
 | GET | `/matches/{match_id}` | Get one match by ID (404 if not found) |
+| GET | `/matches/{match_id}/prediction` | Rule-based upset prediction for one match (404 if not found) |
+
+The prediction response includes `top_factors`: the 3 largest model factors
+by absolute impact, not necessarily "reasons the underdog could win" — a
+factor can top the list because it strongly *protects* the favorite (e.g. a
+big ranking gap), not just because it threatens them.
 
 ## Interactive docs
 

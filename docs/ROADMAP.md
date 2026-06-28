@@ -29,8 +29,9 @@ This project is built in small, reviewable phases. Each phase is implemented, ex
 
 - Implemented `backend/app/services/upset_model.py` with explainable, documented rule-based logic.
 - Added `GET /matches/{id}/prediction`.
-- Returns `favorite_win_probability`, `upset_probability`, `risk_label`, `top_factors`, and `feature_contributions`.
+- Returns `favorite_win_probability`, `upset_probability`, `risk_label`, `top_factors` (top model factors — largest prediction drivers by absolute impact, not only upset-risk reasons), and `feature_contributions`.
 - Risk labels (`Low`, `Medium`, `High`, `Trap Match`) verified to all occur across the sample dataset.
+- `feature_contributions[].direction` is `"increases_upset_risk"`, `"decreases_upset_risk"`, or `"neutral"` (when `impact == 0`).
 - No LLM and no frontend yet.
 
 ## Phase 4 — Frontend Dashboard (next)
