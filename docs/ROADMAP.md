@@ -25,14 +25,15 @@ This project is built in small, reviewable phases. Each phase is implemented, ex
 - 404 handling for missing matches.
 - No database, no prediction logic, no LLM.
 
-## Phase 3 — Rule-Based Upset Scoring Model (next)
+## Phase 3 — Rule-Based Upset Scoring Model ✅
 
-- Implement `backend/app/services/upset_model.py` (or similar) with explainable rule-based logic.
-- Add `GET /matches/{id}/prediction`.
-- Return `favorite_win_probability`, `upset_probability`, `risk_label`, `top_factors`, and `feature_contributions`.
+- Implemented `backend/app/services/upset_model.py` with explainable, documented rule-based logic.
+- Added `GET /matches/{id}/prediction`.
+- Returns `favorite_win_probability`, `upset_probability`, `risk_label`, `top_factors`, and `feature_contributions`.
+- Risk labels (`Low`, `Medium`, `High`, `Trap Match`) verified to all occur across the sample dataset.
 - No LLM and no frontend yet.
 
-## Phase 4 — Frontend Dashboard
+## Phase 4 — Frontend Dashboard (next)
 
 - Scaffold the Next.js + TypeScript + Tailwind frontend.
 - Build a dashboard showing match cards, upset probabilities, risk labels, and top reasons.

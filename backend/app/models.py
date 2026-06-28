@@ -42,3 +42,33 @@ class MatchResponse(Match):
     """
 
     pass
+
+
+class FeatureContribution(BaseModel):
+    """
+    One scored factor that fed into the upset prediction.
+
+    `impact` is signed: positive means this factor pushed upset_probability up,
+    negative means it pushed upset_probability down. `direction` is just a
+    human/UI-friendly restatement of that sign, so the frontend doesn't have
+    to know the sign convention to render an up/down indicator.
+    """
+
+    feature: str
+    label: str
+    impact: float
+    direction: str  # "increases_upset_risk" or "decreases_upset_risk"
+    reason: str
+
+
+class PredictionResponse(BaseModel):
+    """API response for GET /matches/{match_id}/prediction."""
+
+    match_id: str
+    favorite_name: str
+    underdog_name: str
+    favorite_win_probability: float
+    upset_probability: float
+    risk_label: str
+    top_factors: list[str]
+    feature_contributions: list[FeatureContribution]

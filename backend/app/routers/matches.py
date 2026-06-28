@@ -16,7 +16,8 @@ the endpoints' shape.
 from fastapi import APIRouter, HTTPException
 
 from app.data.loader import load_matches_raw
-from app.models import Match, MatchResponse
+from app.models import Match, MatchResponse, PredictionResponse
+from app.services.upset_model import predict_upset
 
 router = APIRouter()
 
@@ -24,6 +25,14 @@ router = APIRouter()
 # the Match model here — if the data didn't match the expected shape, this
 # would fail loudly at import time instead of silently at request time.
 MATCHES: list[Match] = [Match(**match) for match in load_matches_raw()]
+
+
+def _find_match(match_id: str) -> Match:
+    """Shared lookup used by every endpoint keyed on match_id."""
+    for match in MATCHES:
+        if match.match_id == match_id:
+            return match
+    raise HTTPException(status_code=404, detail=f"Match '{match_id}' not found")
 
 
 @router.get("/matches", response_model=list[MatchResponse])
@@ -35,7 +44,14 @@ def get_matches() -> list[Match]:
 @router.get("/matches/{match_id}", response_model=MatchResponse)
 def get_match(match_id: str) -> Match:
     """Return a single match by its match_id, or 404 if it doesn't exist."""
-    for match in MATCHES:
-        if match.match_id == match_id:
-            return match
-    raise HTTPException(status_code=404, detail=f"Match '{match_id}' not found")
+    return _find_match(match_id)
+
+
+@router.get("/matches/{match_id}/prediction", response_model=PredictionResponse)
+def get_match_prediction(match_id: str) -> PredictionResponse:
+    """
+    Run the rule-based upset model (app/services/upset_model.py) on one match
+    and return its prediction, or 404 if the match doesn't exist.
+    """
+    match = _find_match(match_id)
+    return predict_upset(match)
