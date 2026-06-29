@@ -12,7 +12,7 @@ The goal is a clean, betting-free sports analytics dashboard that surfaces *why*
 ## Project structure
 
 ```
-/frontend   Next.js + TypeScript + Tailwind dashboard UI (not started yet)
+/frontend   Next.js + TypeScript + Tailwind dashboard UI
 /backend    Python FastAPI service — match data, rule-based upset scoring model (LLM analyst endpoint comes later)
 /data       Local seed dataset of sample Wimbledon-style matches and players
 /docs       Project docs, including the phased build plan (see docs/ROADMAP.md)
@@ -26,8 +26,12 @@ The backend currently serves data straight from `/data/sample_matches.json`
 - `GET /matches/{id}`
 - `GET /matches/{id}/prediction` — rule-based upset probability, risk label, and feature breakdown
 
-See [backend/README.md](backend/README.md) for setup/run instructions and
-[docs/ROADMAP.md](docs/ROADMAP.md) for current build status.
+The frontend dashboard fetches matches and predictions from the backend and
+renders them as cards with risk badges (Low / Medium / High / Trap Match) and
+top model factors. It needs the backend running to show any data.
+
+See [backend/README.md](backend/README.md) and [frontend/README.md](frontend/README.md)
+for setup/run instructions, and [docs/ROADMAP.md](docs/ROADMAP.md) for current build status.
 
 ## Design principles
 

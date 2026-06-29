@@ -34,13 +34,18 @@ This project is built in small, reviewable phases. Each phase is implemented, ex
 - `feature_contributions[].direction` is `"increases_upset_risk"`, `"decreases_upset_risk"`, or `"neutral"` (when `impact == 0`).
 - No LLM and no frontend yet.
 
-## Phase 4 — Frontend Dashboard (next)
+## Phase 4 — Frontend Dashboard ✅
 
-- Scaffold the Next.js + TypeScript + Tailwind frontend.
-- Build a dashboard showing match cards, upset probabilities, risk labels, and top reasons.
-- Pull real data from the FastAPI backend.
+- Scaffolded the Next.js (App Router) + TypeScript + Tailwind v4 frontend under `/frontend`.
+- API client (`lib/api.ts`) and TypeScript types (`lib/types.ts`) mirroring the backend's Pydantic models, with a configurable `NEXT_PUBLIC_API_BASE_URL` (`.env.example` provided).
+- Dashboard page fetches `GET /matches` then `GET /matches/{id}/prediction` for each match in parallel, and renders one card per match.
+- Each match card shows round, favorite/underdog with rankings, favorite win probability, upset probability, a color-coded risk badge (Low/Medium/High/Trap Match), and top model factors.
+- Explicit loading state and a friendly error state (with the exact command to start the backend, and a working Retry button) when the backend is unreachable.
+- Added CORS middleware to the FastAPI backend (`backend/app/main.py`) so the browser can call it from `localhost:3000` — required infrastructure, not a scoring-logic change.
+- Verified locally in a real headless browser: matches/predictions render correctly end-to-end, the error state shows correct copy when the backend is down, and Retry recovers without a page reload. Confirmed existing backend endpoints (`/health`, `/matches`, `/matches/{id}`, `/matches/{id}/prediction`) still work unchanged.
+- No match detail page, no LLM, no database yet.
 
-## Phase 5 — Match Detail Page
+## Phase 5 — Match Detail Page (next)
 
 - Add a dynamic match detail route.
 - Show full matchup details, prediction summary, player comparison, and feature contributions.
