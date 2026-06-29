@@ -16,7 +16,8 @@ the endpoints' shape.
 from fastapi import APIRouter, HTTPException
 
 from app.data.loader import load_matches_raw
-from app.models import Match, MatchResponse, PredictionResponse
+from app.models import AnalystReportResponse, Match, MatchResponse, PredictionResponse
+from app.services.analyst_generator import generate_analyst_report
 from app.services.upset_model import predict_upset
 
 router = APIRouter()
@@ -55,3 +56,17 @@ def get_match_prediction(match_id: str) -> PredictionResponse:
     """
     match = _find_match(match_id)
     return predict_upset(match)
+
+
+@router.post("/matches/{match_id}/analysis", response_model=AnalystReportResponse)
+def post_match_analysis(match_id: str) -> AnalystReportResponse:
+    """
+    Generate an analyst report explaining the rule-based prediction for one
+    match, or 404 if the match doesn't exist. Reuses predict_upset() for the
+    model output — this endpoint never computes its own probabilities; see
+    app/services/analyst_generator.py for how the report is built and why
+    Claude can't override the prediction.
+    """
+    match = _find_match(match_id)
+    prediction = predict_upset(match)
+    return generate_analyst_report(match, prediction)

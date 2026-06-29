@@ -5,6 +5,8 @@ These models define the *shape* of a match/player as seen by the API.
 They mirror the fields documented in docs/DATA_DICTIONARY.md.
 """
 
+from typing import Literal
+
 from pydantic import BaseModel
 
 
@@ -77,3 +79,29 @@ class PredictionResponse(BaseModel):
     # (e.g. a big ranking gap), not just because it threatens them.
     top_factors: list[str]
     feature_contributions: list[FeatureContribution]
+
+
+class AnalystReportFields(BaseModel):
+    """
+    The explanatory fields produced by the analyst layer (Phase 6) — either
+    Claude or the deterministic mock generator. This is deliberately just the
+    prose explanation: it carries no probabilities or labels of its own, and
+    nothing here can override favorite_win_probability, upset_probability,
+    risk_label, top_factors, or feature_contributions from PredictionResponse.
+    """
+
+    match_summary: str
+    why_favorite_is_favored: str
+    why_upset_could_happen: str
+    key_stat_to_watch: str
+    upset_recipe: list[str]
+    final_take: str
+    confidence_note: str
+
+
+class AnalystReportResponse(AnalystReportFields):
+    """API response for POST /matches/{match_id}/analysis."""
+
+    # "claude" when ANTHROPIC_API_KEY is set and the call succeeded, "mock"
+    # otherwise — so the frontend can show a "demo mode" note when relevant.
+    source: Literal["claude", "mock"]

@@ -12,7 +12,7 @@
  * independently-fetched, derived piece of data for the same match.
  */
 
-import type { Match, MatchWithPrediction, PredictionResponse } from "./types";
+import type { AnalystReportResponse, Match, MatchWithPrediction, PredictionResponse } from "./types";
 
 // Configurable so the frontend can point at a different backend (e.g. a
 // deployed API) without code changes — see .env.example.
@@ -37,10 +37,10 @@ export class ApiError extends Error {
   }
 }
 
-async function apiFetch<T>(path: string): Promise<T> {
+async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
   let response: Response;
   try {
-    response = await fetch(`${API_BASE_URL}${path}`);
+    response = await fetch(`${API_BASE_URL}${path}`, options);
   } catch {
     // fetch() rejects (rather than resolving with an error status) when the
     // request never reached a server at all — e.g. FastAPI isn't running,
@@ -72,6 +72,15 @@ export function getMatch(matchId: string): Promise<Match> {
 
 export function getMatchPrediction(matchId: string): Promise<PredictionResponse> {
   return apiFetch<PredictionResponse>(`/matches/${matchId}/prediction`);
+}
+
+/**
+ * Triggers the Phase 6 analyst layer for a match. This is a POST, not a GET,
+ * because it's not idempotent data retrieval — it's an action that may call
+ * out to Claude (or fall back to a mock report) each time it's invoked.
+ */
+export function postMatchAnalysis(matchId: string): Promise<AnalystReportResponse> {
+  return apiFetch<AnalystReportResponse>(`/matches/${matchId}/analysis`, { method: "POST" });
 }
 
 /**

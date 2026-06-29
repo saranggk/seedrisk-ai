@@ -30,6 +30,7 @@ import { MatchNotFound } from "@/components/MatchNotFound";
 import { RiskBadge } from "@/components/RiskBadge";
 import { PlayerComparisonTable } from "@/components/PlayerComparisonTable";
 import { FeatureContributionList } from "@/components/FeatureContributionList";
+import { AnalystReportSection } from "@/components/AnalystReportSection";
 
 type DetailState =
   | { status: "loading" }
@@ -187,6 +188,9 @@ function MatchDetail({
         </p>
         <FeatureContributionList contributions={prediction.feature_contributions} />
       </section>
+
+      {/* Claude analyst layer — explains the prediction above, never recomputes it */}
+      <AnalystReportSection matchId={match.match_id} />
     </div>
   );
 }
