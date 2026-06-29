@@ -66,6 +66,10 @@ export function getMatches(): Promise<Match[]> {
   return apiFetch<Match[]>("/matches");
 }
 
+export function getMatch(matchId: string): Promise<Match> {
+  return apiFetch<Match>(`/matches/${matchId}`);
+}
+
 export function getMatchPrediction(matchId: string): Promise<PredictionResponse> {
   return apiFetch<PredictionResponse>(`/matches/${matchId}/prediction`);
 }

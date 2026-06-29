@@ -1,6 +1,16 @@
+import Link from "next/link";
 import { ApiError } from "@/lib/api";
 
-export function ErrorState({ error, onRetry }: { error: ApiError; onRetry: () => void }) {
+export function ErrorState({
+  error,
+  onRetry,
+  backHref,
+}: {
+  error: ApiError;
+  onRetry: () => void;
+  /** Shown alongside Retry when there's a sensible "give up and go back" path, e.g. the match detail page. */
+  backHref?: string;
+}) {
   return (
     <div className="mx-auto flex max-w-md flex-col items-center gap-3 rounded-xl border border-red-200 bg-red-50 p-6 text-center">
       <p className="font-semibold text-red-800">Couldn&apos;t load match data</p>
@@ -16,12 +26,19 @@ export function ErrorState({ error, onRetry }: { error: ApiError; onRetry: () =>
         </p>
       )}
 
-      <button
-        onClick={onRetry}
-        className="mt-1 rounded-md bg-red-700 px-4 py-2 text-sm font-medium text-white hover:bg-red-800"
-      >
-        Retry
-      </button>
+      <div className="mt-1 flex items-center gap-3">
+        <button
+          onClick={onRetry}
+          className="rounded-md bg-red-700 px-4 py-2 text-sm font-medium text-white hover:bg-red-800"
+        >
+          Retry
+        </button>
+        {backHref && (
+          <Link href={backHref} className="text-sm font-medium text-red-700 hover:underline">
+            Back to dashboard
+          </Link>
+        )}
+      </div>
     </div>
   );
 }

@@ -45,13 +45,17 @@ This project is built in small, reviewable phases. Each phase is implemented, ex
 - Verified locally in a real headless browser: matches/predictions render correctly end-to-end, the error state shows correct copy when the backend is down, and Retry recovers without a page reload. Confirmed existing backend endpoints (`/health`, `/matches`, `/matches/{id}`, `/matches/{id}/prediction`) still work unchanged.
 - No match detail page, no LLM, no database yet.
 
-## Phase 5 — Match Detail Page (next)
+## Phase 5 — Match Detail Page ✅
 
-- Add a dynamic match detail route.
-- Show full matchup details, prediction summary, player comparison, and feature contributions.
-- Make the model explanation visually clear.
+- Added the dynamic route `frontend/app/matches/[matchId]/page.tsx` (e.g. `/matches/M002`), reading the ID via `useParams()`.
+- Added `getMatch(id)` to `lib/api.ts` (alongside the existing `getMatchPrediction`), fetching match and prediction in parallel.
+- Dashboard `MatchCard`s are now clickable (whole card links to its detail page) with a "View details →" affordance, preserving all existing card content.
+- Detail page shows: back-to-dashboard link, match header with risk badge, prediction summary, top model factors (worded as "largest prediction drivers," not "upset reasons"), a full favorite-vs-underdog stat comparison table, and every `feature_contribution` with its signed impact in percentage points (e.g. `+7.0 pts upset risk`, `-3.2 pts upset risk`, `0.0 pts neutral`), a direction icon/color, and a proportional bar.
+- Distinct states: loading spinner, `MatchNotFound` for a 404'd match ID (with a link back to the dashboard, not a Retry button — retrying a nonexistent ID never helps), and `ErrorState` (now with an optional `backHref`) for a genuinely unreachable backend.
+- Verified locally in a real browser: dashboard → click card → correct detail page; `/matches/M002` renders the full breakdown correctly; `/matches/M999` shows "Match not found." Confirmed existing backend endpoints unchanged (no backend code touched this phase).
+- No LLM, no database yet.
 
-## Phase 6 — Claude Analyst Layer
+## Phase 6 — Claude Analyst Layer (next)
 
 - Add `POST /matches/{id}/analysis`.
 - Claude explains the model output using only supplied structured data.

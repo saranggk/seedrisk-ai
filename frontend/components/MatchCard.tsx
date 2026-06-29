@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { MatchWithPrediction } from "@/lib/types";
 import { RiskBadge } from "./RiskBadge";
 
@@ -9,7 +10,10 @@ export function MatchCard({ match, prediction }: MatchWithPrediction) {
   const { favorite, underdog, round } = match;
 
   return (
-    <div className="flex flex-col gap-4 rounded-xl border border-zinc-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md">
+    <Link
+      href={`/matches/${match.match_id}`}
+      className="flex flex-col gap-4 rounded-xl border border-zinc-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md hover:border-zinc-300"
+    >
       <div className="flex items-center justify-between">
         <span className="text-xs font-medium uppercase tracking-wide text-zinc-500">
           {round}
@@ -56,6 +60,8 @@ export function MatchCard({ match, prediction }: MatchWithPrediction) {
           ))}
         </ul>
       </div>
-    </div>
+
+      <span className="self-end text-sm font-medium text-court-purple">View details →</span>
+    </Link>
   );
 }
