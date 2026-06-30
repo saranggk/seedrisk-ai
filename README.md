@@ -34,9 +34,9 @@ Risk labels are assigned by probability threshold:
 | Low        | < 20%             | Favourite heavily expected to win               |
 | Medium     | 20–34%            | Meaningful upset risk, favourite still expected |
 | High       | 35–49%            | Significant risk — could go either way          |
-| Trap Match | ≥ 50%             | Underdog statistically more likely to win       |
+| Trap Match | ≥ 30% AND ranking gap ≥ 40 | Favourite looks safe by ranking but stats show meaningful upset risk |
 
-**"Trap Match"** flags a favourite that looks safe on paper but has a statistical vulnerability — the model thinks the supposed underdog is the more likely winner.
+**"Trap Match"** is a narrative override, not a higher probability bucket. It fires when the ranking gap is ≥ 40 positions (the favourite looks commanding on paper) but upset probability is still ≥ 30% (the underlying stats say the match is closer than it appears). The favourite is still favoured — but the mismatch between the safe-looking ranking and the elevated stats is what the label is calling out.
 
 No machine learning is used. Every contributing factor traces back to a specific rule in the code.
 

@@ -52,14 +52,14 @@ The `top_factors` field returns the 3 features with the **largest absolute impac
 
 The final upset probability maps to a label:
 
-| Label | Upset probability | Meaning |
+| Label | Trigger | Meaning |
 |---|---|---|
-| Low | < 20% | Favourite is heavily favoured; upset is unlikely |
-| Medium | 20–34% | Meaningful upset risk, but the favourite is still expected to win |
-| High | 35–49% | Significant upset risk — the match could go either way |
-| Trap Match | ≥ 50% | The model thinks the underdog is more likely to win than not |
+| Low | upset probability < 20% | Favourite is heavily favoured; upset is unlikely |
+| Medium | 20% ≤ upset probability < 35% | Meaningful upset risk, but the favourite is still expected to win |
+| High | upset probability ≥ 35% | Significant upset risk — the match could go either way |
+| Trap Match | upset probability ≥ 30% AND ranking gap ≥ 40 | Narrative override — see below |
 
-**"Trap Match"** is intentionally distinct from "High." It is not just "more risk" — it signals that the supposed favourite is statistically the underdog. The name is meant to flag matches where the narrative might say "safe favourite" but the numbers say otherwise.
+**"Trap Match"** is a narrative override evaluated before the Low/Medium/High thresholds. It fires when two conditions hold simultaneously: the ranking gap is ≥ 40 positions (making the favourite look commanding on paper) and upset probability is still ≥ 30% (the underlying stats say the match is closer than it appears). The favourite is still favoured — the label is not saying the underdog is more likely to win. It is calling out the gap between the "safe favourite" narrative implied by the large ranking difference and the elevated statistical risk the model actually calculates. A Trap Match would otherwise score as "Medium" risk and be overlooked.
 
 ---
 
