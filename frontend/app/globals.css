@@ -1,14 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f7f7f2;
-  --foreground: #171717;
+  --background: #f7f3ec;
+  --foreground: #1a1a1a;
 
-  /* Wimbledon-inspired accent palette — deep green/purple tones evoking
-     grass-court tennis, without using any official Wimbledon branding. */
+  /* Wimbledon-inspired palette — grass-court green and purple, without
+     using any official Wimbledon branding. */
   --color-court-green: #1b4332;
   --color-court-green-light: #2d6a4f;
   --color-court-purple: #4c1d6b;
+  --color-court-red: #b91c1c;     /* strawberry red — High risk states only */
+  --color-court-amber: #92400e;   /* amber — Medium risk badges */
 }
 
 @theme inline {
@@ -17,6 +19,8 @@
   --color-court-green: var(--color-court-green);
   --color-court-green-light: var(--color-court-green-light);
   --color-court-purple: var(--color-court-purple);
+  --color-court-red: var(--color-court-red);
+  --color-court-amber: var(--color-court-amber);
 }
 
 body {

@@ -1,27 +1,25 @@
 import type { RiskLabel } from "@/lib/types";
 
-/**
- * Visual styling for each risk_label value returned by the backend's
- * rule-based model (see backend/app/services/upset_model.py for the
- * thresholds that decide which label a match gets).
- *
- * "Trap Match" gets its own distinct purple treatment rather than reusing
- * the High-risk red — it's a different narrative (a favorite that looks
- * safe on paper but isn't), not just "more risk than High."
- */
 const RISK_STYLES: Record<RiskLabel, string> = {
-  Low: "bg-emerald-100 text-emerald-800 ring-emerald-600/20",
-  Medium: "bg-amber-100 text-amber-800 ring-amber-600/20",
-  High: "bg-red-100 text-red-800 ring-red-600/20",
-  "Trap Match": "bg-purple-100 text-purple-800 ring-purple-600/20",
+  Low: "border-emerald-600 text-emerald-700 bg-emerald-50",
+  Medium: "border-amber-500 text-amber-700 bg-amber-50",
+  High: "border-court-red text-court-red bg-red-50",
+  "Trap Match": "border-court-purple text-court-purple bg-purple-50",
+};
+
+const RISK_LABELS: Record<RiskLabel, string> = {
+  Low: "Low",
+  Medium: "Medium",
+  High: "High",
+  "Trap Match": "⚠ Trap Match",
 };
 
 export function RiskBadge({ riskLabel }: { riskLabel: RiskLabel }) {
   return (
     <span
-      className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset ${RISK_STYLES[riskLabel]}`}
+      className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${RISK_STYLES[riskLabel]}`}
     >
-      {riskLabel === "Trap Match" ? "⚠ Trap Match" : riskLabel}
+      {RISK_LABELS[riskLabel]}
     </span>
   );
 }

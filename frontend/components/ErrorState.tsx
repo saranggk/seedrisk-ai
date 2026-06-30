@@ -8,13 +8,14 @@ export function ErrorState({
 }: {
   error: ApiError;
   onRetry: () => void;
-  /** Shown alongside Retry when there's a sensible "give up and go back" path, e.g. the match detail page. */
   backHref?: string;
 }) {
   return (
-    <div className="mx-auto flex max-w-md flex-col items-center gap-3 rounded-xl border border-red-200 bg-red-50 p-6 text-center">
-      <p className="font-semibold text-red-800">Couldn&apos;t load match data</p>
-      <p className="text-sm text-red-700">{error.message}</p>
+    <div className="mx-auto flex max-w-md flex-col items-center gap-4 rounded-xl border border-red-200 bg-red-50 p-6 text-center">
+      <div className="flex flex-col gap-1">
+        <p className="font-semibold text-red-800">Couldn&apos;t load match data</p>
+        <p className="text-sm text-red-700">{error.message}</p>
+      </div>
 
       {error.isNetworkError && (
         <p className="text-sm text-red-700">
@@ -26,7 +27,7 @@ export function ErrorState({
         </p>
       )}
 
-      <div className="mt-1 flex items-center gap-3">
+      <div className="flex items-center gap-3">
         <button
           onClick={onRetry}
           className="rounded-md bg-red-700 px-4 py-2 text-sm font-medium text-white hover:bg-red-800"
