@@ -12,7 +12,7 @@
  * independently-fetched, derived piece of data for the same match.
  */
 
-import type { AnalystReportResponse, Match, MatchWithPrediction, PredictionResponse } from "./types";
+import type { AnalystReportResponse, Match, MatchWithPrediction, PickChoice, PicksAnalysisResponse, PredictionResponse } from "./types";
 
 // Configurable so the frontend can point at a different backend (e.g. a
 // deployed API) without code changes — see .env.example.
@@ -81,6 +81,25 @@ export function getMatchPrediction(matchId: string): Promise<PredictionResponse>
  */
 export function postMatchAnalysis(matchId: string): Promise<AnalystReportResponse> {
   return apiFetch<AnalystReportResponse>(`/matches/${matchId}/analysis`, { method: "POST" });
+}
+
+/**
+ * Send the user's slate of picks to the backend for portfolio analysis.
+ * Grade and stats are computed server-side; Claude (or the mock) writes the prose.
+ */
+export function postPicksAnalysis(
+  picks: Partial<Record<string, PickChoice>>,
+): Promise<PicksAnalysisResponse> {
+  const body = {
+    picks: Object.entries(picks)
+      .filter((entry): entry is [string, PickChoice] => entry[1] !== undefined)
+      .map(([match_id, choice]) => ({ match_id, choice })),
+  };
+  return apiFetch<PicksAnalysisResponse>("/picks/analysis", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
 }
 
 /**

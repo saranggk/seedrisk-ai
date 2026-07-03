@@ -16,8 +16,9 @@ the endpoints' shape.
 from fastapi import APIRouter, HTTPException
 
 from app.data.loader import load_matches_raw
-from app.models import AnalystReportResponse, Match, MatchResponse, PredictionResponse
+from app.models import AnalystReportResponse, Match, MatchResponse, PicksAnalysisRequest, PicksAnalysisResponse, PredictionResponse
 from app.services.analyst_generator import generate_analyst_report
+from app.services.picks_analyst import generate_picks_analysis
 from app.services.upset_model import predict_upset
 
 router = APIRouter()
@@ -70,3 +71,25 @@ def post_match_analysis(match_id: str) -> AnalystReportResponse:
     match = _find_match(match_id)
     prediction = predict_upset(match)
     return generate_analyst_report(match, prediction)
+
+
+@router.post("/picks/analysis", response_model=PicksAnalysisResponse)
+def post_picks_analysis(request: PicksAnalysisRequest) -> PicksAnalysisResponse:
+    """
+    Grade a user's slate of picks against the rule-based model's pre-computed
+    predictions. Unknown match IDs are silently skipped; 422 if nothing valid remains.
+    See app/services/picks_analyst.py for how grades and prose are generated.
+    """
+    picks_with_data = []
+    for item in request.picks:
+        try:
+            match = _find_match(item.match_id)
+            prediction = predict_upset(match)
+            picks_with_data.append((item, match, prediction))
+        except HTTPException:
+            pass
+
+    if not picks_with_data:
+        raise HTTPException(status_code=422, detail="No valid match IDs in picks.")
+
+    return generate_picks_analysis(picks_with_data)

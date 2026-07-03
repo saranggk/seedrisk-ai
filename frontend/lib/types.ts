@@ -64,6 +64,24 @@ export interface MatchWithPrediction {
   prediction: PredictionResponse;
 }
 
+export type PickChoice = "favorite" | "upset";
+
+/**
+ * API response for POST /picks/analysis.
+ * slate_grade, picks_count, and expected_correct are pre-computed in Python —
+ * Claude only writes the four prose fields (same principle as AnalystReportResponse).
+ */
+export interface PicksAnalysisResponse {
+  slate_grade: "Aggressive" | "Balanced" | "Conservative";
+  slate_summary: string;
+  boldest_pick: string;
+  best_aligned_pick: string;
+  portfolio_note: string;
+  picks_count: number;
+  expected_correct: number;
+  source: "claude" | "mock";
+}
+
 /**
  * API response for POST /matches/{id}/analysis. These fields are Claude's (or
  * the backend's deterministic mock generator's) explanation of the
