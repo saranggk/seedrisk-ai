@@ -11,7 +11,7 @@ Given a tennis match between a favourite and an underdog, SeedRisk AI:
 
 ## What it does
 
-The dashboard shows all matches in the dataset with risk badges (Low / Medium / High / Trap Match), probability bars, and a summary strip. Each match card links to a detail page with:
+The dashboard shows all matches in the dataset with risk badges (Low / Medium / High / Trap Match), probability bars, and a summary strip. Matches can be filtered by risk label, sorted by upset probability, and searched by player name. Each match card links to a detail page with:
 
 - Full prediction summary with favourite win probability and upset probability
 - Player-vs-player stat comparison (ranking, grass win %, recent form, Wimbledon history, serve/return rates, tiebreak %, last 10 record, head-to-head)
@@ -89,14 +89,16 @@ Set it in `backend/.env` to enable live Claude analyst reports. Without it, anal
 
 ## Suggested demo flow
 
-1. Open `http://localhost:3000` — dashboard with all 8 matches and a summary strip
+1. Open `http://localhost:3000` — dashboard with all 16 matches and a summary strip
 2. Note the summary strip: total matches, High Risk count, Trap Match count, average upset %
-3. Click any match card (M002 is a good example — it has interesting risk dynamics)
-4. On the detail page, review the probability summary and probability bars
-5. Scroll to **Model drivers** — see exactly which stats pushed upset risk up or down
-6. Check **Player comparison** — favourite values left, stat labels centre, underdog values right
-7. Click **Generate analyst report** to see Claude's plain-English explanation
-8. Try visiting `/matches/M999` to see the match-not-found state
+3. Use the risk label filter buttons to narrow by Low / Medium / High / Trap Match
+4. Try the search bar to find a match by player name, or sort by upset probability
+5. Click any match card (M002 is a good example — it has interesting risk dynamics)
+6. On the detail page, review the probability summary and probability bars
+7. Scroll to **Model drivers** — see exactly which stats pushed upset risk up or down
+8. Check **Player comparison** — favourite values left, stat labels centre, underdog values right
+9. Click **Generate analyst report** to see Claude's plain-English explanation
+10. Try visiting `/matches/M999` to see the match-not-found state
 
 ---
 
@@ -105,7 +107,7 @@ Set it in `backend/.env` to enable live Claude analyst reports. Without it, anal
 ```
 /frontend        Next.js 16 + TypeScript + Tailwind v4 dashboard
 /backend         Python FastAPI — match data, rule-based model, Claude analyst
-/data            Sample dataset (8 Wimbledon-style matches in JSON)
+/data            Sample dataset (16 Wimbledon-style matches in JSON)
 /docs            ROADMAP.md, DATA_DICTIONARY.md, METHODOLOGY.md
 ```
 
@@ -113,7 +115,7 @@ Set it in `backend/.env` to enable live Claude analyst reports. Without it, anal
 
 ## Current limitations
 
-- **Sample data only** — 8 hand-crafted matches, not real ATP/WTA data
+- **Sample data only** — 16 hand-crafted matches, not real ATP/WTA data
 - **No statistical validation** — model weights are manually tuned, no training or backtesting
 - **No persistence** — data lives in `data/sample_matches.json`; no database
 - **Local dev only** — no deployment configuration
@@ -126,6 +128,7 @@ Set it in `backend/.env` to enable live Claude analyst reports. Without it, anal
 - Historical accuracy evaluation against real match outcomes
 - Logistic regression or gradient-boosted model (same output interface)
 - SQLite or Postgres persistence
+- Interactive picks mode with Claude portfolio analysis
 - Bracket simulator
 - Deployment (Fly.io, Vercel + Railway, etc.)
 

@@ -34,11 +34,16 @@ Dynamic route `/matches/[matchId]`. Cards on the dashboard now link to their det
 
 Wimbledon-inspired design applied to all real app pages. Dashboard gets a dark green header banner and a summary strip (total matches, High Risk count, Trap Match count, average upset %). Match cards updated with risk-coloured left border accent, probability bars (green for favourite win, purple for upset), High/Trap Match card tints, and cleaner player hierarchy. Risk badges switched to outlined pill style with correct colour roles (green/amber/strawberry red/purple). Player comparison table reordered to favourite-left | stat-centre | underdog-right. Feature contribution bars updated to purple for `increases_upset_risk` and green for `decreases_upset_risk`. Analyst report section polished with dark green "Final Take" panel, rose/blush demo-mode notice, and an italic confidence note. Match detail page restructured as a premium match briefing card. Loading, error, and not-found states improved. Root `README.md` rewritten with full setup, demo flow, and project overview. `docs/METHODOLOGY.md` added explaining the model, risk labels, Claude's role, and data limitations.
 
+## Phase 8 — Dashboard Controls & Data Expansion ✅
+
+Sample dataset doubled from 8 to 16 matches (M001–M016), engineered to produce a balanced distribution across all four risk labels (6 Low, 3 Medium, 3 High, 4 Trap Match). Dashboard gains filter tabs (by risk label, colour-matched to risk badges), a sort toggle (upset % ascending/descending/none), a search bar (player name substring match), and a "Showing X of Y" counter. All three controls compose — filter, search, and sort can be active simultaneously. The SummaryStrip continues to reflect the full unfiltered dataset so aggregate stats stay stable while browsing.
+
 ## Optional Later Phases
 
+- Interactive picks mode with Claude portfolio analysis (user picks upsets, Claude grades the slate).
 - Deployment (Fly.io, Vercel + Railway, etc.).
 - Real ATP/WTA data ingestion via an open tennis API.
 - Historical accuracy evaluation against real match outcomes.
 - SQLite/Postgres/Supabase persistence.
 - Logistic regression or XGBoost model upgrade.
-- Bracket simulator.
+- Full bracket simulator with round-by-round progression.

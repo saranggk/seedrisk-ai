@@ -98,11 +98,11 @@ Mock mode is intentional: local development should not require an API key, and t
 
 ## Sample data limitations
 
-The current dataset (`data/sample_matches.json`) consists of 8 manually crafted matches designed to represent a range of risk profiles. It is **not real ATP/WTA data** and has not been validated against historical outcomes.
+The current dataset (`data/sample_matches.json`) consists of 16 manually crafted matches designed to cover all four risk label buckets (Low, Medium, High, Trap Match). It is **not real ATP/WTA data** and has not been validated against historical outcomes.
 
 Specific limitations:
 - No real player stats — all values are plausible but synthetic
-- Small dataset — no statistical patterns can be drawn from 8 matches
+- Small dataset — no statistical patterns can be drawn from 16 matches
 - No temporal variation — all matches are treated as equally recent
 - No real head-to-head history
 
