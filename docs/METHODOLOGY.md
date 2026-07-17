@@ -6,13 +6,7 @@ How the upset-risk model works, what the Claude analyst layer does, and what the
 
 ## Why a rule-based model?
 
-The MVP uses a hand-tuned rule-based scoring model rather than machine learning for three reasons:
-
-1. **No training data required** — works with any size dataset, including a small sample for demo purposes.
-2. **Fully auditable** — every factor and its weight is explicitly defined in `backend/app/services/upset_model.py`. Nothing is learned from opaque fitting.
-3. **Explainability is first-class** — the model produces signed impact values for every feature, making it straightforward to show users exactly what drove the prediction.
-
-A logistic regression or gradient-boosted model could be swapped in later behind the same output interface without changing the frontend or the Claude analyst layer.
+See [`docs/DECISIONS.md` — ADR-1](DECISIONS.md#adr-1-rule-based-scoring-not-a-trained-ml-model) for why the MVP uses rule-based scoring instead of a trained model, and for the planned path to a trained model behind the same output interface.
 
 ---
 
@@ -59,7 +53,7 @@ The final upset probability maps to a label:
 | High | upset probability ≥ 35% | Significant upset risk — the match could go either way |
 | Trap Match | upset probability ≥ 30% AND ranking gap ≥ 40 | Narrative override — see below |
 
-**"Trap Match"** is a narrative override evaluated before the Low/Medium/High thresholds. It fires when two conditions hold simultaneously: the ranking gap is ≥ 40 positions (making the favourite look commanding on paper) and upset probability is still ≥ 30% (the underlying stats say the match is closer than it appears). The favourite is still favoured — the label is not saying the underdog is more likely to win. It is calling out the gap between the "safe favourite" narrative implied by the large ranking difference and the elevated statistical risk the model actually calculates. A Trap Match would otherwise score as "Medium" risk and be overlooked.
+See [`docs/DECISIONS.md` — ADR-4](DECISIONS.md#adr-4-trap-match-as-its-own-label-not-folded-into-mediumhigh) for why Trap Match is its own narrative-override label rather than a higher probability bucket.
 
 ---
 
@@ -92,7 +86,7 @@ Claude then writes a structured 7-field report grounded strictly in that data.
 
 If `ANTHROPIC_API_KEY` is not set, or the Claude call fails for any reason (rate limit, network error, bad key), the endpoint returns a deterministic mock report built directly from the same rule-based output. The `source` field in the response is `"mock"` (vs `"claude"` for a live call) so the frontend shows a "Demo mode" notice.
 
-Mock mode is intentional: local development should not require an API key, and the model's output should always be explainable even without an LLM layer.
+See [`docs/DECISIONS.md` — ADR-3](DECISIONS.md#adr-3-deterministic-mock-mode-when-no-api-key-is-set) for why mock mode exists.
 
 ---
 
