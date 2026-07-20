@@ -10,11 +10,11 @@ export interface Player {
   player_name: string;
   ranking: number;
   seed: number | null;
-  grass_win_pct: number;
+  surface_win_pct: number;
   recent_win_pct: number;
-  wimbledon_win_pct: number;
-  hold_rate_grass: number;
-  break_rate_grass: number;
+  tournament_win_pct: number;
+  surface_hold_rate: number;
+  surface_break_rate: number;
   tiebreak_win_pct: number;
   last_10_record: string;
   h2h_wins: number;
