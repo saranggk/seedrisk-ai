@@ -2,8 +2,13 @@
 Phase 1 data-loading utility.
 
 This module does NOT run a server and does NOT touch SQLite yet (that's Phase 2).
-Its only job is to read data/sample_matches.json into Python so it can be
-inspected, tested, and later reused by the FastAPI app and the scoring model.
+Its job is to read data/sample_matches.json into Python, deriving each match's
+favorite/underdog roles from ranking rather than trusting the JSON's own
+"favorite"/"underdog" keys as authoritative labels -- see docs/DECISIONS.md
+and docs/plans/2026-07-19-001-refactor-regression-tests-and-surface-schema-plan.md
+(Unit U3) for why. The JSON's top-level "favorite"/"underdog" keys are kept
+as positional containers only; this function reads both regardless of which
+key holds them.
 """
 
 import json
@@ -15,10 +20,47 @@ import pandas as pd
 DATA_FILE = Path(__file__).resolve().parents[3] / "data" / "sample_matches.json"
 
 
+def _derive_favorite_underdog(player_a: dict, player_b: dict) -> tuple[dict, dict]:
+    """
+    Order two raw player dicts as (favorite, underdog): lower ranking wins;
+    if rankings are equal, lower/non-null seed wins over a null or higher
+    seed; if both are equal (or both null), the input order is kept as an
+    explicit, arbitrary, deterministic fallback.
+    """
+    if player_a["ranking"] != player_b["ranking"]:
+        return (
+            (player_a, player_b)
+            if player_a["ranking"] < player_b["ranking"]
+            else (player_b, player_a)
+        )
+
+    seed_a, seed_b = player_a.get("seed"), player_b.get("seed")
+    if seed_a != seed_b:
+        if seed_a is None:
+            return (player_b, player_a)
+        if seed_b is None:
+            return (player_a, player_b)
+        return (player_a, player_b) if seed_a < seed_b else (player_b, player_a)
+
+    return (player_a, player_b)  # fully tied: deterministic, arbitrary
+
+
 def load_matches_raw() -> list[dict]:
-    """Load sample_matches.json as a plain list of match dicts (favorite/underdog nested)."""
+    """
+    Load sample_matches.json as a plain list of match dicts, with each
+    match's favorite/underdog derived from ranking (see
+    _derive_favorite_underdog) rather than read as a stored label.
+    """
     with open(DATA_FILE, encoding="utf-8") as f:
-        return json.load(f)
+        matches = json.load(f)
+
+    for match in matches:
+        favorite, underdog = _derive_favorite_underdog(
+            match["favorite"], match["underdog"]
+        )
+        match["favorite"], match["underdog"] = favorite, underdog
+
+    return matches
 
 
 def load_matches_flat() -> pd.DataFrame:
