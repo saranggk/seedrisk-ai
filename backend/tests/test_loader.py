@@ -5,10 +5,13 @@ regression-tests-and-surface-schema-plan.md, Unit U3.
 """
 
 import json
+from pathlib import Path
 
-from app.data.loader import DATA_FILE, _derive_favorite_underdog, load_matches_raw
+from app.data.loader import DATA_FILE, _derive_favorite_underdog, load_matches_flat, load_matches_raw
 from app.models import Match
 from app.services.upset_model import predict_upset
+
+FIXTURE_PATH = Path(__file__).parent / "fixtures" / "predict_upset_snapshot.json"
 
 
 def test_derivation_matches_hand_labels_for_all_real_matches():
@@ -60,6 +63,19 @@ def test_equal_ranking_seeded_player_beats_unseeded():
     assert underdog["player_name"] == "B"
 
 
+def test_equal_ranking_seeded_player_beats_unseeded_when_unseeded_is_first_arg():
+    """
+    Mirror of the case above with the arguments swapped -- exercises the
+    seed_a is None branch specifically, not just seed_b is None.
+    """
+    unseeded = {"player_name": "A", "ranking": 10, "seed": None}
+    seeded = {"player_name": "B", "ranking": 10, "seed": 12}
+
+    favorite, underdog = _derive_favorite_underdog(unseeded, seeded)
+    assert favorite["player_name"] == "B"
+    assert underdog["player_name"] == "A"
+
+
 def test_equal_ranking_and_seed_keeps_original_order_without_crashing():
     player_a = {"player_name": "A", "ranking": 10, "seed": None}
     player_b = {"player_name": "B", "ranking": 10, "seed": None}
@@ -75,7 +91,7 @@ def test_full_chain_still_matches_snapshot_fixture():
     exact output captured in tests/fixtures/predict_upset_snapshot.json,
     proving this refactor didn't silently change model behavior.
     """
-    with open("tests/fixtures/predict_upset_snapshot.json", encoding="utf-8") as f:
+    with open(FIXTURE_PATH, encoding="utf-8") as f:
         snapshot = json.load(f)
 
     matches = [Match(**m) for m in load_matches_raw()]
@@ -85,3 +101,22 @@ def test_full_chain_still_matches_snapshot_fixture():
         assert prediction.favorite_win_probability == expected["favorite_win_probability"]
         assert prediction.upset_probability == expected["upset_probability"]
         assert prediction.risk_label == expected["risk_label"]
+
+
+def test_load_matches_flat_reflects_derived_roles():
+    """
+    load_matches_flat() depends on load_matches_raw()'s new derivation --
+    its 'role' column must reflect the derived favorite/underdog, not a
+    raw, unvalidated label.
+    """
+    df = load_matches_flat()
+    with open(DATA_FILE, encoding="utf-8") as f:
+        raw_matches = json.load(f)
+
+    for match in raw_matches:
+        favorite, _ = _derive_favorite_underdog(match["favorite"], match["underdog"])
+        row = df[(df["match_id"] == match["match_id"]) & (df["role"] == "favorite")].iloc[0]
+        assert row["player_name"] == favorite["player_name"], (
+            f"{match['match_id']}: load_matches_flat()'s 'favorite' row doesn't "
+            f"match the derived favorite"
+        )
