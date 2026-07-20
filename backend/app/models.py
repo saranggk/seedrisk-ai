@@ -14,11 +14,11 @@ class Player(BaseModel):
     player_name: str
     ranking: int
     seed: int | None = None
-    grass_win_pct: float
+    surface_win_pct: float
     recent_win_pct: float
-    wimbledon_win_pct: float
-    hold_rate_grass: float
-    break_rate_grass: float
+    tournament_win_pct: float
+    surface_hold_rate: float
+    surface_break_rate: float
     tiebreak_win_pct: float
     last_10_record: str
     h2h_wins: int

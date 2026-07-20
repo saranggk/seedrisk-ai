@@ -9,7 +9,7 @@
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "grass_win_pct",
+        "feature": "surface_win_pct",
         "impact": -0.08
       },
       {
@@ -19,17 +19,17 @@
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "wimbledon_win_pct",
+        "feature": "tournament_win_pct",
         "impact": -0.06
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "hold_rate_grass",
+        "feature": "surface_hold_rate",
         "impact": -0.036
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "break_rate_grass",
+        "feature": "surface_break_rate",
         "impact": -0.028
       },
       {
@@ -56,7 +56,7 @@
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "grass_win_pct",
+        "feature": "surface_win_pct",
         "impact": -0.01
       },
       {
@@ -66,17 +66,17 @@
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "wimbledon_win_pct",
+        "feature": "tournament_win_pct",
         "impact": 0.015
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "hold_rate_grass",
+        "feature": "surface_hold_rate",
         "impact": 0.009
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "break_rate_grass",
+        "feature": "surface_break_rate",
         "impact": 0.007
       },
       {
@@ -103,7 +103,7 @@
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "grass_win_pct",
+        "feature": "surface_win_pct",
         "impact": -0.075
       },
       {
@@ -113,17 +113,17 @@
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "wimbledon_win_pct",
+        "feature": "tournament_win_pct",
         "impact": -0.06
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "hold_rate_grass",
+        "feature": "surface_hold_rate",
         "impact": -0.024
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "break_rate_grass",
+        "feature": "surface_break_rate",
         "impact": -0.0105
       },
       {
@@ -150,7 +150,7 @@
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "grass_win_pct",
+        "feature": "surface_win_pct",
         "impact": 0.04
       },
       {
@@ -160,17 +160,17 @@
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "wimbledon_win_pct",
+        "feature": "tournament_win_pct",
         "impact": 0.015
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "hold_rate_grass",
+        "feature": "surface_hold_rate",
         "impact": 0.021
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "break_rate_grass",
+        "feature": "surface_break_rate",
         "impact": 0.035
       },
       {
@@ -197,7 +197,7 @@
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "grass_win_pct",
+        "feature": "surface_win_pct",
         "impact": -0.08
       },
       {
@@ -207,17 +207,17 @@
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "wimbledon_win_pct",
+        "feature": "tournament_win_pct",
         "impact": -0.06
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "hold_rate_grass",
+        "feature": "surface_hold_rate",
         "impact": -0.045
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "break_rate_grass",
+        "feature": "surface_break_rate",
         "impact": -0.0455
       },
       {
@@ -244,7 +244,7 @@
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "grass_win_pct",
+        "feature": "surface_win_pct",
         "impact": 0.035
       },
       {
@@ -254,17 +254,17 @@
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "wimbledon_win_pct",
+        "feature": "tournament_win_pct",
         "impact": 0.012
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "hold_rate_grass",
+        "feature": "surface_hold_rate",
         "impact": 0.018
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "break_rate_grass",
+        "feature": "surface_break_rate",
         "impact": 0.0315
       },
       {
@@ -291,7 +291,7 @@
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "grass_win_pct",
+        "feature": "surface_win_pct",
         "impact": -0.08
       },
       {
@@ -301,17 +301,17 @@
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "wimbledon_win_pct",
+        "feature": "tournament_win_pct",
         "impact": -0.06
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "hold_rate_grass",
+        "feature": "surface_hold_rate",
         "impact": -0.039
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "break_rate_grass",
+        "feature": "surface_break_rate",
         "impact": -0.035
       },
       {
@@ -338,7 +338,7 @@
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "grass_win_pct",
+        "feature": "surface_win_pct",
         "impact": -0.01
       },
       {
@@ -348,17 +348,17 @@
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "wimbledon_win_pct",
+        "feature": "tournament_win_pct",
         "impact": -0.03
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "hold_rate_grass",
+        "feature": "surface_hold_rate",
         "impact": 0.006
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "break_rate_grass",
+        "feature": "surface_break_rate",
         "impact": 0.035
       },
       {
@@ -385,7 +385,7 @@
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "grass_win_pct",
+        "feature": "surface_win_pct",
         "impact": -0.08
       },
       {
@@ -395,17 +395,17 @@
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "wimbledon_win_pct",
+        "feature": "tournament_win_pct",
         "impact": -0.06
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "hold_rate_grass",
+        "feature": "surface_hold_rate",
         "impact": -0.045
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "break_rate_grass",
+        "feature": "surface_break_rate",
         "impact": -0.042
       },
       {
@@ -432,7 +432,7 @@
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "grass_win_pct",
+        "feature": "surface_win_pct",
         "impact": -0.02
       },
       {
@@ -442,17 +442,17 @@
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "wimbledon_win_pct",
+        "feature": "tournament_win_pct",
         "impact": -0.012
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "hold_rate_grass",
+        "feature": "surface_hold_rate",
         "impact": -0.006
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "break_rate_grass",
+        "feature": "surface_break_rate",
         "impact": -0.007
       },
       {
@@ -479,7 +479,7 @@
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "grass_win_pct",
+        "feature": "surface_win_pct",
         "impact": 0.015
       },
       {
@@ -489,17 +489,17 @@
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "wimbledon_win_pct",
+        "feature": "tournament_win_pct",
         "impact": -0.024
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "hold_rate_grass",
+        "feature": "surface_hold_rate",
         "impact": 0.006
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "break_rate_grass",
+        "feature": "surface_break_rate",
         "impact": 0.0105
       },
       {
@@ -526,7 +526,7 @@
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "grass_win_pct",
+        "feature": "surface_win_pct",
         "impact": 0.03
       },
       {
@@ -536,17 +536,17 @@
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "wimbledon_win_pct",
+        "feature": "tournament_win_pct",
         "impact": 0.015
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "hold_rate_grass",
+        "feature": "surface_hold_rate",
         "impact": 0.006
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "break_rate_grass",
+        "feature": "surface_break_rate",
         "impact": 0.014
       },
       {
@@ -573,7 +573,7 @@
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "grass_win_pct",
+        "feature": "surface_win_pct",
         "impact": 0.08
       },
       {
@@ -583,17 +583,17 @@
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "wimbledon_win_pct",
+        "feature": "tournament_win_pct",
         "impact": 0.036
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "hold_rate_grass",
+        "feature": "surface_hold_rate",
         "impact": 0.024
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "break_rate_grass",
+        "feature": "surface_break_rate",
         "impact": 0.042
       },
       {
@@ -620,7 +620,7 @@
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "grass_win_pct",
+        "feature": "surface_win_pct",
         "impact": 0.055
       },
       {
@@ -630,17 +630,17 @@
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "wimbledon_win_pct",
+        "feature": "tournament_win_pct",
         "impact": 0.036
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "hold_rate_grass",
+        "feature": "surface_hold_rate",
         "impact": 0.024
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "break_rate_grass",
+        "feature": "surface_break_rate",
         "impact": 0.035
       },
       {
@@ -667,7 +667,7 @@
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "grass_win_pct",
+        "feature": "surface_win_pct",
         "impact": 0.035
       },
       {
@@ -677,17 +677,17 @@
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "wimbledon_win_pct",
+        "feature": "tournament_win_pct",
         "impact": 0.018
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "hold_rate_grass",
+        "feature": "surface_hold_rate",
         "impact": 0.018
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "break_rate_grass",
+        "feature": "surface_break_rate",
         "impact": 0.028
       },
       {
@@ -714,7 +714,7 @@
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "grass_win_pct",
+        "feature": "surface_win_pct",
         "impact": 0.055
       },
       {
@@ -724,17 +724,17 @@
       },
       {
         "direction": "decreases_upset_risk",
-        "feature": "wimbledon_win_pct",
+        "feature": "tournament_win_pct",
         "impact": -0.012
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "hold_rate_grass",
+        "feature": "surface_hold_rate",
         "impact": 0.009
       },
       {
         "direction": "increases_upset_risk",
-        "feature": "break_rate_grass",
+        "feature": "surface_break_rate",
         "impact": 0.021
       },
       {

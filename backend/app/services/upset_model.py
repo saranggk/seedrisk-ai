@@ -165,7 +165,7 @@ def _build_feature_contributions(match: Match) -> list[FeatureContribution]:
     return [
         _score_ranking_gap(match),
         _score_pct_diff(
-            match, "grass_win_pct", "Grass win percentage",
+            match, "surface_win_pct", "Grass win percentage",
             weight=0.5, cap=0.08, context="grass win percentage",
         ),
         _score_pct_diff(
@@ -173,15 +173,15 @@ def _build_feature_contributions(match: Match) -> list[FeatureContribution]:
             weight=0.4, cap=0.07, context="recent win percentage",
         ),
         _score_pct_diff(
-            match, "wimbledon_win_pct", "Wimbledon win percentage",
+            match, "tournament_win_pct", "Wimbledon win percentage",
             weight=0.3, cap=0.06, context="Wimbledon win percentage",
         ),
         _score_pct_diff(
-            match, "hold_rate_grass", "Grass service hold rate",
+            match, "surface_hold_rate", "Grass service hold rate",
             weight=0.3, cap=0.06, context="grass hold rate",
         ),
         _score_pct_diff(
-            match, "break_rate_grass", "Grass break rate",
+            match, "surface_break_rate", "Grass break rate",
             weight=0.35, cap=0.07, context="grass break rate",
         ),
         _score_pct_diff(
