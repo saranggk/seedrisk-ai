@@ -1,0 +1,754 @@
+{
+  "M001": {
+    "favorite_win_probability": 0.95,
+    "feature_contributions": [
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "ranking_gap",
+        "impact": -0.045
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "grass_win_pct",
+        "impact": -0.08
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "recent_win_pct",
+        "impact": -0.07
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "wimbledon_win_pct",
+        "impact": -0.06
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "hold_rate_grass",
+        "impact": -0.036
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "break_rate_grass",
+        "impact": -0.028
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "tiebreak_win_pct",
+        "impact": -0.0125
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "h2h_edge",
+        "impact": -0.06
+      }
+    ],
+    "risk_label": "Low",
+    "upset_probability": 0.05
+  },
+  "M002": {
+    "favorite_win_probability": 0.6958,
+    "feature_contributions": [
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "ranking_gap",
+        "impact": -0.0318
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "grass_win_pct",
+        "impact": -0.01
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "recent_win_pct",
+        "impact": 0.07
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "wimbledon_win_pct",
+        "impact": 0.015
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "hold_rate_grass",
+        "impact": 0.009
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "break_rate_grass",
+        "impact": 0.007
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "tiebreak_win_pct",
+        "impact": 0.045
+      },
+      {
+        "direction": "neutral",
+        "feature": "h2h_edge",
+        "impact": 0.0
+      }
+    ],
+    "risk_label": "Trap Match",
+    "upset_probability": 0.3042
+  },
+  "M003": {
+    "favorite_win_probability": 0.95,
+    "feature_contributions": [
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "ranking_gap",
+        "impact": -0.0576
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "grass_win_pct",
+        "impact": -0.075
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "recent_win_pct",
+        "impact": -0.028
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "wimbledon_win_pct",
+        "impact": -0.06
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "hold_rate_grass",
+        "impact": -0.024
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "break_rate_grass",
+        "impact": -0.0105
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "tiebreak_win_pct",
+        "impact": 0.0125
+      },
+      {
+        "direction": "neutral",
+        "feature": "h2h_edge",
+        "impact": 0.0
+      }
+    ],
+    "risk_label": "Low",
+    "upset_probability": 0.05
+  },
+  "M004": {
+    "favorite_win_probability": 0.5666,
+    "feature_contributions": [
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "ranking_gap",
+        "impact": -0.0276
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "grass_win_pct",
+        "impact": 0.04
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "recent_win_pct",
+        "impact": 0.07
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "wimbledon_win_pct",
+        "impact": 0.015
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "hold_rate_grass",
+        "impact": 0.021
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "break_rate_grass",
+        "impact": 0.035
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "tiebreak_win_pct",
+        "impact": 0.05
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "h2h_edge",
+        "impact": 0.03
+      }
+    ],
+    "risk_label": "Trap Match",
+    "upset_probability": 0.4334
+  },
+  "M005": {
+    "favorite_win_probability": 0.95,
+    "feature_contributions": [
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "ranking_gap",
+        "impact": -0.0234
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "grass_win_pct",
+        "impact": -0.08
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "recent_win_pct",
+        "impact": -0.07
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "wimbledon_win_pct",
+        "impact": -0.06
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "hold_rate_grass",
+        "impact": -0.045
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "break_rate_grass",
+        "impact": -0.0455
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "tiebreak_win_pct",
+        "impact": -0.05
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "h2h_edge",
+        "impact": -0.09
+      }
+    ],
+    "risk_label": "Low",
+    "upset_probability": 0.05
+  },
+  "M006": {
+    "favorite_win_probability": 0.5703,
+    "feature_contributions": [
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "ranking_gap",
+        "impact": -0.0168
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "grass_win_pct",
+        "impact": 0.035
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "recent_win_pct",
+        "impact": 0.07
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "wimbledon_win_pct",
+        "impact": 0.012
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "hold_rate_grass",
+        "impact": 0.018
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "break_rate_grass",
+        "impact": 0.0315
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "tiebreak_win_pct",
+        "impact": 0.05
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "h2h_edge",
+        "impact": 0.03
+      }
+    ],
+    "risk_label": "High",
+    "upset_probability": 0.4297
+  },
+  "M007": {
+    "favorite_win_probability": 0.95,
+    "feature_contributions": [
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "ranking_gap",
+        "impact": -0.0108
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "grass_win_pct",
+        "impact": -0.08
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "recent_win_pct",
+        "impact": -0.07
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "wimbledon_win_pct",
+        "impact": -0.06
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "hold_rate_grass",
+        "impact": -0.039
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "break_rate_grass",
+        "impact": -0.035
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "tiebreak_win_pct",
+        "impact": -0.0475
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "h2h_edge",
+        "impact": -0.09
+      }
+    ],
+    "risk_label": "Low",
+    "upset_probability": 0.05
+  },
+  "M008": {
+    "favorite_win_probability": 0.6928,
+    "feature_contributions": [
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "ranking_gap",
+        "impact": -0.0138
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "grass_win_pct",
+        "impact": -0.01
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "recent_win_pct",
+        "impact": 0.07
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "wimbledon_win_pct",
+        "impact": -0.03
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "hold_rate_grass",
+        "impact": 0.006
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "break_rate_grass",
+        "impact": 0.035
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "tiebreak_win_pct",
+        "impact": 0.05
+      },
+      {
+        "direction": "neutral",
+        "feature": "h2h_edge",
+        "impact": 0.0
+      }
+    ],
+    "risk_label": "Medium",
+    "upset_probability": 0.3072
+  },
+  "M009": {
+    "favorite_win_probability": 0.95,
+    "feature_contributions": [
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "ranking_gap",
+        "impact": -0.0438
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "grass_win_pct",
+        "impact": -0.08
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "recent_win_pct",
+        "impact": -0.07
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "wimbledon_win_pct",
+        "impact": -0.06
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "hold_rate_grass",
+        "impact": -0.045
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "break_rate_grass",
+        "impact": -0.042
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "tiebreak_win_pct",
+        "impact": -0.0425
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "h2h_edge",
+        "impact": -0.09
+      }
+    ],
+    "risk_label": "Low",
+    "upset_probability": 0.05
+  },
+  "M010": {
+    "favorite_win_probability": 0.8836,
+    "feature_contributions": [
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "ranking_gap",
+        "impact": -0.0126
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "grass_win_pct",
+        "impact": -0.02
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "recent_win_pct",
+        "impact": -0.016
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "wimbledon_win_pct",
+        "impact": -0.012
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "hold_rate_grass",
+        "impact": -0.006
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "break_rate_grass",
+        "impact": -0.007
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "tiebreak_win_pct",
+        "impact": -0.01
+      },
+      {
+        "direction": "neutral",
+        "feature": "h2h_edge",
+        "impact": 0.0
+      }
+    ],
+    "risk_label": "Low",
+    "upset_probability": 0.1164
+  },
+  "M011": {
+    "favorite_win_probability": 0.7624,
+    "feature_contributions": [
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "ranking_gap",
+        "impact": -0.0174
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "grass_win_pct",
+        "impact": 0.015
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "recent_win_pct",
+        "impact": 0.04
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "wimbledon_win_pct",
+        "impact": -0.024
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "hold_rate_grass",
+        "impact": 0.006
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "break_rate_grass",
+        "impact": 0.0105
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "tiebreak_win_pct",
+        "impact": 0.0075
+      },
+      {
+        "direction": "neutral",
+        "feature": "h2h_edge",
+        "impact": 0.0
+      }
+    ],
+    "risk_label": "Medium",
+    "upset_probability": 0.2376
+  },
+  "M012": {
+    "favorite_win_probability": 0.6888,
+    "feature_contributions": [
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "ranking_gap",
+        "impact": -0.0168
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "grass_win_pct",
+        "impact": 0.03
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "recent_win_pct",
+        "impact": 0.048
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "wimbledon_win_pct",
+        "impact": 0.015
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "hold_rate_grass",
+        "impact": 0.006
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "break_rate_grass",
+        "impact": 0.014
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "tiebreak_win_pct",
+        "impact": 0.015
+      },
+      {
+        "direction": "neutral",
+        "feature": "h2h_edge",
+        "impact": 0.0
+      }
+    ],
+    "risk_label": "Medium",
+    "upset_probability": 0.3112
+  },
+  "M013": {
+    "favorite_win_probability": 0.4812,
+    "feature_contributions": [
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "ranking_gap",
+        "impact": -0.0132
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "grass_win_pct",
+        "impact": 0.08
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "recent_win_pct",
+        "impact": 0.07
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "wimbledon_win_pct",
+        "impact": 0.036
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "hold_rate_grass",
+        "impact": 0.024
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "break_rate_grass",
+        "impact": 0.042
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "tiebreak_win_pct",
+        "impact": 0.05
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "h2h_edge",
+        "impact": 0.03
+      }
+    ],
+    "risk_label": "High",
+    "upset_probability": 0.5188
+  },
+  "M014": {
+    "favorite_win_probability": 0.5182,
+    "feature_contributions": [
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "ranking_gap",
+        "impact": -0.0132
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "grass_win_pct",
+        "impact": 0.055
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "recent_win_pct",
+        "impact": 0.07
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "wimbledon_win_pct",
+        "impact": 0.036
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "hold_rate_grass",
+        "impact": 0.024
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "break_rate_grass",
+        "impact": 0.035
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "tiebreak_win_pct",
+        "impact": 0.045
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "h2h_edge",
+        "impact": 0.03
+      }
+    ],
+    "risk_label": "High",
+    "upset_probability": 0.4818
+  },
+  "M015": {
+    "favorite_win_probability": 0.6428,
+    "feature_contributions": [
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "ranking_gap",
+        "impact": -0.0468
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "grass_win_pct",
+        "impact": 0.035
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "recent_win_pct",
+        "impact": 0.07
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "wimbledon_win_pct",
+        "impact": 0.018
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "hold_rate_grass",
+        "impact": 0.018
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "break_rate_grass",
+        "impact": 0.028
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "tiebreak_win_pct",
+        "impact": 0.035
+      },
+      {
+        "direction": "neutral",
+        "feature": "h2h_edge",
+        "impact": 0.0
+      }
+    ],
+    "risk_label": "Trap Match",
+    "upset_probability": 0.3572
+  },
+  "M016": {
+    "favorite_win_probability": 0.6799,
+    "feature_contributions": [
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "ranking_gap",
+        "impact": -0.0504
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "grass_win_pct",
+        "impact": 0.055
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "recent_win_pct",
+        "impact": 0.07
+      },
+      {
+        "direction": "decreases_upset_risk",
+        "feature": "wimbledon_win_pct",
+        "impact": -0.012
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "hold_rate_grass",
+        "impact": 0.009
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "break_rate_grass",
+        "impact": 0.021
+      },
+      {
+        "direction": "increases_upset_risk",
+        "feature": "tiebreak_win_pct",
+        "impact": 0.0275
+      },
+      {
+        "direction": "neutral",
+        "feature": "h2h_edge",
+        "impact": 0.0
+      }
+    ],
+    "risk_label": "Trap Match",
+    "upset_probability": 0.3201
+  }
+}
