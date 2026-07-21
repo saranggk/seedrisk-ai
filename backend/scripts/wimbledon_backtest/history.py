@@ -15,7 +15,7 @@ from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
 
-import pandas as pd
+from scripts.wimbledon_backtest._csv_source import iter_year_frames, parse_tourney_date
 
 LOOKBACK_YEARS = range(2016, 2026)
 TOURS = ("atp", "wta")
@@ -39,34 +39,21 @@ class HistoryRow:
     score: str
 
 
-def _parse_tourney_date(raw) -> date:
-    digits = str(int(raw))
-    return date(int(digits[0:4]), int(digits[4:6]), int(digits[6:8]))
-
-
 def build_history_index(archive_dir: Path) -> dict[object, list[HistoryRow]]:
     """Returns {player_id: [HistoryRow, ...]} sorted ascending by date."""
     index: dict[object, list[HistoryRow]] = defaultdict(list)
     for tour in TOURS:
-        for year in LOOKBACK_YEARS:
-            csv_path = archive_dir / tour / f"{tour}_matches_{year}.csv"
-            if not csv_path.exists():
-                continue
-            _index_year(index, csv_path)
+        for _year, df in iter_year_frames(archive_dir, tour, LOOKBACK_YEARS):
+            df = df[df["score"] != "W/O"]
+            for _, row in df.iterrows():
+                _index_row(index, row)
     for rows in index.values():
         rows.sort(key=lambda r: r.date)
     return dict(index)
 
 
-def _index_year(index: dict, csv_path: Path) -> None:
-    df = pd.read_csv(csv_path)
-    df = df[df["score"] != "W/O"]
-    for _, row in df.iterrows():
-        _index_row(index, row)
-
-
 def _index_row(index: dict, row) -> None:
-    match_date = _parse_tourney_date(row["tourney_date"])
+    match_date = parse_tourney_date(row["tourney_date"])
     surface = row["surface"]
     tourney_name = row["tourney_name"]
     score = row["score"]

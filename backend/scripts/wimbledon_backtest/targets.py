@@ -10,18 +10,14 @@ real-wimbledon-backtest-data-plan.md, Unit U2 and KTD6.
 
 from __future__ import annotations
 
-from datetime import date
 from pathlib import Path
 
 import pandas as pd
 
+from scripts.wimbledon_backtest._csv_source import iter_year_frames, parse_tourney_date
+
 TARGET_YEARS = range(2021, 2026)
 TOURS = ("atp", "wta")
-
-
-def _parse_tourney_date(raw) -> date:
-    digits = str(int(raw))
-    return date(int(digits[0:4]), int(digits[4:6]), int(digits[6:8]))
 
 
 def _clean(value):
@@ -37,7 +33,7 @@ def _clean(value):
 def _to_target_record(row, tour: str) -> dict:
     return {
         "match_id": f"{tour}-{row['tourney_id']}-{row['match_num']}",
-        "date": _parse_tourney_date(row["tourney_date"]),
+        "date": parse_tourney_date(row["tourney_date"]),
         "tour": tour,
         "round": row["round"],
         "score": row["score"],
@@ -60,16 +56,8 @@ def load_target_matches(archive_dir: Path) -> list[dict]:
     """Returns normalized Wimbledon main-draw singles match records for TARGET_YEARS."""
     records: list[dict] = []
     for tour in TOURS:
-        for year in TARGET_YEARS:
-            csv_path = archive_dir / tour / f"{tour}_matches_{year}.csv"
-            if not csv_path.exists():
-                continue
-            records.extend(_load_year(csv_path, tour.upper()))
+        for _year, df in iter_year_frames(archive_dir, tour, TARGET_YEARS):
+            wimbledon = df[df["tourney_name"] == "Wimbledon"]
+            wimbledon = wimbledon[wimbledon["score"] != "W/O"]
+            records.extend(_to_target_record(row, tour.upper()) for _, row in wimbledon.iterrows())
     return records
-
-
-def _load_year(csv_path: Path, tour: str) -> list[dict]:
-    df = pd.read_csv(csv_path)
-    wimbledon = df[df["tourney_name"] == "Wimbledon"]
-    wimbledon = wimbledon[wimbledon["score"] != "W/O"]
-    return [_to_target_record(row, tour) for _, row in wimbledon.iterrows()]
