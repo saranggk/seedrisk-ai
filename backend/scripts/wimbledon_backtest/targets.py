@@ -14,10 +14,14 @@ from pathlib import Path
 
 import pandas as pd
 
-from scripts.wimbledon_backtest._csv_source import iter_year_frames, parse_tourney_date
+from scripts.wimbledon_backtest._csv_source import (
+    TOURS,
+    WALKOVER_SCORE,
+    iter_year_frames,
+    parse_tourney_date,
+)
 
 TARGET_YEARS = range(2021, 2026)
-TOURS = ("atp", "wta")
 
 
 def _clean(value):
@@ -58,6 +62,6 @@ def load_target_matches(archive_dir: Path) -> list[dict]:
     for tour in TOURS:
         for _year, df in iter_year_frames(archive_dir, tour, TARGET_YEARS):
             wimbledon = df[df["tourney_name"] == "Wimbledon"]
-            wimbledon = wimbledon[wimbledon["score"] != "W/O"]
+            wimbledon = wimbledon[wimbledon["score"] != WALKOVER_SCORE]
             records.extend(_to_target_record(row, tour.upper()) for _, row in wimbledon.iterrows())
     return records

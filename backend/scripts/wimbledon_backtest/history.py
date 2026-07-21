@@ -15,10 +15,14 @@ from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
 
-from scripts.wimbledon_backtest._csv_source import iter_year_frames, parse_tourney_date
+from scripts.wimbledon_backtest._csv_source import (
+    TOURS,
+    WALKOVER_SCORE,
+    iter_year_frames,
+    parse_tourney_date,
+)
 
 LOOKBACK_YEARS = range(2016, 2026)
-TOURS = ("atp", "wta")
 
 
 @dataclass(frozen=True)
@@ -44,7 +48,7 @@ def build_history_index(archive_dir: Path) -> dict[object, list[HistoryRow]]:
     index: dict[object, list[HistoryRow]] = defaultdict(list)
     for tour in TOURS:
         for _year, df in iter_year_frames(archive_dir, tour, LOOKBACK_YEARS):
-            df = df[df["score"] != "W/O"]
+            df = df[df["score"] != WALKOVER_SCORE]
             for _, row in df.iterrows():
                 _index_row(index, row)
     for rows in index.values():

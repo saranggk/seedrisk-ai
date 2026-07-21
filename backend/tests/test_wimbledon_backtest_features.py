@@ -147,3 +147,111 @@ def test_assemble_match_record_with_real_missing_rank_case():
     assert record["favorite"]["player_name"] == "M. Gasparyan"
     assert record["underdog"]["player_name"] == "K. Juvan"
     assert record["actual_winner"] == "favorite"
+
+
+def test_both_ranks_missing_resolves_by_seed_not_a_constant_underdog():
+    """
+    Regression test (code review, correctness + adversarial, corroborated):
+    the both-ranks-missing branch of _derive_favorite_underdog_safe used to
+    call the shared loader function on freshly-built copies, then compare
+    the result by object identity against the ORIGINAL dicts -- an identity
+    check that could never be True against a copy, so the seeded player was
+    always mislabeled underdog regardless of the real seed tiebreak.
+    """
+    seeded = {"id": 1, "name": "Seeded", "seed": 3, "ranking": None}
+    unseeded = {"id": 2, "name": "Unseeded", "seed": None, "ranking": None}
+
+    favorite, underdog = _derive_favorite_underdog_safe(seeded, unseeded)
+
+    # Mirrors _derive_favorite_underdog's own tie rule: a seed beats no seed.
+    assert favorite is seeded
+    assert underdog is unseeded
+
+
+def test_assemble_match_record_both_ranks_missing_not_pinned_to_underdog():
+    target_match = {
+        "match_id": "ATP-2022-540-200",
+        "date": date(2022, 7, 1),
+        "tour": "ATP",
+        "round": "R128",
+        "score": "6-4 6-2",
+        "winner": {"id": 111, "name": "Seeded Winner", "seed": 5, "rank": float("nan")},
+        "loser": {"id": 222, "name": "Unseeded Loser", "seed": None, "rank": float("nan")},
+    }
+
+    record = assemble_match_record({}, target_match)
+
+    # The winner is seeded, the loser isn't -- winner should resolve as
+    # favorite (matching the shared seed tiebreak), not be pinned to underdog.
+    assert record["favorite"]["player_name"] == "Seeded Winner"
+    assert record["actual_winner"] == "favorite"
+
+
+def test_assemble_match_record_happy_path_both_ranks_known():
+    target_match = {
+        "match_id": "ATP-2024-540-100",
+        "date": date(2024, 7, 1),
+        "tour": "ATP",
+        "round": "R128",
+        "score": "6-3 6-4",
+        "winner": {"id": 1, "name": "Top Seed", "seed": 1, "rank": 1},
+        "loser": {"id": 2, "name": "Qualifier", "seed": None, "rank": 250},
+    }
+
+    record = assemble_match_record({}, target_match)
+
+    assert record["favorite"]["player_name"] == "Top Seed"
+    assert record["underdog"]["player_name"] == "Qualifier"
+    assert record["actual_winner"] == "favorite"
+
+
+def test_assemble_match_record_underdog_wins():
+    target_match = {
+        "match_id": "ATP-2024-540-101",
+        "date": date(2024, 7, 1),
+        "tour": "ATP",
+        "round": "R128",
+        "score": "6-3 6-4",
+        "winner": {"id": 2, "name": "Qualifier", "seed": None, "rank": 250},
+        "loser": {"id": 1, "name": "Top Seed", "seed": 1, "rank": 1},
+    }
+
+    record = assemble_match_record({}, target_match)
+
+    # The higher-ranked player (rank 1) is still the favorite by role, even
+    # though they lost this match -- actual_winner must reflect the upset.
+    assert record["favorite"]["player_name"] == "Top Seed"
+    assert record["underdog"]["player_name"] == "Qualifier"
+    assert record["actual_winner"] == "underdog"
+
+
+def test_rate_features_compute_real_values_from_mixed_history():
+    """
+    The zero-history test proves these fields null out; this proves they
+    compute a real, correct value from a populated, mixed-outcome history.
+    """
+    history = [
+        _row(date(2020, 1, 1), won=True, tourney_name="Wimbledon", surface="Grass"),
+        _row(date(2020, 7, 1), won=False, tourney_name="Wimbledon", surface="Grass"),
+        _row(date(2022, 1, 1), won=True, tourney_name="Halle", surface="Grass"),
+        _row(date(2022, 6, 1), won=True, tourney_name="Halle", surface="Grass"),
+        _row(date(2022, 8, 1), won=False, tourney_name="US Open", surface="Hard"),
+    ]
+    index = {1: history}
+
+    features = compute_player_features(index, 1, date(2023, 1, 1), opponent_id=None)
+
+    assert features["tournament_win_pct"] == 0.5  # 1 win, 1 loss at Wimbledon
+    assert features["last_10_record"] == "3-2"  # 3 wins, 2 losses overall
+
+
+def test_recent_win_pct_respects_the_12_month_cutoff():
+    history = [
+        _row(date(2020, 1, 1), won=False),  # outside the 12-month window
+        _row(date(2022, 6, 1), won=True),   # inside the 12-month window
+    ]
+    index = {1: history}
+
+    features = compute_player_features(index, 1, date(2023, 1, 1), opponent_id=None)
+
+    assert features["recent_win_pct"] == 1.0  # only the in-window win counts

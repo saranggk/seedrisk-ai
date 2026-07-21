@@ -129,7 +129,18 @@ def _derive_favorite_underdog_safe(player_a: dict, player_b: dict) -> tuple[dict
         return (player_a, player_b)
     if rank_b is not None:
         return (player_b, player_a)
-    return _derive_favorite_underdog({**player_a, "ranking": 0}, {**player_b, "ranking": 0})
+    # Both missing: the shared function needs a non-None ranking to compare,
+    # so it's called on copies with an equal placeholder ranking -- but its
+    # result is then one of those COPIES, never player_a/player_b themselves.
+    # A caller doing an `is` identity check against the originals (as
+    # assemble_match_record does) would always get False here, silently
+    # forcing "underdog" regardless of the real seed tiebreak. Compare by id
+    # instead, then return the original objects in the resolved order.
+    placeholder_favorite, _ = _derive_favorite_underdog(
+        {**player_a, "ranking": 0}, {**player_b, "ranking": 0}
+    )
+    a_is_favorite = placeholder_favorite["id"] == player_a["id"]
+    return (player_a, player_b) if a_is_favorite else (player_b, player_a)
 
 
 def assemble_match_record(index: dict, target_match: dict) -> dict:

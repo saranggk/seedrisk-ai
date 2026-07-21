@@ -56,6 +56,13 @@ def _summarize(records: list[dict]) -> dict:
 def main() -> None:
     records, summary = build_dataset()
 
+    if not records:
+        raise RuntimeError(
+            "No target matches found -- refusing to overwrite any existing "
+            f"{OUTPUT_FILE} with an empty dataset. Check the archive clone "
+            "and the target year range in targets.py."
+        )
+
     OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(records, f, indent=2, sort_keys=True)
