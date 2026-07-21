@@ -25,7 +25,13 @@ def _parse_tourney_date(raw) -> date:
 
 
 def _clean(value):
-    return None if pd.isna(value) else value
+    """Coerces a nullable numeric CSV field (seed/rank) to int, or None if missing.
+
+    pandas reads seed/rank columns as float64 once any row has a missing
+    value (NaN forces the whole column to float), so a present value like
+    a rank of 1 otherwise round-trips as 1.0 into the output JSON.
+    """
+    return None if pd.isna(value) else int(value)
 
 
 def _to_target_record(row, tour: str) -> dict:
