@@ -1,0 +1,257 @@
+{
+  "brier_score": 0.2582685840802208,
+  "by_risk_label": {
+    "High": {
+      "count": 29,
+      "observed_upset_rate": 0.4827586206896552
+    },
+    "Low": {
+      "count": 575,
+      "observed_upset_rate": 0.28695652173913044
+    },
+    "Medium": {
+      "count": 104,
+      "observed_upset_rate": 0.4807692307692308
+    },
+    "Trap Match": {
+      "count": 15,
+      "observed_upset_rate": 0.7333333333333333
+    }
+  },
+  "by_tour": {
+    "ATP": {
+      "brier_score": 0.23956334069565174,
+      "count": 345,
+      "reliability_bins": [
+        {
+          "bin_high": 0.55,
+          "bin_low": 0.5,
+          "count": 1,
+          "mean_predicted_probability": 0.5198,
+          "observed_favorite_win_rate": 0.0
+        },
+        {
+          "bin_high": 0.6,
+          "bin_low": 0.55,
+          "count": 8,
+          "mean_predicted_probability": 0.587675,
+          "observed_favorite_win_rate": 0.375
+        },
+        {
+          "bin_high": 0.65,
+          "bin_low": 0.6,
+          "count": 9,
+          "mean_predicted_probability": 0.6255999999999999,
+          "observed_favorite_win_rate": 0.6666666666666666
+        },
+        {
+          "bin_high": 0.7,
+          "bin_low": 0.65,
+          "count": 16,
+          "mean_predicted_probability": 0.68375,
+          "observed_favorite_win_rate": 0.4375
+        },
+        {
+          "bin_high": 0.75,
+          "bin_low": 0.7,
+          "count": 17,
+          "mean_predicted_probability": 0.7259176470588236,
+          "observed_favorite_win_rate": 0.5882352941176471
+        },
+        {
+          "bin_high": 0.8,
+          "bin_low": 0.75,
+          "count": 21,
+          "mean_predicted_probability": 0.774504761904762,
+          "observed_favorite_win_rate": 0.5714285714285714
+        },
+        {
+          "bin_high": 0.85,
+          "bin_low": 0.8,
+          "count": 21,
+          "mean_predicted_probability": 0.8255142857142859,
+          "observed_favorite_win_rate": 0.6190476190476191
+        },
+        {
+          "bin_high": 0.9,
+          "bin_low": 0.85,
+          "count": 25,
+          "mean_predicted_probability": 0.872132,
+          "observed_favorite_win_rate": 0.52
+        },
+        {
+          "bin_high": 0.95,
+          "bin_low": 0.9,
+          "count": 227,
+          "mean_predicted_probability": 0.945779295154182,
+          "observed_favorite_win_rate": 0.7665198237885462
+        }
+      ]
+    },
+    "WTA": {
+      "brier_score": 0.27534083002645504,
+      "count": 378,
+      "reliability_bins": [
+        {
+          "bin_high": 0.45,
+          "bin_low": 0.4,
+          "count": 1,
+          "mean_predicted_probability": 0.4133,
+          "observed_favorite_win_rate": 0.0
+        },
+        {
+          "bin_high": 0.5,
+          "bin_low": 0.45,
+          "count": 0,
+          "mean_predicted_probability": null,
+          "observed_favorite_win_rate": null
+        },
+        {
+          "bin_high": 0.55,
+          "bin_low": 0.5,
+          "count": 2,
+          "mean_predicted_probability": 0.54025,
+          "observed_favorite_win_rate": 0.5
+        },
+        {
+          "bin_high": 0.6,
+          "bin_low": 0.55,
+          "count": 6,
+          "mean_predicted_probability": 0.5754833333333332,
+          "observed_favorite_win_rate": 0.3333333333333333
+        },
+        {
+          "bin_high": 0.65,
+          "bin_low": 0.6,
+          "count": 9,
+          "mean_predicted_probability": 0.6246222222222222,
+          "observed_favorite_win_rate": 0.5555555555555556
+        },
+        {
+          "bin_high": 0.7,
+          "bin_low": 0.65,
+          "count": 13,
+          "mean_predicted_probability": 0.6817923076923077,
+          "observed_favorite_win_rate": 0.23076923076923078
+        },
+        {
+          "bin_high": 0.75,
+          "bin_low": 0.7,
+          "count": 19,
+          "mean_predicted_probability": 0.7251526315789473,
+          "observed_favorite_win_rate": 0.7894736842105263
+        },
+        {
+          "bin_high": 0.8,
+          "bin_low": 0.75,
+          "count": 26,
+          "mean_predicted_probability": 0.7758653846153845,
+          "observed_favorite_win_rate": 0.34615384615384615
+        },
+        {
+          "bin_high": 0.85,
+          "bin_low": 0.8,
+          "count": 21,
+          "mean_predicted_probability": 0.8197047619047618,
+          "observed_favorite_win_rate": 0.6190476190476191
+        },
+        {
+          "bin_high": 0.9,
+          "bin_low": 0.85,
+          "count": 36,
+          "mean_predicted_probability": 0.8792138888888889,
+          "observed_favorite_win_rate": 0.6944444444444444
+        },
+        {
+          "bin_high": 0.95,
+          "bin_low": 0.9,
+          "count": 245,
+          "mean_predicted_probability": 0.9470187755102005,
+          "observed_favorite_win_rate": 0.7020408163265306
+        }
+      ]
+    }
+  },
+  "excluded_count": 542,
+  "reliability_bins": [
+    {
+      "bin_high": 0.45,
+      "bin_low": 0.4,
+      "count": 1,
+      "mean_predicted_probability": 0.4133,
+      "observed_favorite_win_rate": 0.0
+    },
+    {
+      "bin_high": 0.5,
+      "bin_low": 0.45,
+      "count": 0,
+      "mean_predicted_probability": null,
+      "observed_favorite_win_rate": null
+    },
+    {
+      "bin_high": 0.55,
+      "bin_low": 0.5,
+      "count": 3,
+      "mean_predicted_probability": 0.5334333333333333,
+      "observed_favorite_win_rate": 0.3333333333333333
+    },
+    {
+      "bin_high": 0.6,
+      "bin_low": 0.55,
+      "count": 14,
+      "mean_predicted_probability": 0.5824499999999999,
+      "observed_favorite_win_rate": 0.35714285714285715
+    },
+    {
+      "bin_high": 0.65,
+      "bin_low": 0.6,
+      "count": 18,
+      "mean_predicted_probability": 0.6251111111111112,
+      "observed_favorite_win_rate": 0.6111111111111112
+    },
+    {
+      "bin_high": 0.7,
+      "bin_low": 0.65,
+      "count": 29,
+      "mean_predicted_probability": 0.6828724137931035,
+      "observed_favorite_win_rate": 0.3448275862068966
+    },
+    {
+      "bin_high": 0.75,
+      "bin_low": 0.7,
+      "count": 36,
+      "mean_predicted_probability": 0.7255138888888888,
+      "observed_favorite_win_rate": 0.6944444444444444
+    },
+    {
+      "bin_high": 0.8,
+      "bin_low": 0.75,
+      "count": 47,
+      "mean_predicted_probability": 0.7752574468085105,
+      "observed_favorite_win_rate": 0.44680851063829785
+    },
+    {
+      "bin_high": 0.85,
+      "bin_low": 0.8,
+      "count": 42,
+      "mean_predicted_probability": 0.8226095238095239,
+      "observed_favorite_win_rate": 0.6190476190476191
+    },
+    {
+      "bin_high": 0.9,
+      "bin_low": 0.85,
+      "count": 61,
+      "mean_predicted_probability": 0.8763114754098361,
+      "observed_favorite_win_rate": 0.6229508196721312
+    },
+    {
+      "bin_high": 0.95,
+      "bin_low": 0.9,
+      "count": 472,
+      "mean_predicted_probability": 0.9464226694915188,
+      "observed_favorite_win_rate": 0.7330508474576272
+    }
+  ],
+  "scored_count": 723,
+  "total_count": 1265
+}
