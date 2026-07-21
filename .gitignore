@@ -23,6 +23,9 @@ env/
 *.sqlite
 *.sqlite3
 
+# Scratch clone of external data sources (see backend/scripts/wimbledon_backtest/fetch.py)
+.data-cache/
+
 # Node / Next.js
 node_modules/
 .next/
@@ -39,3 +42,6 @@ yarn-error.log*
 
 # Misc
 coverage/
+
+# Compound Engineering local config
+.compound-engineering/*.local.yaml
