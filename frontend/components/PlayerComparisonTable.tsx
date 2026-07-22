@@ -30,13 +30,13 @@ export function PlayerComparisonTable({
       {/* Player name header — grid-cols-3 keeps left/centre/right in equal thirds */}
       <div className="grid grid-cols-3 bg-court-green">
         <div className="px-5 py-3.5">
-          <div className="text-xs font-semibold uppercase tracking-widest text-emerald-400">
+          <div className="text-xs font-semibold uppercase tracking-widest text-court-green-light">
             Favourite
           </div>
           <div className="mt-0.5 font-bold text-white">{favorite.player_name}</div>
         </div>
         <div className="flex items-center justify-center">
-          <span className="text-xs font-medium text-emerald-600/60">vs</span>
+          <span className="text-xs font-medium text-court-green-light/60">vs</span>
         </div>
         <div className="px-5 py-3.5 text-right">
           <div className="text-xs font-semibold uppercase tracking-widest text-zinc-400">

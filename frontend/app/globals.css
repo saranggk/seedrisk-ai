@@ -11,6 +11,14 @@
   --color-court-purple: #4c1d6b;
   --color-court-red: #b91c1c;     /* strawberry red — High risk states only */
   --color-court-amber: #92400e;   /* amber — Medium risk badges */
+
+  /* Semantic risk-color layer — components reference these, never the
+     court-* palette or a stock Tailwind color, so risk meaning has one
+     override point (dark mode overrides these, not every component). */
+  --color-risk-low: var(--color-court-green);
+  --color-risk-medium: var(--color-court-amber);
+  --color-risk-high: var(--color-court-red);
+  --color-risk-trap: var(--color-court-purple);
 }
 
 @theme inline {
@@ -21,6 +29,10 @@
   --color-court-purple: var(--color-court-purple);
   --color-court-red: var(--color-court-red);
   --color-court-amber: var(--color-court-amber);
+  --color-risk-low: var(--color-risk-low);
+  --color-risk-medium: var(--color-risk-medium);
+  --color-risk-high: var(--color-risk-high);
+  --color-risk-trap: var(--color-risk-trap);
 }
 
 body {

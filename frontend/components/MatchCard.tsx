@@ -7,17 +7,17 @@ function formatPct(value: number): string {
 }
 
 const CARD_LEFT_BORDER: Record<RiskLabel, string> = {
-  Low: "border-l-court-green",
-  Medium: "border-l-court-green",
-  High: "border-l-court-red",
-  "Trap Match": "border-l-court-purple",
+  Low: "border-l-risk-low",
+  Medium: "border-l-risk-medium",
+  High: "border-l-risk-high",
+  "Trap Match": "border-l-risk-trap",
 };
 
 const CARD_TINT: Record<RiskLabel, string> = {
   Low: "bg-white",
   Medium: "bg-white",
-  High: "bg-red-50",
-  "Trap Match": "bg-purple-50",
+  High: "bg-risk-high/10",
+  "Trap Match": "bg-risk-trap/10",
 };
 
 interface PickProps {

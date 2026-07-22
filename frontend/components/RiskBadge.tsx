@@ -1,10 +1,10 @@
 import type { RiskLabel } from "@/lib/types";
 
 const RISK_STYLES: Record<RiskLabel, string> = {
-  Low: "border-emerald-600 text-emerald-700 bg-emerald-50",
-  Medium: "border-amber-500 text-amber-700 bg-amber-50",
-  High: "border-court-red text-court-red bg-red-50",
-  "Trap Match": "border-court-purple text-court-purple bg-purple-50",
+  Low: "border-risk-low text-risk-low bg-risk-low/10",
+  Medium: "border-risk-medium text-risk-medium bg-risk-medium/10",
+  High: "border-risk-high text-risk-high bg-risk-high/10",
+  "Trap Match": "border-risk-trap text-risk-trap bg-risk-trap/10",
 };
 
 const RISK_LABELS: Record<RiskLabel, string> = {
