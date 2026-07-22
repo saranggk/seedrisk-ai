@@ -7,25 +7,13 @@ from app.models import Match, Player
 from app.services.upset_model import predict_upset
 from scripts.backtest_calibration.loader import ScoredMatch
 from scripts.backtest_calibration.scoring import score_matches
+from tests._backtest_calibration_fixtures import player_dict
 
 
 def _player(name, ranking, **overrides):
-    base = {
-        "player_name": name,
-        "ranking": ranking,
-        "seed": None,
-        "surface_win_pct": 0.6,
-        "recent_win_pct": 0.5,
-        "tournament_win_pct": 0.5,
-        "surface_hold_rate": 0.8,
-        "surface_break_rate": 0.2,
-        "tiebreak_win_pct": 0.5,
-        "last_10_record": "5-5",
-        "h2h_wins": 0,
-        "h2h_losses": 0,
-    }
-    base.update(overrides)
-    return Player(**base)
+    # Player ignores the extra thin_grass_history key from player_dict()
+    # (pydantic's default extra="ignore" -- see loader.py KTD3).
+    return Player(**player_dict(name, ranking, **overrides))
 
 
 def _scored_match(actual_winner, tour="ATP", **player_overrides):

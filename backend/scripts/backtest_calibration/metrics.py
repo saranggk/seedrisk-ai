@@ -29,8 +29,11 @@ def _brier_score(results: list[dict]) -> float | None:
 
 
 def _bin_edges(values: list[float]) -> list[float]:
-    lo = math.floor(min(values) / BIN_WIDTH) * BIN_WIDTH
-    hi = math.ceil(max(values) / BIN_WIDTH) * BIN_WIDTH
+    # round() before floor/ceil absorbs float division noise (e.g.
+    # 0.6 / 0.05 == 11.999999999999998, not 12) that would otherwise put a
+    # bin-aligned value in the wrong bin -- caught by a real test failure.
+    lo = math.floor(round(min(values) / BIN_WIDTH, 8)) * BIN_WIDTH
+    hi = math.ceil(round(max(values) / BIN_WIDTH, 8)) * BIN_WIDTH
     if hi == lo:
         hi = lo + BIN_WIDTH
     n_bins = round((hi - lo) / BIN_WIDTH)
@@ -78,6 +81,15 @@ def _tour_breakdown(results: list[dict]) -> dict:
             "brier_score": _brier_score(subset),
             "reliability_bins": _reliability_bins(subset),
         }
+
+    # Fail loud, not silent (code review finding): TOURS is a fixed tuple, so
+    # a result whose tour isn't in it would otherwise vanish from every
+    # bucket while still counting toward the overall scored_count/brier_score.
+    covered = sum(b["count"] for b in breakdown.values())
+    if covered != len(results):
+        unknown = sorted({r["tour"] for r in results} - set(TOURS))
+        raise ValueError(f"Unrecognized tour value(s) not in {TOURS}: {unknown}")
+
     return breakdown
 
 
@@ -89,6 +101,16 @@ def _risk_label_breakdown(results: list[dict]) -> dict:
             "count": len(subset),
             "observed_upset_rate": _mean([1 - r["outcome"] for r in subset]),
         }
+
+    # Fail loud, not silent (code review finding): RISK_LABELS mirrors
+    # upset_model.py's _determine_risk_label() by hand (see the module
+    # comment above); if that model ever adds/renames a label, results
+    # carrying it would otherwise vanish from this breakdown with no error.
+    covered = sum(b["count"] for b in breakdown.values())
+    if covered != len(results):
+        unknown = sorted({r["risk_label"] for r in results} - set(RISK_LABELS))
+        raise ValueError(f"Unrecognized risk_label value(s) not in {RISK_LABELS}: {unknown}")
+
     return breakdown
 
 

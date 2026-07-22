@@ -3,34 +3,10 @@ Tests for Unit U1 (load and filter backtest matches for scoring). See
 docs/plans/2026-07-21-001-feat-backtest-calibration-harness-plan.md.
 """
 
-import math
+import json
 
-from scripts.backtest_calibration.loader import filter_scoreable
-
-REQUIRED_FIELDS = (
-    "ranking", "surface_win_pct", "recent_win_pct", "tournament_win_pct",
-    "surface_hold_rate", "surface_break_rate", "tiebreak_win_pct",
-)
-
-
-def _player(name="Player", **overrides):
-    base = {
-        "player_name": name,
-        "ranking": 10,
-        "seed": None,
-        "surface_win_pct": 0.6,
-        "recent_win_pct": 0.5,
-        "tournament_win_pct": 0.5,
-        "surface_hold_rate": 0.8,
-        "surface_break_rate": 0.2,
-        "tiebreak_win_pct": 0.5,
-        "last_10_record": "5-5",
-        "h2h_wins": 0,
-        "h2h_losses": 0,
-        "thin_grass_history": False,
-    }
-    base.update(overrides)
-    return base
+from scripts.backtest_calibration.loader import filter_scoreable, load_records
+from tests._backtest_calibration_fixtures import player_dict as _player
 
 
 def _record(favorite=None, underdog=None, **overrides):
@@ -118,3 +94,26 @@ def test_extra_field_thin_grass_history_does_not_crash():
     scored, _ = filter_scoreable([record])
 
     assert len(scored) == 1
+
+
+def test_excluded_missing_h2h_wins():
+    """Regression (code review, correctness + adversarial corroborated):
+    Player requires player_name/last_10_record/h2h_wins/h2h_losses too, not
+    just the 7 rate fields -- a missing value there must exclude the match,
+    not reach Player(**dict) uncaught and crash the whole run."""
+    record = _record(favorite=_player("Favorite", ranking=1, h2h_wins=None))
+
+    scored, excluded_count = filter_scoreable([record])
+
+    assert scored == []
+    assert excluded_count == 1
+
+
+def test_load_records_reads_json_file(tmp_path):
+    records = [_record(match_id="A"), _record(match_id="B")]
+    path = tmp_path / "matches.json"
+    path.write_text(json.dumps(records))
+
+    loaded = load_records(path)
+
+    assert loaded == records

@@ -51,6 +51,9 @@ def main() -> None:
 
     print(f"Scored {report['scored_count']} of {report['total_count']} matches "
           f"({report['excluded_count']} excluded) -> {OUTPUT_FILE}")
+    if report["scored_count"] == 0:
+        print("No scoreable matches -- nothing further to report.")
+        return
     print(f"Overall Brier score: {report['brier_score']:.4f}")
     for tour, breakdown in report["by_tour"].items():
         if breakdown["count"]:

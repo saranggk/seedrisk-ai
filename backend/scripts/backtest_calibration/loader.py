@@ -28,6 +28,15 @@ REQUIRED_PLAYER_FIELDS = (
     "surface_hold_rate",
     "surface_break_rate",
     "tiebreak_win_pct",
+    # Not read by predict_upset()'s scoring math, but required (no default) by
+    # the Player pydantic model -- a missing value here would otherwise reach
+    # Player(**dict) uncaught and crash the whole run instead of excluding
+    # just this one match, per this module's own exclude-and-count contract
+    # (code review finding, correctness + adversarial corroborated).
+    "player_name",
+    "last_10_record",
+    "h2h_wins",
+    "h2h_losses",
 )
 
 

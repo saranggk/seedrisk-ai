@@ -83,3 +83,53 @@ def test_risk_label_breakdown_computed_only_from_given_results():
     trap = metrics["by_risk_label"]["Trap Match"]
     assert trap["count"] == 2
     assert trap["observed_upset_rate"] == 0.5
+
+
+def test_reliability_bins_collapse_to_one_bin_when_all_probabilities_match():
+    """Edge case: when every result's probability already sits on a
+    BIN_WIDTH-aligned value, floor(min) == ceil(max) and _bin_edges' hi==lo
+    branch must widen the range instead of producing a zero-width bin."""
+    results = [
+        _result("A", "ATP", "Low", 0.60, 1),
+        _result("B", "ATP", "Low", 0.60, 0),
+    ]
+
+    metrics = compute_metrics(results)
+
+    assert len(metrics["reliability_bins"]) == 1
+    only_bin = metrics["reliability_bins"][0]
+    assert only_bin["bin_low"] == 0.60
+    assert only_bin["bin_high"] == 0.65
+    assert only_bin["count"] == 2
+
+
+def test_reliability_bin_index_places_the_max_value_in_the_last_bin():
+    """Edge case: a probability exactly equal to the computed max edge falls
+    outside every half-open [low, high) bin and must land in the final bin
+    via _bin_index's fallback, not be dropped or misplaced."""
+    results = [_result("A", "ATP", "High", 0.95, 0)]
+
+    metrics = compute_metrics(results)
+
+    bins = metrics["reliability_bins"]
+    assert sum(b["count"] for b in bins) == 1
+    assert bins[-1]["count"] == 1
+
+
+def test_tour_breakdown_raises_on_unrecognized_tour():
+    """Fail loud, not silent (code review finding): a tour outside
+    {"ATP", "WTA"} must not silently vanish from by_tour while still
+    counting toward the top-level scored_count."""
+    results = [_result("A", "ITF", "Low", 0.9, 1)]
+
+    with pytest.raises(ValueError, match="ITF"):
+        compute_metrics(results)
+
+
+def test_risk_label_breakdown_raises_on_unrecognized_label():
+    """Fail loud, not silent (code review finding): a risk_label outside the
+    four upset_model.py can produce must not silently vanish."""
+    results = [_result("A", "ATP", "Unknown", 0.9, 1)]
+
+    with pytest.raises(ValueError, match="Unknown"):
+        compute_metrics(results)

@@ -5,27 +5,9 @@ docs/plans/2026-07-21-001-feat-backtest-calibration-harness-plan.md.
 
 import json
 
+from scripts.backtest_calibration import main as main_module
 from scripts.backtest_calibration.main import build_report, write_report
-
-
-def _player(name, ranking, **overrides):
-    base = {
-        "player_name": name,
-        "ranking": ranking,
-        "seed": None,
-        "surface_win_pct": 0.6,
-        "recent_win_pct": 0.5,
-        "tournament_win_pct": 0.5,
-        "surface_hold_rate": 0.8,
-        "surface_break_rate": 0.2,
-        "tiebreak_win_pct": 0.5,
-        "last_10_record": "5-5",
-        "h2h_wins": 0,
-        "h2h_losses": 0,
-        "thin_grass_history": False,
-    }
-    base.update(overrides)
-    return base
+from tests._backtest_calibration_fixtures import player_dict as _player
 
 
 def _record(match_id, favorite=None, underdog=None, tour="ATP", actual_winner="favorite"):
@@ -68,3 +50,41 @@ def test_write_report_produces_valid_json_file(tmp_path):
     with open(output_file, encoding="utf-8") as f:
         loaded = json.load(f)
     assert loaded == report
+
+
+def test_main_runs_end_to_end_and_writes_report(tmp_path, monkeypatch, capsys):
+    records = [_record("A"), _record("B", tour="WTA", actual_winner="underdog")]
+    data_file = tmp_path / "matches.json"
+    data_file.write_text(json.dumps(records))
+    output_file = tmp_path / "calibration_report.json"
+    monkeypatch.setattr(main_module, "DATA_FILE", data_file)
+    monkeypatch.setattr(main_module, "OUTPUT_FILE", output_file)
+
+    main_module.main()
+
+    with open(output_file, encoding="utf-8") as f:
+        report = json.load(f)
+    assert report["total_count"] == 2
+    assert "Overall Brier score" in capsys.readouterr().out
+
+
+def test_main_handles_all_excluded_dataset_without_crashing(tmp_path, monkeypatch, capsys):
+    """Regression (code review, adversarial, confidence 100): brier_score is
+    None when nothing is scoreable, and the summary print used to format it
+    with :.4f unconditionally, raising TypeError instead of writing the
+    report and exiting cleanly."""
+    excluded_favorite = _player("F", 1, surface_win_pct=None)
+    records = [_record("A", favorite=excluded_favorite)]
+    data_file = tmp_path / "matches.json"
+    data_file.write_text(json.dumps(records))
+    output_file = tmp_path / "calibration_report.json"
+    monkeypatch.setattr(main_module, "DATA_FILE", data_file)
+    monkeypatch.setattr(main_module, "OUTPUT_FILE", output_file)
+
+    main_module.main()  # must not raise
+
+    with open(output_file, encoding="utf-8") as f:
+        report = json.load(f)
+    assert report["scored_count"] == 0
+    assert report["brier_score"] is None
+    assert "No scoreable matches" in capsys.readouterr().out
