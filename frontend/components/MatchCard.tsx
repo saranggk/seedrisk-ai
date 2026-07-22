@@ -1,23 +1,17 @@
 import Link from "next/link";
 import type { MatchWithPrediction, PickChoice, RiskLabel } from "@/lib/types";
+import { RISK_LEFT_BORDER, RISK_BG_TINT } from "@/lib/riskColors";
 import { RiskBadge } from "./RiskBadge";
 
 function formatPct(value: number): string {
   return `${Math.round(value * 100)}%`;
 }
 
-const CARD_LEFT_BORDER: Record<RiskLabel, string> = {
-  Low: "border-l-risk-low",
-  Medium: "border-l-risk-medium",
-  High: "border-l-risk-high",
-  "Trap Match": "border-l-risk-trap",
-};
-
 const CARD_TINT: Record<RiskLabel, string> = {
   Low: "bg-white",
   Medium: "bg-white",
-  High: "bg-risk-high/10",
-  "Trap Match": "bg-risk-trap/10",
+  High: RISK_BG_TINT.High,
+  "Trap Match": RISK_BG_TINT["Trap Match"],
 };
 
 interface PickProps {
@@ -32,7 +26,7 @@ export function MatchCard({
   pickProps,
 }: MatchWithPrediction & { pickProps?: PickProps }) {
   const { favorite, underdog, round } = match;
-  const leftBorder = CARD_LEFT_BORDER[prediction.risk_label];
+  const leftBorder = RISK_LEFT_BORDER[prediction.risk_label];
   const tint = CARD_TINT[prediction.risk_label];
   const favPct = Math.round(prediction.favorite_win_probability * 100);
   const undPct = Math.round(prediction.upset_probability * 100);

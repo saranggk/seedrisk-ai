@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { ApiError, getMatchesWithPredictions, postPicksAnalysis } from "@/lib/api";
 import type { MatchWithPrediction, PickChoice, PicksAnalysisResponse, RiskLabel } from "@/lib/types";
+import { RISK_BG_SOLID, RISK_BORDER } from "@/lib/riskColors";
 import { MatchCard } from "@/components/MatchCard";
 import { LoadingState } from "@/components/LoadingState";
 import { ErrorState } from "@/components/ErrorState";
@@ -25,19 +26,19 @@ const FILTER_OPTIONS: FilterValue[] = ["All", "Low", "Medium", "High", "Trap Mat
 
 const FILTER_ACTIVE_CLASS: Record<FilterValue, string> = {
   All: "bg-zinc-800 text-white border-zinc-800",
-  Low: "bg-risk-low text-white border-risk-low",
-  Medium: "bg-risk-medium text-white border-risk-medium",
-  High: "bg-risk-high text-white border-risk-high",
-  "Trap Match": "bg-risk-trap text-white border-risk-trap",
+  Low: `${RISK_BG_SOLID.Low} text-white ${RISK_BORDER.Low}`,
+  Medium: `${RISK_BG_SOLID.Medium} text-white ${RISK_BORDER.Medium}`,
+  High: `${RISK_BG_SOLID.High} text-white ${RISK_BORDER.High}`,
+  "Trap Match": `${RISK_BG_SOLID["Trap Match"]} text-white ${RISK_BORDER["Trap Match"]}`,
 };
 
 const INACTIVE_CLASS =
   "bg-white text-zinc-600 border-zinc-200 hover:border-zinc-400";
 
 const GRADE_CLASS: Record<"Aggressive" | "Balanced" | "Conservative", string> = {
-  Aggressive: "bg-risk-high",
-  Balanced: "bg-risk-medium",
-  Conservative: "bg-risk-low",
+  Aggressive: RISK_BG_SOLID.High,
+  Balanced: RISK_BG_SOLID.Medium,
+  Conservative: RISK_BG_SOLID.Low,
 };
 
 function nextSort(s: SortOrder): SortOrder {

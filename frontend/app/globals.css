@@ -14,7 +14,8 @@
 
   /* Semantic risk-color layer — components reference these, never the
      court-* palette or a stock Tailwind color, so risk meaning has one
-     override point (dark mode overrides these, not every component). */
+     override point for future theme work (e.g. dark mode) instead of a
+     component-by-component audit. */
   --color-risk-low: var(--color-court-green);
   --color-risk-medium: var(--color-court-amber);
   --color-risk-high: var(--color-court-red);
@@ -48,6 +49,11 @@ body {
   font-family: var(--font-body);
 }
 
+/* Tailwind's @theme block above already generates a `.font-data` utility
+   for font-family from --font-data; this rule adds tabular-nums to that
+   same class name rather than a separate one, so tabular numerals are
+   never forgotten at a call site. Renaming the --font-data theme token
+   would silently detach this rule — keep the names in sync. */
 .font-data {
   font-variant-numeric: tabular-nums;
 }

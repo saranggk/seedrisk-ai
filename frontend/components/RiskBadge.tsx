@@ -1,11 +1,5 @@
 import type { RiskLabel } from "@/lib/types";
-
-const RISK_STYLES: Record<RiskLabel, string> = {
-  Low: "border-risk-low text-risk-low bg-risk-low/10",
-  Medium: "border-risk-medium text-risk-medium bg-risk-medium/10",
-  High: "border-risk-high text-risk-high bg-risk-high/10",
-  "Trap Match": "border-risk-trap text-risk-trap bg-risk-trap/10",
-};
+import { RISK_BORDER, RISK_TEXT, RISK_BG_TINT } from "@/lib/riskColors";
 
 const RISK_LABELS: Record<RiskLabel, string> = {
   Low: "Low",
@@ -17,7 +11,7 @@ const RISK_LABELS: Record<RiskLabel, string> = {
 export function RiskBadge({ riskLabel }: { riskLabel: RiskLabel }) {
   return (
     <span
-      className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${RISK_STYLES[riskLabel]}`}
+      className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${RISK_BORDER[riskLabel]} ${RISK_TEXT[riskLabel]} ${RISK_BG_TINT[riskLabel]}`}
     >
       {RISK_LABELS[riskLabel]}
     </span>
