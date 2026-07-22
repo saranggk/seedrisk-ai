@@ -33,7 +33,7 @@ export function PlayerComparisonTable({
           <div className="text-xs font-semibold uppercase tracking-widest text-court-green-light">
             Favourite
           </div>
-          <div className="mt-0.5 font-bold text-white">{favorite.player_name}</div>
+          <div className="mt-0.5 font-display font-bold text-white">{favorite.player_name}</div>
         </div>
         <div className="flex items-center justify-center">
           <span className="text-xs font-medium text-court-green-light/60">vs</span>
@@ -42,7 +42,7 @@ export function PlayerComparisonTable({
           <div className="text-xs font-semibold uppercase tracking-widest text-zinc-400">
             Underdog
           </div>
-          <div className="mt-0.5 font-bold text-zinc-100">{underdog.player_name}</div>
+          <div className="mt-0.5 font-display font-bold text-zinc-100">{underdog.player_name}</div>
         </div>
       </div>
 
@@ -56,7 +56,7 @@ export function PlayerComparisonTable({
           const border = isLast ? "" : "border-b border-zinc-100";
           return (
             <Fragment key={row.label}>
-              <div className={`px-5 py-2.5 font-semibold text-court-green ${rowBg} ${border}`}>
+              <div className={`px-5 py-2.5 font-data font-semibold text-court-green ${rowBg} ${border}`}>
                 {row.render(favorite)}
               </div>
               <div
@@ -65,7 +65,7 @@ export function PlayerComparisonTable({
                 {row.label}
               </div>
               <div
-                className={`px-5 py-2.5 text-right font-semibold text-zinc-700 ${rowBg} ${border}`}
+                className={`px-5 py-2.5 text-right font-data font-semibold text-zinc-700 ${rowBg} ${border}`}
               >
                 {row.render(underdog)}
               </div>

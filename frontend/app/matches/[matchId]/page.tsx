@@ -100,12 +100,12 @@ function MatchDetail({
 
         <div className="flex flex-col gap-1.5 border-b border-zinc-100 pb-5">
           <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-            <span className="text-xl font-bold text-court-green">{favorite.player_name}</span>
-            <span className="text-sm text-zinc-400">#{favorite.ranking} · Favourite</span>
+            <span className="font-display text-xl font-bold text-court-green">{favorite.player_name}</span>
+            <span className="font-data text-sm text-zinc-400">#{favorite.ranking} · Favourite</span>
           </div>
           <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-            <span className="text-lg font-semibold text-zinc-700">{underdog.player_name}</span>
-            <span className="text-sm text-zinc-400">#{underdog.ranking} · Underdog</span>
+            <span className="font-display text-lg font-semibold text-zinc-700">{underdog.player_name}</span>
+            <span className="font-data text-sm text-zinc-400">#{underdog.ranking} · Underdog</span>
           </div>
         </div>
 
@@ -115,7 +115,7 @@ function MatchDetail({
             <div className="mb-1.5 text-xs font-semibold uppercase tracking-widest text-zinc-400">
               Favourite win
             </div>
-            <div className="text-3xl font-bold text-court-green">
+            <div className="font-data text-3xl font-bold text-court-green">
               {formatPct(prediction.favorite_win_probability)}
             </div>
             <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-zinc-100">
@@ -129,7 +129,7 @@ function MatchDetail({
             <div className="mb-1.5 text-xs font-semibold uppercase tracking-widest text-zinc-400">
               Upset probability
             </div>
-            <div className="text-3xl font-bold text-court-purple">
+            <div className="font-data text-3xl font-bold text-court-purple">
               {formatPct(prediction.upset_probability)}
             </div>
             <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-zinc-100">

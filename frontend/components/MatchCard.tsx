@@ -54,12 +54,12 @@ export function MatchCard({
       {/* Players */}
       <div className="flex flex-col gap-1.5 border-b border-zinc-100 pb-4">
         <div className="flex items-baseline justify-between gap-2">
-          <span className="font-bold text-court-green">{favorite.player_name}</span>
-          <span className="shrink-0 text-xs text-zinc-400">#{favorite.ranking} · FAV</span>
+          <span className="font-display font-bold text-court-green">{favorite.player_name}</span>
+          <span className="shrink-0 font-data text-xs text-zinc-400">#{favorite.ranking} · FAV</span>
         </div>
         <div className="flex items-baseline justify-between gap-2">
-          <span className="font-semibold text-zinc-700">{underdog.player_name}</span>
-          <span className="shrink-0 text-xs text-zinc-400">#{underdog.ranking} · UND</span>
+          <span className="font-display font-semibold text-zinc-700">{underdog.player_name}</span>
+          <span className="shrink-0 font-data text-xs text-zinc-400">#{underdog.ranking} · UND</span>
         </div>
       </div>
 
@@ -67,14 +67,14 @@ export function MatchCard({
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between text-xs">
           <span className="text-zinc-500">Favourite win</span>
-          <span className="font-bold text-court-green">{formatPct(prediction.favorite_win_probability)}</span>
+          <span className="font-data font-bold text-court-green">{formatPct(prediction.favorite_win_probability)}</span>
         </div>
         <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-100">
           <div className="h-full rounded-full bg-court-green" style={{ width: `${favPct}%` }} />
         </div>
         <div className="flex items-center justify-between text-xs">
           <span className="text-zinc-500">Upset probability</span>
-          <span className="font-bold text-court-purple">{formatPct(prediction.upset_probability)}</span>
+          <span className="font-data font-bold text-court-purple">{formatPct(prediction.upset_probability)}</span>
         </div>
         <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-100">
           <div className="h-full rounded-full bg-court-purple" style={{ width: `${undPct}%` }} />
@@ -125,7 +125,7 @@ export function MatchCard({
             </button>
           </div>
           {currentPick === "upset" && prediction.risk_label === "Low" && (
-            <p className="mt-1.5 text-xs font-semibold text-amber-600">
+            <p className="mt-1.5 text-xs font-semibold text-risk-medium">
               Bold pick — model says Low risk
             </p>
           )}

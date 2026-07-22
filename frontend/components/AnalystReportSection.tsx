@@ -116,10 +116,10 @@ export function AnalystReportSection({ matchId }: { matchId: string }) {
 
           {/* Final Take — dark green panel */}
           <div className="rounded-lg bg-court-green px-5 py-4">
-            <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-widest text-emerald-400">
+            <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-widest text-court-green-light">
               Final analyst take
             </h3>
-            <p className="text-sm leading-relaxed text-emerald-50">{state.report.final_take}</p>
+            <p className="text-sm leading-relaxed text-white/90">{state.report.final_take}</p>
           </div>
 
           {/* Confidence note — muted, italicised */}

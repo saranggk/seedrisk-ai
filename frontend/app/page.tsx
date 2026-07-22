@@ -25,19 +25,19 @@ const FILTER_OPTIONS: FilterValue[] = ["All", "Low", "Medium", "High", "Trap Mat
 
 const FILTER_ACTIVE_CLASS: Record<FilterValue, string> = {
   All: "bg-zinc-800 text-white border-zinc-800",
-  Low: "bg-emerald-600 text-white border-emerald-600",
-  Medium: "bg-amber-500 text-white border-amber-500",
-  High: "bg-court-red text-white border-court-red",
-  "Trap Match": "bg-court-purple text-white border-court-purple",
+  Low: "bg-risk-low text-white border-risk-low",
+  Medium: "bg-risk-medium text-white border-risk-medium",
+  High: "bg-risk-high text-white border-risk-high",
+  "Trap Match": "bg-risk-trap text-white border-risk-trap",
 };
 
 const INACTIVE_CLASS =
   "bg-white text-zinc-600 border-zinc-200 hover:border-zinc-400";
 
 const GRADE_CLASS: Record<"Aggressive" | "Balanced" | "Conservative", string> = {
-  Aggressive: "bg-court-red",
-  Balanced: "bg-amber-500",
-  Conservative: "bg-emerald-600",
+  Aggressive: "bg-risk-high",
+  Balanced: "bg-risk-medium",
+  Conservative: "bg-risk-low",
 };
 
 function nextSort(s: SortOrder): SortOrder {
@@ -72,7 +72,7 @@ function SummaryStrip({ matches }: { matches: MatchWithPrediction[] }) {
           key={label}
           className="rounded-lg border border-zinc-200 bg-white px-4 py-3 text-center shadow-sm"
         >
-          <div className={`text-2xl font-bold ${accent}`}>{value}</div>
+          <div className={`font-data text-2xl font-bold ${accent}`}>{value}</div>
           <div className="mt-0.5 text-xs font-semibold uppercase tracking-widest text-zinc-400">
             {label}
           </div>
@@ -175,11 +175,11 @@ export default function DashboardPage() {
       <main className={`mx-auto max-w-6xl px-6 py-10 ${pickMode ? "pb-28" : ""}`}>
         {/* Tournament header */}
         <header className="mb-8 overflow-hidden rounded-xl bg-court-green px-8 py-7">
-          <p className="text-xs font-semibold uppercase tracking-widest text-emerald-400">
+          <p className="text-xs font-semibold uppercase tracking-widest text-court-green-light">
             Wimbledon · Upset Intelligence
           </p>
-          <h1 className="mt-2 text-2xl font-bold tracking-tight text-white">SeedRisk AI</h1>
-          <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-emerald-100/80">
+          <h1 className="mt-2 font-display text-2xl font-bold tracking-tight text-white">SeedRisk AI</h1>
+          <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-white/80">
             Stats-driven upset risk for Wimbledon matchups. An explainable rule-based model
             surfaces which favourites are most vulnerable — no betting advice, just the data.
           </p>

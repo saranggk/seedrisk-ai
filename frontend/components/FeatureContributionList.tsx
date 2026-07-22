@@ -35,7 +35,7 @@ export function FeatureContributionList({
           <li key={contribution.feature} className="flex flex-col gap-1.5 bg-white p-4">
             <div className="flex items-center justify-between gap-3">
               <span className="font-medium text-zinc-800">{contribution.label}</span>
-              <span className={`whitespace-nowrap text-sm font-semibold ${style.text}`}>
+              <span className={`whitespace-nowrap font-data text-sm font-semibold ${style.text}`}>
                 {style.icon} {formatImpact(contribution)}
               </span>
             </div>
