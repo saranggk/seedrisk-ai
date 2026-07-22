@@ -33,10 +33,21 @@
   --color-risk-medium: var(--color-risk-medium);
   --color-risk-high: var(--color-risk-high);
   --color-risk-trap: var(--color-risk-trap);
+
+  /* Three-tier type system — display/body/data roles, sourced from the
+     next/font/local `-raw` variables set on <html> in layout.tsx (renamed
+     here to avoid a self-referential var() with the same theme token name). */
+  --font-display: var(--font-display-raw), Georgia, serif;
+  --font-body: var(--font-body-raw), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-data: var(--font-data-raw), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: var(--font-body);
+}
+
+.font-data {
+  font-variant-numeric: tabular-nums;
 }
