@@ -24,13 +24,13 @@ Architectural decisions that shaped SeedRisk AI, in ADR (Architecture Decision R
 
 ---
 
-## ADR-3: Deterministic mock mode when no API key is set
+## ADR-3: Fail fast when Claude is unavailable, no mock fallback
 
-**Context.** Requiring a live `ANTHROPIC_API_KEY` for local development would block anyone from running the app without first getting a key, and would make the app fail entirely if the Claude call errored (rate limit, network issue).
+**Context.** The app originally had a mock fallback: when `ANTHROPIC_API_KEY` was unset, or the Claude call failed for any reason, `generate_analyst_report()` returned a fully deterministic templated report instead, so local dev never required a key. That made sense early on, but the project always has a real key now — the fallback had become dead code to maintain, and it was a liability once the app moved toward deployment: a misconfigured key on the hosting platform would silently serve real visitors fabricated "analyst" text with a 200 response, with no visible signal anything was wrong.
 
-**Decision.** When `ANTHROPIC_API_KEY` is unset, or the Claude call fails for any reason, `generate_analyst_report()` falls back to a fully deterministic report built directly from the same structured data the live call would have used — so the app works end-to-end either way. The response's `source` field is `"mock"` vs `"claude"` so the frontend can show a demo-mode notice.
+**Decision (updated 2026-07-24).** The mock fallback was removed entirely. `backend/app/main.py` now calls `sys.exit(...)` at startup if `ANTHROPIC_API_KEY` is unset — the server refuses to boot rather than run degraded. A Claude call failing at request time now raises a typed exception (`AnalystServiceUnavailable` in `analyst_generator.py`, `PicksAnalystServiceUnavailable` in `picks_analyst.py`) that the router converts to an HTTP `502`, instead of falling back to fabricated data. The `source` field (`"mock"` vs `"claude"`) was removed from both response models, since there's no longer a second value it could hold.
 
-**Consequences.** Local development and demos never require an API key. The mock report's prose is hand-written rather than Claude-generated, so it must be kept in sync with the model's factors — the mechanical description of this behavior lives in `docs/METHODOLOGY.md`, alongside a pointer to this entry for the rationale.
+**Consequences.** The backend cannot run at all without a real API key — local dev now requires one too. In exchange, a misconfigured deploy fails loudly (won't boot) instead of silently serving fake data. See [`docs/solutions/architecture-patterns/remove-mock-fallback-fail-fast-llm-integration.md`](solutions/architecture-patterns/remove-mock-fallback-fail-fast-llm-integration.md) for the full rationale and code shape.
 
 ---
 

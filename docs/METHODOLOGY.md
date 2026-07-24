@@ -95,11 +95,11 @@ Claude then writes a structured 7-field report grounded strictly in that data.
 
 ---
 
-## Mock mode
+## No mock fallback
 
-If `ANTHROPIC_API_KEY` is not set, or the Claude call fails for any reason (rate limit, network error, bad key), the endpoint returns a deterministic mock report built directly from the same rule-based output. The `source` field in the response is `"mock"` (vs `"claude"` for a live call) so the frontend shows a "Demo mode" notice.
+`ANTHROPIC_API_KEY` is required — the backend refuses to start without it. If the Claude call fails at request time for any reason (rate limit, network error, bad key), the endpoint returns an HTTP `502` rather than falling back to a fabricated report.
 
-See [`docs/DECISIONS.md` — ADR-3](DECISIONS.md#adr-3-deterministic-mock-mode-when-no-api-key-is-set) for why mock mode exists.
+See [`docs/DECISIONS.md` — ADR-3](DECISIONS.md#adr-3-fail-fast-when-claude-is-unavailable-no-mock-fallback) for why the fallback was removed.
 
 ---
 
