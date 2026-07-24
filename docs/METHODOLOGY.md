@@ -57,6 +57,19 @@ See [`docs/DECISIONS.md` — ADR-4](DECISIONS.md#adr-4-trap-match-as-its-own-lab
 
 ---
 
+## Calibration: checking the model against real outcomes
+
+Everything above describes what the model predicts. Separately, `backend/scripts/backtest_calibration/` checks *how good those predictions actually are* against real history: it scores ~723 real ATP/WTA Wimbledon matches (2021–2025, from `data/wimbledon_backtest_matches.json` — see `docs/DATA_DICTIONARY.md`) through the live `predict_upset()` function and computes:
+
+- **Brier score** — the standard proper scoring rule for probabilistic predictions (lower is better; 0 is a perfect prediction, 0.25 is what a coin-flip-confidence model scores against a 50/50 outcome).
+- **Reliability bins** — matches grouped into 0.05-wide predicted-probability buckets (e.g. "predicted 90–95% favourite"), each reporting how often the favourite *actually* won in that bucket. A well-calibrated model's observed rate should track its predicted rate closely within each bin.
+
+The committed result is `data/calibration_report.json`. `GET /calibration` exposes its `reliability_bins` (only that field — not the Brier score or the tour/risk-label breakdowns) to the live API, and the frontend uses it to bucket each prediction into "Likely" (risk label Low) / "Toss-up" (Medium) / "Underdog Alert" (High or Trap Match) and, where a bin has at least 20 historical matches, states the model's real observed accuracy at that confidence level. Thinner bins show the bucket label alone — a bin with 1 or 3 historical matches isn't a reliable estimate of anything, and quoting one as if it were would undercut the entire point of showing real data instead of a bare percentage.
+
+This is diagnostic/informational only: it does not feed back into `predict_upset()`'s weights or thresholds, and it does not run against the synthetic `data/sample_matches.json` the live dashboard actually displays — it's checked against the separate, real dataset instead. Regenerate it with `python -m scripts.backtest_calibration.main` whenever the real dataset changes.
+
+---
+
 ## What Claude does and does not do
 
 The Claude analyst layer (`POST /matches/{id}/analysis`) receives:
@@ -92,7 +105,7 @@ See [`docs/DECISIONS.md` — ADR-3](DECISIONS.md#adr-3-deterministic-mock-mode-w
 
 ## Sample data limitations
 
-The current dataset (`data/sample_matches.json`) consists of 16 manually crafted matches designed to cover all four risk label buckets (Low, Medium, High, Trap Match). It is **not real ATP/WTA data** and has not been validated against historical outcomes.
+The current dataset (`data/sample_matches.json`) consists of 16 manually crafted matches designed to cover all four risk label buckets (Low, Medium, High, Trap Match). It is **not real ATP/WTA data**. The model itself *has* been checked against real historical outcomes (see "Calibration" above) — but against a separate real dataset, not this one; the live dashboard's own 16 matches remain synthetic.
 
 Specific limitations:
 - No real player stats — all values are plausible but synthetic
@@ -104,7 +117,7 @@ Specific limitations:
 
 ## Future model and data improvements
 
-- **Real data ingestion** — connect to an open tennis API for real ATP/WTA match and player stats
-- **Historical accuracy evaluation** — backtest the rule-based model against real Wimbledon outcomes
-- **Model upgrade** — replace rule-based scoring with logistic regression or XGBoost trained on real data, while keeping the same output interface (`feature_contributions`, `risk_label`, etc.)
+- **Real data ingestion for the live app** — the calibration check above already runs against real historical data; the *live* dashboard still runs on synthetic `data/sample_matches.json`. Connecting a real ATP/WTA data source to the live app (not just the offline calibration check) remains future work.
+- **Model upgrade** — replace rule-based scoring with logistic regression or XGBoost trained on the real historical data, while keeping the same output interface (`feature_contributions`, `risk_label`, etc.)
 - **Feature expansion** — add surface-specific head-to-head records, fatigue proxy (recent match count), serve speed data, and seeding-specific information
+- **Tighter calibration bins** — right now, thin reliability bins (see above) just get a plain label with no rate quoted; a larger real dataset would let more of the probability range carry a trustworthy observed-rate annotation

@@ -27,38 +27,47 @@ If the backend isn't running, the dashboard shows an actionable error card with 
 
 ## Pages
 
-- `/` — dashboard: all matches as cards with probability bars, risk badges, and a summary strip. Click any card to open its detail page.
-- `/matches/[matchId]` — match detail (e.g. `/matches/M002`): prediction summary, player comparison (favourite left · stat centre · underdog right), full model driver breakdown, and an on-demand Claude analyst report. Invalid IDs (e.g. `/matches/M999`) show a "Match not found" state rather than a generic error.
+- `/` — dashboard: all matches as cards with an engine-eval bar, calibration caption, risk badge, and a summary strip. Filter by risk label, sort by upset %, search by player name. "Pick Mode" lets you call Favourite/Upset on each card and grade your slate via Claude in an accessible results modal. Click any card (outside Pick Mode) to open its detail page.
+- `/matches/[matchId]` — match detail (e.g. `/matches/M002`): prediction summary as one continuous engine-eval bar with a calibration caption, a radar-chart player comparison (favourite vs. underdog across six percentage stats, plus ranking/seed/record/H2H as text), full model driver breakdown, and an on-demand Claude analyst report. Invalid IDs (e.g. `/matches/M999`) show a "Match not found" state rather than a generic error.
 
-The analyst report is generated on-demand (button click), not on page load — each click may call Claude. If no `ANTHROPIC_API_KEY` is configured on the backend, the report still renders using a deterministic mock with a "Demo mode" notice.
+The analyst report and picks analysis are both generated on-demand (button click), not on page load — each click may call Claude. If no `ANTHROPIC_API_KEY` is configured on the backend, both fall back to a deterministic mock with a "Demo mode" notice.
 
 ## Design system
 
-Wimbledon-inspired colour roles (see `app/globals.css`):
+All color, typography, and motion values are CSS custom properties in `app/globals.css`, re-exposed via Tailwind's `@theme inline` — components reference the generated utility classes (`bg-risk-high`, `text-on-accent`, `font-display`, etc.), never a raw Tailwind color or an ad-hoc hex value. Each token layer has both a light and a dark ("Night Session") value, toggled by a `dark` class on `<html>` (see `components/ThemeToggle.tsx`):
 
-| Token | Value | Used for |
+| Layer | Tokens | Used for |
 |---|---|---|
-| `court-green` | `#1b4332` | Favourite strength, headers, structure |
-| `court-green-light` | `#2d6a4f` | Hover states, secondary green |
-| `court-purple` | `#4c1d6b` | Upset probability, Trap Match, rising-risk bars |
-| `court-red` | `#b91c1c` | High risk only |
-| `court-amber` | `#92400e` | Medium risk badges |
-
-Background is `#f7f3ec` — a warm cream evoking tournament feel.
+| Court palette | `court-green`, `court-green-light`, `court-purple`, `court-red`, `court-amber` | Favourite/underdog identity color, historically Wimbledon-inspired |
+| Risk semantics | `risk-low`, `risk-medium`, `risk-high`, `risk-trap` | Risk badges/borders/fills — aliases the court palette so both layers repaint together in dark mode |
+| Neutral surface | `surface`, `surface-muted`, `text-primary`, `text-muted`, `border` | Card backgrounds, body text, dividers — replaces raw `zinc-*`/`white`/`black` |
+| Accent-contrast | `on-accent` | Text sitting on top of a solid `court-*`/`risk-*` fill (badges, buttons, panels) — kept separate because those tokens flip to *bright* accent values in dark mode |
+| Danger/notice | `danger` | Error states and "needs attention" notices (consolidates what were previously separate red/rose palettes) |
+| Scrim | `scrim` | Modal backdrop dimming overlay |
+| Type roles | `font-display` (Fraunces), `font-body` (Work Sans), `font-data` (JetBrains Mono, tabular figures) | Headings/player names, body copy, and numeric data respectively — self-hosted via `next/font/local`, not `next/font/google` (which can hang local dev fetching from Google's CDN) |
+| Motion | `duration-standard`/`ease-standard` (200ms, overrides Tailwind's own transition defaults app-wide), `duration-rally` (320ms, the one signature "rally" overshoot-then-settle animation on `EngineEvalBar`'s mount) | |
 
 ## Component overview
 
 ```
 components/
-├── MatchCard.tsx                 Dashboard card — risk-coloured left border, probability bars
+├── MatchCard.tsx                 Dashboard card — risk-coloured left border, engine-eval bar, calibration caption
+├── EngineEvalBar.tsx             One zero-anchored split bar (favourite/upset), rallies into place on mount
+├── PlayerRadarChart.tsx          Hand-rolled inline-SVG radar chart, six percentage-based stats
+├── PlayerComparisonTable.tsx     Radar chart + favourite ← stat → underdog text rows (ranking/seed/record/H2H)
+├── FeatureContributionList.tsx   Signed-impact bars, each scaled to that factor's own fixed max_impact ceiling
+├── CalibrationCaption.tsx        "Likely/Toss-up/Underdog Alert" + real observed accuracy where enough data exists
 ├── RiskBadge.tsx                 Outlined pill: Low (green) / Medium (amber) / High (red) / Trap Match (purple)
-├── LoadingState.tsx              Spinner with configurable message
+├── Modal.tsx                     Reusable accessible dialog primitive — native <dialog>, zero extra dependencies
+├── Spinner.tsx                   Shared loading spinner (size + accent color props)
+├── ThemeToggle.tsx               Sun/moon dark-mode toggle, persisted override + prefers-color-scheme fallback
+├── LoadingState.tsx              Full-page loading state, built on Spinner
 ├── ErrorState.tsx                Error card with Retry and optional back link
 ├── MatchNotFound.tsx             Shown on detail page for unknown match IDs
-├── PlayerComparisonTable.tsx     Favourite ← stat → underdog three-column layout
-├── FeatureContributionList.tsx   Signed-impact bars, purple for upset risk / green for favourite protection
-└── AnalystReportSection.tsx      On-demand analyst report, dark green Final Take panel, blush demo notice
+└── AnalystReportSection.tsx      On-demand analyst report, dark green Final Take panel, demo notice
 lib/
 ├── types.ts                      TypeScript types mirroring backend/app/models.py
-└── api.ts                        API client: getMatches, getMatch, getMatchPrediction, postMatchAnalysis
+├── api.ts                        API client: getMatches, getMatch, getMatchPrediction, postMatchAnalysis, postPicksAnalysis, getCalibration
+├── riskColors.ts                 Single source for risk-label → token-class mapping (components compose from these, never re-derive)
+└── calibration.ts                Bucket-label mapping + reliability-bin lookup for CalibrationCaption
 ```
