@@ -37,6 +37,7 @@ export interface FeatureContribution {
   feature: string;
   label: string;
   impact: number;
+  max_impact: number;
   direction: FeatureDirection;
   reason: string;
 }

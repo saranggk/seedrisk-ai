@@ -88,7 +88,8 @@ def _score_ranking_gap(match: Match) -> FeatureContribution:
     # by ranking, which should REDUCE upset risk. A SMALL gap means rankings
     # don't offer much protection, so we barely adjust the baseline at all.
     gap = match.underdog.ranking - match.favorite.ranking
-    impact = -_scaled_impact(gap / 100, weight=0.06, cap=0.10)
+    cap = 0.10
+    impact = -_scaled_impact(gap / 100, weight=0.06, cap=cap)
     # Note the extra minus sign: a positive gap (favorite better ranked)
     # must produce a NEGATIVE impact (less upset risk), so we flip the sign
     # rather than reusing _scaled_impact's sign convention directly.
@@ -101,6 +102,7 @@ def _score_ranking_gap(match: Match) -> FeatureContribution:
         feature="ranking_gap",
         label="Ranking gap",
         impact=round(impact, 4),
+        max_impact=cap,
         direction=_direction(impact),
         reason=reason,
     )
@@ -125,6 +127,7 @@ def _score_pct_diff(
         feature=feature,
         label=label,
         impact=round(impact, 4),
+        max_impact=cap,
         direction=_direction(impact),
         reason=reason,
     )
@@ -137,7 +140,8 @@ def _score_h2h(match: Match) -> FeatureContribution:
     # concrete signal independent of general form or ranking.
     net = match.underdog.h2h_wins - match.underdog.h2h_losses
     net = _clamp(net, -3, 3)  # a handful of meetings is already a strong signal
-    impact = _scaled_impact(net, weight=0.03, cap=0.09)
+    cap = 0.09
+    impact = _scaled_impact(net, weight=0.03, cap=cap)
 
     if net > 0:
         reason = (
@@ -156,6 +160,7 @@ def _score_h2h(match: Match) -> FeatureContribution:
         feature="h2h_edge",
         label="Head-to-head edge",
         impact=round(impact, 4),
+        max_impact=cap,
         direction=_direction(impact),
         reason=reason,
     )

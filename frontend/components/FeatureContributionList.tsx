@@ -23,13 +23,17 @@ export function FeatureContributionList({
 }: {
   contributions: FeatureContribution[];
 }) {
-  const maxAbsImpact = Math.max(...contributions.map((c) => Math.abs(c.impact)), 0.0001);
-
   return (
     <ul className="flex flex-col divide-y divide-zinc-100 rounded-xl border border-zinc-200">
       {contributions.map((contribution) => {
         const style = DIRECTION_STYLES[contribution.direction];
-        const barWidthPct = (Math.abs(contribution.impact) / maxAbsImpact) * 100;
+        // Scaled against this factor's own fixed cap (max_impact), not the
+        // largest impact among the contributions on screen, so the same
+        // factor always renders at the same visual scale across matches.
+        const barWidthPct = Math.min(
+          100,
+          (Math.abs(contribution.impact) / contribution.max_impact) * 100
+        );
 
         return (
           <li key={contribution.feature} className="flex flex-col gap-1.5 bg-white p-4">

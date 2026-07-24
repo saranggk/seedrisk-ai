@@ -13,16 +13,13 @@ import { RiskBadge } from "@/components/RiskBadge";
 import { PlayerComparisonTable } from "@/components/PlayerComparisonTable";
 import { FeatureContributionList } from "@/components/FeatureContributionList";
 import { AnalystReportSection } from "@/components/AnalystReportSection";
+import { EngineEvalBar } from "@/components/EngineEvalBar";
 
 type DetailState =
   | { status: "loading" }
   | { status: "not_found" }
   | { status: "error"; error: ApiError }
   | { status: "ready"; match: Match; prediction: PredictionResponse };
-
-function formatPct(value: number): string {
-  return `${Math.round(value * 100)}%`;
-}
 
 export default function MatchDetailPage() {
   const { matchId } = useParams<{ matchId: string }>();
@@ -84,8 +81,6 @@ function MatchDetail({
   prediction: PredictionResponse;
 }) {
   const { favorite, underdog, round } = match;
-  const favPct = Math.round(prediction.favorite_win_probability * 100);
-  const undPct = Math.round(prediction.upset_probability * 100);
 
   return (
     <div className="flex flex-col gap-10">
@@ -110,36 +105,18 @@ function MatchDetail({
         </div>
 
         {/* Prediction summary */}
-        <div className="mt-5 grid grid-cols-2 gap-6 sm:grid-cols-3">
-          <div>
-            <div className="mb-1.5 text-xs font-semibold uppercase tracking-widest text-zinc-400">
-              Favourite win
+        <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
+          <div className="flex-1">
+            <div className="mb-2 text-xs font-semibold uppercase tracking-widest text-zinc-400">
+              Engine eval
             </div>
-            <div className="font-data text-3xl font-bold text-court-green">
-              {formatPct(prediction.favorite_win_probability)}
-            </div>
-            <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-zinc-100">
-              <div
-                className="h-full rounded-full bg-court-green"
-                style={{ width: `${favPct}%` }}
-              />
-            </div>
+            <EngineEvalBar
+              favoriteWinProbability={prediction.favorite_win_probability}
+              upsetProbability={prediction.upset_probability}
+              size="large"
+            />
           </div>
           <div>
-            <div className="mb-1.5 text-xs font-semibold uppercase tracking-widest text-zinc-400">
-              Upset probability
-            </div>
-            <div className="font-data text-3xl font-bold text-court-purple">
-              {formatPct(prediction.upset_probability)}
-            </div>
-            <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-zinc-100">
-              <div
-                className="h-full rounded-full bg-court-purple"
-                style={{ width: `${undPct}%` }}
-              />
-            </div>
-          </div>
-          <div className="col-span-2 sm:col-span-1">
             <div className="mb-1.5 text-xs font-semibold uppercase tracking-widest text-zinc-400">
               Risk label
             </div>

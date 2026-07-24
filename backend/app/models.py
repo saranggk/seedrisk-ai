@@ -54,12 +54,17 @@ class FeatureContribution(BaseModel):
     negative means it pushed upset_probability down, and exactly 0 means it had
     no effect. `direction` is a human/UI-friendly restatement of that sign, so
     the frontend doesn't have to know the sign convention to render an
-    up/down/neutral indicator.
+    up/down/neutral indicator. `max_impact` is this factor's fixed ceiling —
+    the largest absolute impact it could ever produce, regardless of the
+    actual stat difference — so a renderer can scale a bar against a stable
+    per-factor scale instead of whatever the largest impact happens to be
+    among the contributions currently on screen.
     """
 
     feature: str
     label: str
     impact: float
+    max_impact: float
     direction: str  # "increases_upset_risk", "decreases_upset_risk", or "neutral" (impact == 0)
     reason: str
 

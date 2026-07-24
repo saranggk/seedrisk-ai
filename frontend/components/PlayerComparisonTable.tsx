@@ -1,19 +1,10 @@
 import { Fragment } from "react";
 import type { Player } from "@/lib/types";
-
-function pct(value: number): string {
-  return `${Math.round(value * 100)}%`;
-}
+import { PlayerRadarChart } from "./PlayerRadarChart";
 
 const ROWS: { label: string; render: (p: Player) => string }[] = [
   { label: "Ranking", render: (p) => `#${p.ranking}` },
   { label: "Seed", render: (p) => (p.seed != null ? `#${p.seed}` : "Unseeded") },
-  { label: "Grass win %", render: (p) => pct(p.surface_win_pct) },
-  { label: "Recent form", render: (p) => pct(p.recent_win_pct) },
-  { label: "Wimbledon win %", render: (p) => pct(p.tournament_win_pct) },
-  { label: "Grass hold rate", render: (p) => pct(p.surface_hold_rate) },
-  { label: "Grass break rate", render: (p) => pct(p.surface_break_rate) },
-  { label: "Tiebreak win %", render: (p) => pct(p.tiebreak_win_pct) },
   { label: "Last 10 record", render: (p) => p.last_10_record },
   { label: "H2H vs opponent", render: (p) => `${p.h2h_wins}–${p.h2h_losses}` },
 ];
@@ -46,9 +37,14 @@ export function PlayerComparisonTable({
         </div>
       </div>
 
-      {/* Stat rows — flat grid-cols-3 so all columns share the same widths.
-          Equal thirds guarantee the centre label column is mathematically
-          centred regardless of content width on either side. */}
+      {/* Percentage stats as a radar chart — mismatches read as polygon
+          shape instead of a row-by-row text scan. */}
+      <div className="border-b border-zinc-100 bg-white">
+        <PlayerRadarChart favorite={favorite} underdog={underdog} />
+      </div>
+
+      {/* Non-percentage stats — ordinal/text values that don't map cleanly
+          onto radar axes, so they stay as a plain comparison grid. */}
       <div className="grid grid-cols-3 text-sm">
         {ROWS.map((row, i) => {
           const isLast = i === ROWS.length - 1;
