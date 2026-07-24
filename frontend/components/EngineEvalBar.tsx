@@ -32,25 +32,39 @@ export function EngineEvalBar({
   const undPct = 100 - favPct;
   const height = size === "large" ? "h-9" : "h-6";
   const textSize = size === "large" ? "text-sm" : "text-xs";
+  const favFits = favPct > 12;
+  const undFits = undPct > 12;
 
   return (
-    <div
-      className={`flex w-full overflow-hidden rounded-lg border border-border ${height}`}
-      role="img"
-      aria-label={`${formatPct(favoriteWinProbability)} favourite win probability, ${formatPct(upsetProbability)} upset probability`}
-    >
+    <div className="flex w-full items-center gap-1.5">
+      {!favFits && (
+        <span className={`shrink-0 font-data font-bold text-court-green ${textSize}`}>
+          {formatPct(favoriteWinProbability)}
+        </span>
+      )}
       <div
-        className={`rally-bar flex items-center justify-start bg-court-green pl-2.5 font-data font-bold text-on-accent ${textSize}`}
-        style={rallyStyle(favPct)}
+        className={`flex w-full min-w-0 flex-1 overflow-hidden rounded-lg border border-border ${height}`}
+        role="img"
+        aria-label={`${formatPct(favoriteWinProbability)} favourite win probability, ${formatPct(upsetProbability)} upset probability`}
       >
-        {favPct > 12 && formatPct(favoriteWinProbability)}
+        <div
+          className={`rally-bar flex items-center justify-start bg-court-green pl-2.5 font-data font-bold text-on-accent ${textSize}`}
+          style={rallyStyle(favPct)}
+        >
+          {favFits && formatPct(favoriteWinProbability)}
+        </div>
+        <div
+          className={`rally-bar flex items-center justify-end bg-court-purple pr-2.5 font-data font-bold text-on-accent ${textSize}`}
+          style={rallyStyle(undPct)}
+        >
+          {undFits && formatPct(upsetProbability)}
+        </div>
       </div>
-      <div
-        className={`rally-bar flex items-center justify-end bg-court-purple pr-2.5 font-data font-bold text-on-accent ${textSize}`}
-        style={rallyStyle(undPct)}
-      >
-        {undPct > 12 && formatPct(upsetProbability)}
-      </div>
+      {!undFits && (
+        <span className={`shrink-0 font-data font-bold text-court-purple ${textSize}`}>
+          {formatPct(upsetProbability)}
+        </span>
+      )}
     </div>
   );
 }

@@ -117,31 +117,21 @@ function MatchDetail({
         </div>
 
         {/* Prediction summary */}
-        <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
-          <div className="flex-1">
-            <div className="mb-2 text-xs font-semibold uppercase tracking-widest text-text-muted">
-              Engine eval
-            </div>
-            <EngineEvalBar
-              favoriteWinProbability={prediction.favorite_win_probability}
-              upsetProbability={prediction.upset_probability}
-              size="large"
-            />
-            <div className="mt-1.5">
-              <CalibrationCaption
-                favoriteWinProbability={prediction.favorite_win_probability}
-                riskLabel={prediction.risk_label}
-                bins={calibrationBins}
-              />
-            </div>
+        <div className="mt-5">
+          <div className="mb-2 text-xs font-semibold uppercase tracking-widest text-text-muted">
+            Engine eval
           </div>
-          <div>
-            <div className="mb-1.5 text-xs font-semibold uppercase tracking-widest text-text-muted">
-              Risk label
-            </div>
-            <div className="mt-1">
-              <RiskBadge riskLabel={prediction.risk_label} />
-            </div>
+          <EngineEvalBar
+            favoriteWinProbability={prediction.favorite_win_probability}
+            upsetProbability={prediction.upset_probability}
+            size="large"
+          />
+          <div className="mt-1.5">
+            <CalibrationCaption
+              favoriteWinProbability={prediction.favorite_win_probability}
+              riskLabel={prediction.risk_label}
+              bins={calibrationBins}
+            />
           </div>
         </div>
       </header>
