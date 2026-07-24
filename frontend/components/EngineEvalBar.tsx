@@ -24,18 +24,18 @@ export function EngineEvalBar({
 
   return (
     <div
-      className={`flex w-full overflow-hidden rounded-lg border border-zinc-200 ${height}`}
+      className={`flex w-full overflow-hidden rounded-lg border border-border ${height}`}
       role="img"
       aria-label={`${formatPct(favoriteWinProbability)} favourite win probability, ${formatPct(upsetProbability)} upset probability`}
     >
       <div
-        className={`flex items-center justify-start bg-court-green pl-2.5 font-data font-bold text-white ${textSize}`}
+        className={`flex items-center justify-start bg-court-green pl-2.5 font-data font-bold text-on-accent ${textSize}`}
         style={{ width: `${favPct}%` }}
       >
         {favPct > 12 && formatPct(favoriteWinProbability)}
       </div>
       <div
-        className={`flex items-center justify-end bg-court-purple pr-2.5 font-data font-bold text-white ${textSize}`}
+        className={`flex items-center justify-end bg-court-purple pr-2.5 font-data font-bold text-on-accent ${textSize}`}
         style={{ width: `${undPct}%` }}
       >
         {undPct > 12 && formatPct(upsetProbability)}

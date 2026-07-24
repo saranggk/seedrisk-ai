@@ -5,8 +5,8 @@ import { RiskBadge } from "./RiskBadge";
 import { EngineEvalBar } from "./EngineEvalBar";
 
 const CARD_TINT: Record<RiskLabel, string> = {
-  Low: "bg-white",
-  Medium: "bg-white",
+  Low: "bg-surface",
+  Medium: "bg-surface",
   High: RISK_BG_TINT.High,
   "Trap Match": RISK_BG_TINT["Trap Match"],
 };
@@ -28,27 +28,27 @@ export function MatchCard({
   const pickMode = pickProps?.pickMode ?? false;
   const currentPick = pickProps?.currentPick ?? null;
 
-  const cardClassName = `flex h-full flex-col gap-4 rounded-xl border border-zinc-200 border-l-4 ${leftBorder} ${tint} p-5 shadow-sm`;
+  const cardClassName = `flex h-full flex-col gap-4 rounded-xl border border-border border-l-4 ${leftBorder} ${tint} p-5 shadow-sm`;
 
   const cardContent = (
     <>
       {/* Round + risk badge */}
       <div className="flex items-center justify-between gap-2">
-        <span className="text-xs font-semibold uppercase tracking-widest text-zinc-400">
+        <span className="text-xs font-semibold uppercase tracking-widest text-text-muted">
           {round}
         </span>
         <RiskBadge riskLabel={prediction.risk_label} />
       </div>
 
       {/* Players */}
-      <div className="flex flex-col gap-1.5 border-b border-zinc-100 pb-4">
+      <div className="flex flex-col gap-1.5 border-b border-border pb-4">
         <div className="flex items-baseline justify-between gap-2">
           <span className="font-display font-bold text-court-green">{favorite.player_name}</span>
-          <span className="shrink-0 font-data text-xs text-zinc-400">#{favorite.ranking} · FAV</span>
+          <span className="shrink-0 font-data text-xs text-text-muted">#{favorite.ranking} · FAV</span>
         </div>
         <div className="flex items-baseline justify-between gap-2">
-          <span className="font-display font-semibold text-zinc-700">{underdog.player_name}</span>
-          <span className="shrink-0 font-data text-xs text-zinc-400">#{underdog.ranking} · UND</span>
+          <span className="font-display font-semibold text-text-primary">{underdog.player_name}</span>
+          <span className="shrink-0 font-data text-xs text-text-muted">#{underdog.ranking} · UND</span>
         </div>
       </div>
 
@@ -60,13 +60,13 @@ export function MatchCard({
 
       {/* Top factors */}
       <div>
-        <p className="mb-1.5 text-xs font-semibold uppercase tracking-widest text-zinc-400">
+        <p className="mb-1.5 text-xs font-semibold uppercase tracking-widest text-text-muted">
           Key factors
         </p>
         <ul className="space-y-1">
           {prediction.top_factors.map((factor) => (
-            <li key={factor} className="flex gap-2 text-xs text-zinc-600">
-              <span className="mt-0.5 shrink-0 text-zinc-300">—</span>
+            <li key={factor} className="flex gap-2 text-xs text-text-muted">
+              <span className="mt-0.5 shrink-0 text-text-muted">—</span>
               <span>{factor}</span>
             </li>
           ))}
@@ -75,8 +75,8 @@ export function MatchCard({
 
       {/* Bottom action: pick buttons in pick mode, detail link otherwise */}
       {pickMode ? (
-        <div className="mt-auto border-t border-zinc-100 pt-3">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-zinc-400">
+        <div className="mt-auto border-t border-border pt-3">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-text-muted">
             Your pick
           </p>
           <div className="flex gap-2">
@@ -84,8 +84,8 @@ export function MatchCard({
               onClick={() => pickProps?.onPick(match.match_id, "favorite")}
               className={`flex-1 rounded-lg border py-1.5 text-xs font-semibold transition-colors ${
                 currentPick === "favorite"
-                  ? "bg-court-green text-white border-court-green"
-                  : "bg-white text-zinc-600 border-zinc-200 hover:border-zinc-400"
+                  ? "bg-court-green text-on-accent border-court-green"
+                  : "bg-surface text-text-muted border-border hover:border-court-green"
               }`}
             >
               Favourite
@@ -94,8 +94,8 @@ export function MatchCard({
               onClick={() => pickProps?.onPick(match.match_id, "upset")}
               className={`flex-1 rounded-lg border py-1.5 text-xs font-semibold transition-colors ${
                 currentPick === "upset"
-                  ? "bg-court-purple text-white border-court-purple"
-                  : "bg-white text-zinc-600 border-zinc-200 hover:border-zinc-400"
+                  ? "bg-court-purple text-on-accent border-court-purple"
+                  : "bg-surface text-text-muted border-border hover:border-court-green"
               }`}
             >
               Upset
@@ -108,7 +108,7 @@ export function MatchCard({
           )}
         </div>
       ) : (
-        <div className="mt-auto border-t border-zinc-100 pt-1">
+        <div className="mt-auto border-t border-border pt-1">
           <span className="text-xs font-semibold uppercase tracking-widest text-court-purple">
             View details →
           </span>

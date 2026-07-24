@@ -20,6 +20,62 @@
   --color-risk-medium: var(--color-court-amber);
   --color-risk-high: var(--color-court-red);
   --color-risk-trap: var(--color-court-purple);
+
+  /* Neutral surface/text/border layer — components reference these instead
+     of raw zinc, white, or black Tailwind colors, so the whole neutral
+     palette has one override point too (see :root.dark below), same
+     reasoning as the risk-color layer above. */
+  --color-surface: #ffffff;
+  --color-surface-muted: #fafafa;
+  --color-text-primary: #27272a;
+  --color-text-muted: #71717a;
+  --color-border: #e4e4e7;
+
+  /* Danger/notice layer — error states and informational "needs attention"
+     notices (e.g. demo-mode banners). Consolidates what were previously two
+     independent hardcoded palettes (red-* for errors, rose-* for notices)
+     into one token, tinted via the same /10-opacity pattern risk colors use. */
+  --color-danger: #b91c1c;
+
+  /* Text color for content sitting on top of a solid court-color or
+     risk-color fill (badges, panels, buttons) — kept separate from those
+     tokens because they flip to bright accent values in dark mode (for
+     legibility as standalone text on the dark canvas), which would make
+     white text on top of them unreadable. */
+  --color-on-accent: #ffffff;
+
+  /* Modal backdrop scrim — a dimming overlay, not a page/card surface, so
+     it doesn't need to invert with the theme; kept as its own token rather
+     than a hardcoded black so no component reaches for a raw neutral color. */
+  --color-scrim: rgb(0 0 0 / 0.5);
+}
+
+/* Dark theme — "Deep court twilight": a green-black undertone background
+   (not a pure invert), amber floodlight accent, and brighter/re-tinted
+   risk colors for contrast on a dark canvas. Overriding the base court-*
+   tokens here (rather than risk-* directly) means both the risk-severity
+   layer and every direct court-* usage (favorite/underdog identity colors)
+   repaint together from this one block. */
+:root.dark {
+  --background: #0f1712;
+  --foreground: #e5e0d0;
+
+  --color-court-green: #5fc79e;
+  --color-court-green-light: #8fe8bd;
+  --color-court-purple: #bb9de3;
+  --color-court-red: #f2867d;
+  --color-court-amber: #f0b46e;
+
+  --color-surface: #16211a;
+  --color-surface-muted: #1a251d;
+  --color-text-primary: #e5e0d0;
+  --color-text-muted: #96a08e;
+  --color-border: #22331f;
+
+  --color-danger: #f2867d;
+
+  --color-on-accent: #0c1710;
+  --color-scrim: rgb(0 0 0 / 0.6);
 }
 
 @theme inline {
@@ -34,6 +90,14 @@
   --color-risk-medium: var(--color-risk-medium);
   --color-risk-high: var(--color-risk-high);
   --color-risk-trap: var(--color-risk-trap);
+  --color-surface: var(--color-surface);
+  --color-surface-muted: var(--color-surface-muted);
+  --color-text-primary: var(--color-text-primary);
+  --color-text-muted: var(--color-text-muted);
+  --color-border: var(--color-border);
+  --color-danger: var(--color-danger);
+  --color-on-accent: var(--color-on-accent);
+  --color-scrim: var(--color-scrim);
 
   /* Three-tier type system — display/body/data roles, sourced from the
      next/font/local `-raw` variables set on <html> in layout.tsx (renamed
@@ -47,6 +111,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-body);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /* Tailwind's @theme block above already generates a `.font-data` utility

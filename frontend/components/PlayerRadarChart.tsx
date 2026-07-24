@@ -68,9 +68,8 @@ export function PlayerRadarChart({
             key={fraction}
             points={ringPoints(fraction)}
             fill="none"
-            stroke="#ece4e0"
             strokeWidth={1}
-            className="stroke-zinc-200"
+            className="stroke-border"
           />
         ))}
         {AXES.map((_, i) => {
@@ -83,7 +82,7 @@ export function PlayerRadarChart({
               x2={x}
               y2={y}
               strokeWidth={1}
-              className="stroke-zinc-200"
+              className="stroke-border"
             />
           );
         })}
@@ -113,7 +112,7 @@ export function PlayerRadarChart({
               fontSize={11}
               textAnchor={anchor}
               dominantBaseline="middle"
-              className="fill-zinc-500 font-body"
+              className="fill-text-muted font-body"
             >
               {axis.label}
             </text>

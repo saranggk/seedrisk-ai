@@ -11,17 +11,17 @@ export function ErrorState({
   backHref?: string;
 }) {
   return (
-    <div className="mx-auto flex max-w-md flex-col items-center gap-4 rounded-xl border border-red-200 bg-red-50 p-6 text-center">
+    <div className="mx-auto flex max-w-md flex-col items-center gap-4 rounded-xl border border-danger/30 bg-danger/10 p-6 text-center">
       <div className="flex flex-col gap-1">
-        <p className="font-semibold text-red-800">Couldn&apos;t load match data</p>
-        <p className="text-sm text-red-700">{error.message}</p>
+        <p className="font-semibold text-danger">Couldn&apos;t load match data</p>
+        <p className="text-sm text-danger">{error.message}</p>
       </div>
 
       {error.isNetworkError && (
-        <p className="text-sm text-red-700">
+        <p className="text-sm text-danger">
           Start the backend in another terminal, then retry:
           <br />
-          <code className="mt-1 inline-block rounded bg-red-100 px-2 py-1 font-mono text-xs">
+          <code className="mt-1 inline-block rounded bg-danger/15 px-2 py-1 font-mono text-xs">
             cd backend &amp;&amp; uvicorn app.main:app --reload
           </code>
         </p>
@@ -30,12 +30,12 @@ export function ErrorState({
       <div className="flex items-center gap-3">
         <button
           onClick={onRetry}
-          className="rounded-md bg-red-700 px-4 py-2 text-sm font-medium text-white hover:bg-red-800"
+          className="rounded-md bg-danger px-4 py-2 text-sm font-medium text-on-accent hover:opacity-90"
         >
           Retry
         </button>
         {backHref && (
-          <Link href={backHref} className="text-sm font-medium text-red-700 hover:underline">
+          <Link href={backHref} className="text-sm font-medium text-danger hover:underline">
             Back to dashboard
           </Link>
         )}
