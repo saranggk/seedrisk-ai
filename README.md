@@ -105,6 +105,24 @@ Set it in `backend/.env` — required for the backend to start. It powers live C
 
 ---
 
+## Deployment
+
+Frontend on [Vercel](https://vercel.com), backend on [Render](https://render.com) — both have genuine free tiers (no credit card required). The backend's free tier spins down after 15 minutes of inactivity, so the first request after idle time takes 30–60s to wake up; expected on a $0 portfolio deploy.
+
+**Backend (Render):**
+1. Push this repo to GitHub, then in the Render dashboard: New → Blueprint, point it at the repo. It reads `render.yaml` at the repo root and creates a free web service rooted at `backend/`.
+2. In the service's Environment tab, set `ANTHROPIC_API_KEY` (required). `ANTHROPIC_MODEL` and `ALLOWED_ORIGINS` are optional.
+3. Once deployed, note the service URL (`https://<name>.onrender.com`) — you'll need it for the frontend.
+
+**Frontend (Vercel):**
+1. Import the repo in the Vercel dashboard, set **Root Directory** to `frontend`.
+2. Add an environment variable: `NEXT_PUBLIC_API_BASE_URL` = your Render backend URL from above.
+3. Deploy. Note the resulting Vercel URL (`https://<name>.vercel.app`).
+
+**Close the loop:** back in Render, set `ALLOWED_ORIGINS` to your Vercel URL and redeploy the backend — otherwise the browser will block the frontend's requests with a CORS error.
+
+---
+
 ## Suggested demo flow
 
 1. Open `http://localhost:3000` — dashboard with all 16 matches and a summary strip
@@ -137,7 +155,6 @@ Set it in `backend/.env` — required for the backend to start. It powers live C
 
 - **Sample data only** — the live dashboard runs on 16 hand-crafted matches, not real ATP/WTA data (calibration is checked against a separate real dataset — see above)
 - **No persistence** — data lives in `data/sample_matches.json`; no database
-- **Local dev only** — no deployment configuration
 
 ---
 
@@ -147,6 +164,5 @@ Set it in `backend/.env` — required for the backend to start. It powers live C
 - Logistic regression or gradient-boosted model (same output interface)
 - SQLite or Postgres persistence
 - Bracket simulator
-- Deployment (Fly.io, Vercel + Railway, etc.)
 
 See [docs/ROADMAP.md](docs/ROADMAP.md) for the phased build history, [docs/METHODOLOGY.md](docs/METHODOLOGY.md) for a full explanation of the model, and [docs/DECISIONS.md](docs/DECISIONS.md) for the architectural decisions behind it.
