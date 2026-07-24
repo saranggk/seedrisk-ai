@@ -82,6 +82,7 @@ export function MatchCard({
           <div className="flex gap-2">
             <button
               onClick={() => pickProps?.onPick(match.match_id, "favorite")}
+              aria-pressed={currentPick === "favorite"}
               className={`flex-1 rounded-lg border py-1.5 text-xs font-semibold transition-colors ${
                 currentPick === "favorite"
                   ? "bg-court-green text-on-accent border-court-green"
@@ -92,6 +93,7 @@ export function MatchCard({
             </button>
             <button
               onClick={() => pickProps?.onPick(match.match_id, "upset")}
+              aria-pressed={currentPick === "upset"}
               className={`flex-1 rounded-lg border py-1.5 text-xs font-semibold transition-colors ${
                 currentPick === "upset"
                   ? "bg-court-purple text-on-accent border-court-purple"

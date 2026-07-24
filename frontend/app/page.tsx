@@ -7,6 +7,7 @@ import { RISK_BG_SOLID, RISK_BORDER } from "@/lib/riskColors";
 import { MatchCard } from "@/components/MatchCard";
 import { LoadingState } from "@/components/LoadingState";
 import { ErrorState } from "@/components/ErrorState";
+import { Modal } from "@/components/Modal";
 
 type LoadState =
   | { status: "loading" }
@@ -284,7 +285,7 @@ export default function DashboardPage() {
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
             <div>
               <p className="text-sm font-bold text-text-primary">Pick Mode</p>
-              <p className="text-xs text-text-muted">
+              <p className="text-xs text-text-muted" aria-live="polite">
                 {picksCount === 0
                   ? "No picks made yet"
                   : `${picksCount} ${picksCount === 1 ? "pick" : "picks"} made`}
@@ -323,76 +324,69 @@ export default function DashboardPage() {
       )}
 
       {/* Analysis results modal */}
-      {showAnalysis && picksAnalysis.status === "done" && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-scrim p-4"
-          onClick={() => setShowAnalysis(false)}
-        >
-          <div
-            className="w-full max-w-2xl overflow-hidden rounded-2xl bg-surface shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Modal header */}
-            <div className="relative bg-court-purple px-6 py-5">
-              <button
-                onClick={() => setShowAnalysis(false)}
-                className="absolute right-4 top-4 text-lg font-bold leading-none text-on-accent/60 transition-colors hover:text-on-accent"
+      {picksAnalysis.status === "done" && (
+        <Modal open={showAnalysis} onClose={() => setShowAnalysis(false)} label="Slate Analysis">
+          {/* Modal header */}
+          <div className="relative bg-court-purple px-6 py-5">
+            <button
+              onClick={() => setShowAnalysis(false)}
+              aria-label="Close"
+              className="absolute right-4 top-4 text-lg font-bold leading-none text-on-accent/60 transition-colors hover:text-on-accent"
+            >
+              ✕
+            </button>
+            <p className="text-xs font-semibold uppercase tracking-widest text-on-accent/70">
+              Slate Analysis
+            </p>
+            <div className="mt-2 flex flex-wrap items-center gap-3">
+              <span
+                className={`rounded-full px-3 py-1 text-sm font-bold text-on-accent ${
+                  GRADE_CLASS[picksAnalysis.result.slate_grade]
+                }`}
               >
-                ✕
-              </button>
-              <p className="text-xs font-semibold uppercase tracking-widest text-on-accent/70">
-                Slate Analysis
-              </p>
-              <div className="mt-2 flex flex-wrap items-center gap-3">
-                <span
-                  className={`rounded-full px-3 py-1 text-sm font-bold text-on-accent ${
-                    GRADE_CLASS[picksAnalysis.result.slate_grade]
-                  }`}
-                >
-                  {picksAnalysis.result.slate_grade}
-                </span>
-                <span className="text-sm text-on-accent/90">
-                  {picksAnalysis.result.picks_count}{" "}
-                  {picksAnalysis.result.picks_count === 1 ? "pick" : "picks"} · Expected
-                  correct: {picksAnalysis.result.expected_correct.toFixed(1)}
-                </span>
-              </div>
-            </div>
-
-            {/* Modal body */}
-            <div className="max-h-[60vh] space-y-5 overflow-y-auto p-6">
-              <p className="text-sm leading-relaxed text-text-primary">
-                {picksAnalysis.result.slate_summary}
-              </p>
-
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div className="rounded-lg border border-border bg-surface-muted p-4">
-                  <p className="mb-1.5 text-xs font-semibold uppercase tracking-widest text-text-muted">
-                    Boldest Pick
-                  </p>
-                  <p className="text-sm text-text-primary">{picksAnalysis.result.boldest_pick}</p>
-                </div>
-                <div className="rounded-lg border border-border bg-surface-muted p-4">
-                  <p className="mb-1.5 text-xs font-semibold uppercase tracking-widest text-text-muted">
-                    Best Aligned
-                  </p>
-                  <p className="text-sm text-text-primary">
-                    {picksAnalysis.result.best_aligned_pick}
-                  </p>
-                </div>
-              </div>
-
-              <p className="text-xs italic text-text-muted">
-                {picksAnalysis.result.portfolio_note}
-              </p>
-              {picksAnalysis.result.source === "mock" && (
-                <p className="text-xs font-semibold text-danger">
-                  Demo mode — configure ANTHROPIC_API_KEY for live AI analysis
-                </p>
-              )}
+                {picksAnalysis.result.slate_grade}
+              </span>
+              <span className="text-sm text-on-accent/90">
+                {picksAnalysis.result.picks_count}{" "}
+                {picksAnalysis.result.picks_count === 1 ? "pick" : "picks"} · Expected
+                correct: {picksAnalysis.result.expected_correct.toFixed(1)}
+              </span>
             </div>
           </div>
-        </div>
+
+          {/* Modal body */}
+          <div className="max-h-[60vh] space-y-5 overflow-y-auto p-6">
+            <p className="text-sm leading-relaxed text-text-primary">
+              {picksAnalysis.result.slate_summary}
+            </p>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="rounded-lg border border-border bg-surface-muted p-4">
+                <p className="mb-1.5 text-xs font-semibold uppercase tracking-widest text-text-muted">
+                  Boldest Pick
+                </p>
+                <p className="text-sm text-text-primary">{picksAnalysis.result.boldest_pick}</p>
+              </div>
+              <div className="rounded-lg border border-border bg-surface-muted p-4">
+                <p className="mb-1.5 text-xs font-semibold uppercase tracking-widest text-text-muted">
+                  Best Aligned
+                </p>
+                <p className="text-sm text-text-primary">
+                  {picksAnalysis.result.best_aligned_pick}
+                </p>
+              </div>
+            </div>
+
+            <p className="text-xs italic text-text-muted">
+              {picksAnalysis.result.portfolio_note}
+            </p>
+            {picksAnalysis.result.source === "mock" && (
+              <p className="text-xs font-semibold text-danger">
+                Demo mode — configure ANTHROPIC_API_KEY for live AI analysis
+              </p>
+            )}
+          </div>
+        </Modal>
       )}
     </>
   );
