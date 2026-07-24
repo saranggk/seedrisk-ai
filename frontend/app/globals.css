@@ -48,6 +48,15 @@
      it doesn't need to invert with the theme; kept as its own token rather
      than a hardcoded black so no component reaches for a raw neutral color. */
   --color-scrim: rgb(0 0 0 / 0.5);
+
+  /* Transition vocabulary — named, explicit values instead of leaning on
+     Tailwind's implicit defaults for every bare transition-colors/-opacity/
+     -shadow utility. --duration-rally is deliberately separate: the
+     signature moment below is a distinct, special-cased motion, not part
+     of this "quiet" system. */
+  --duration-standard: 200ms;
+  --ease-standard: ease;
+  --duration-rally: 320ms;
 }
 
 /* Dark theme — "Deep court twilight": a green-black undertone background
@@ -99,6 +108,13 @@
   --color-on-accent: var(--color-on-accent);
   --color-scrim: var(--color-scrim);
 
+  /* Every bare transition-colors/-opacity/-shadow utility in the app reads
+     these two variables for its duration/easing — overriding them here
+     applies the standard vocabulary everywhere with no per-call-site
+     changes needed. */
+  --default-transition-duration: var(--duration-standard);
+  --default-transition-timing-function: var(--ease-standard);
+
   /* Three-tier type system — display/body/data roles, sourced from the
      next/font/local `-raw` variables set on <html> in layout.tsx (renamed
      here to avoid a self-referential var() with the same theme token name). */
@@ -121,4 +137,30 @@ body {
    would silently detach this rule — keep the names in sync. */
 .font-data {
   font-variant-numeric: tabular-nums;
+}
+
+/* Signature moment: the engine-eval bar's favorite/upset split rallies
+   into place on mount (slight overshoot, then settles) instead of
+   snapping directly to its value. --rally-target is set inline per
+   instance (a dynamic per-match percentage), so this one keyframe block
+   serves every EngineEvalBar segment regardless of its actual value. */
+@keyframes rally-in {
+  0% {
+    width: 0%;
+  }
+  60% {
+    width: calc(var(--rally-target) * 1.05);
+  }
+  100% {
+    width: var(--rally-target);
+  }
+}
+
+/* The animation is only applied here, not in the keyframe definition above,
+   so reduced-motion users fall through to the segment's plain `width`
+   style with no animation at all, seeing the final state immediately. */
+@media (prefers-reduced-motion: no-preference) {
+  .rally-bar {
+    animation: rally-in var(--duration-rally) var(--ease-standard) both;
+  }
 }

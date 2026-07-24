@@ -3,6 +3,7 @@
 import { useCallback, useState } from "react";
 import { ApiError, postMatchAnalysis } from "@/lib/api";
 import type { AnalystReportResponse } from "@/lib/types";
+import { Spinner } from "./Spinner";
 
 type State =
   | { status: "idle" }
@@ -58,7 +59,7 @@ export function AnalystReportSection({ matchId }: { matchId: string }) {
 
       {state.status === "loading" && (
         <div className="flex items-center gap-3 rounded-xl border border-border bg-surface-muted px-5 py-6 text-sm text-text-muted">
-          <div className="h-5 w-5 shrink-0 animate-spin rounded-full border-2 border-border border-t-court-purple" />
+          <Spinner size="sm" accentColor="court-purple" />
           Generating analyst report…
         </div>
       )}

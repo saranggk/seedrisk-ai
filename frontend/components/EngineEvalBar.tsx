@@ -1,11 +1,22 @@
+import type { CSSProperties } from "react";
+
 interface EngineEvalBarProps {
   favoriteWinProbability: number;
   upsetProbability: number;
   size?: "compact" | "large";
 }
 
+// --rally-target isn't part of the standard CSSProperties type, so this
+// narrows just that one extra key rather than casting the whole style
+// object away from type-checking.
+type RallyStyle = CSSProperties & { "--rally-target": string };
+
 function formatPct(value: number): string {
   return `${Math.round(value * 100)}%`;
+}
+
+function rallyStyle(pct: number): RallyStyle {
+  return { width: `${pct}%`, "--rally-target": `${pct}%` };
 }
 
 // One zero-anchored bar split at the favorite/upset boundary. The two sides
@@ -29,14 +40,14 @@ export function EngineEvalBar({
       aria-label={`${formatPct(favoriteWinProbability)} favourite win probability, ${formatPct(upsetProbability)} upset probability`}
     >
       <div
-        className={`flex items-center justify-start bg-court-green pl-2.5 font-data font-bold text-on-accent ${textSize}`}
-        style={{ width: `${favPct}%` }}
+        className={`rally-bar flex items-center justify-start bg-court-green pl-2.5 font-data font-bold text-on-accent ${textSize}`}
+        style={rallyStyle(favPct)}
       >
         {favPct > 12 && formatPct(favoriteWinProbability)}
       </div>
       <div
-        className={`flex items-center justify-end bg-court-purple pr-2.5 font-data font-bold text-on-accent ${textSize}`}
-        style={{ width: `${undPct}%` }}
+        className={`rally-bar flex items-center justify-end bg-court-purple pr-2.5 font-data font-bold text-on-accent ${textSize}`}
+        style={rallyStyle(undPct)}
       >
         {undPct > 12 && formatPct(upsetProbability)}
       </div>
