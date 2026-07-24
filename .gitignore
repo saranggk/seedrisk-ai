@@ -45,3 +45,6 @@ coverage/
 
 # Compound Engineering local config
 .compound-engineering/*.local.yaml
+
+# Assistant-behavior config, not product docs — stays local
+CLAUDE.md
