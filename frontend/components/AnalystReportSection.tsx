@@ -81,15 +81,6 @@ export function AnalystReportSection({ matchId }: { matchId: string }) {
 
       {state.status === "ready" && (
         <div className="flex flex-col gap-5 rounded-xl border border-border bg-surface p-6 shadow-sm">
-          {/* Demo mode notice */}
-          {state.report.source === "mock" && (
-            <div className="rounded-lg border border-danger/30 bg-danger/10 px-4 py-3 text-xs text-danger">
-              <span className="font-semibold">Demo mode</span> — ANTHROPIC_API_KEY isn&apos;t
-              configured on the backend, so this is a deterministic report built from the model
-              output, not live Claude commentary.
-            </div>
-          )}
-
           <ReportField label="Match summary" body={state.report.match_summary} />
           <ReportField
             label="Why the favourite is favoured"

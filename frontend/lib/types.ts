@@ -80,14 +80,13 @@ export interface PicksAnalysisResponse {
   portfolio_note: string;
   picks_count: number;
   expected_correct: number;
-  source: "claude" | "mock";
 }
 
 /**
- * API response for POST /matches/{id}/analysis. These fields are Claude's (or
- * the backend's deterministic mock generator's) explanation of the
- * PredictionResponse above — they never carry probabilities or a risk label
- * of their own and cannot override the model's output.
+ * API response for POST /matches/{id}/analysis. These fields are Claude's
+ * explanation of the PredictionResponse above — they never carry
+ * probabilities or a risk label of their own and cannot override the
+ * model's output.
  */
 export interface AnalystReportResponse {
   match_summary: string;
@@ -97,8 +96,6 @@ export interface AnalystReportResponse {
   upset_recipe: string[];
   final_take: string;
   confidence_note: string;
-  // "claude" when ANTHROPIC_API_KEY was set and the call succeeded, "mock" otherwise.
-  source: "claude" | "mock";
 }
 
 /**

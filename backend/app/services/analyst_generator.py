@@ -21,12 +21,6 @@ WHY THIS REDUCES HALLUCINATION RISK:
    field exists in the schema.
 3. The prompt explicitly tells Claude to use confidence_note to flag gaps
    rather than fill them in with invented specifics.
-
-WHY MOCK MODE EXISTS:
-Local development shouldn't require an API key. With no ANTHROPIC_API_KEY
-set (or if the Claude call fails for any reason — rate limit, network, etc.),
-generate_analyst_report() falls back to a fully deterministic report built
-directly from the same structured data, so the app still works end-to-end.
 """
 
 import json
@@ -35,6 +29,11 @@ import os
 from anthropic import Anthropic, APIError
 
 from app.models import AnalystReportFields, AnalystReportResponse, Match, PredictionResponse
+
+
+class AnalystServiceUnavailable(RuntimeError):
+    """Raised when the Claude analyst call fails; routers turn this into a 502."""
+
 
 # Overridable via ANTHROPIC_MODEL (see backend/.env.example) — this is a
 # grounded explanation/writing task over structured data, not a task that
@@ -72,70 +71,6 @@ def _build_payload(match: Match, prediction: PredictionResponse) -> dict:
     }
 
 
-def _factors_by_direction(prediction: PredictionResponse, direction: str) -> list[str]:
-    return [fc.reason for fc in prediction.feature_contributions if fc.direction == direction]
-
-
-def _mock_report(match: Match, prediction: PredictionResponse) -> AnalystReportResponse:
-    """
-    Deterministic, template-based report built directly from the rule-based
-    model's own output — no LLM call. Used when ANTHROPIC_API_KEY isn't set,
-    or as a fallback if the Claude call fails for any reason.
-    """
-    favorite_name = match.favorite.player_name
-    underdog_name = match.underdog.player_name
-    protecting = _factors_by_direction(prediction, "decreases_upset_risk")
-    threatening = _factors_by_direction(prediction, "increases_upset_risk")
-    top_impact = max(prediction.feature_contributions, key=lambda fc: abs(fc.impact))
-
-    match_summary = (
-        f"{favorite_name} is favored over {underdog_name} in this {match.round} matchup. "
-        f"The model gives {favorite_name} a {round(prediction.favorite_win_probability * 100)}% "
-        f"chance to win, putting this match at {prediction.risk_label} upset risk."
-    )
-    why_favorite_is_favored = (
-        " ".join(protecting[:2])
-        if protecting
-        else f"{favorite_name} doesn't hold a clear statistical edge on the stats supplied here, "
-        f"which is part of why this match is rated {prediction.risk_label}."
-    )
-    why_upset_could_happen = (
-        " ".join(threatening[:2])
-        if threatening
-        else f"No individual stat strongly favors {underdog_name} here — the upset probability "
-        "is close to the model's baseline rate for an underdog with no other information."
-    )
-    upset_recipe = (
-        threatening[:3]
-        if threatening
-        else [
-            f"No single supplied stat stands out in {underdog_name}'s favor; an upset would "
-            f"likely require {underdog_name} to simply outplay the baseline across the board."
-        ]
-    )
-    final_take = (
-        f"This is a {prediction.risk_label} risk match by the model's estimate — {favorite_name} "
-        f"is the expected winner, but {underdog_name} is not without a path, as outlined above."
-    )
-    confidence_note = (
-        "This is a deterministic summary generated directly from the rule-based model's output, "
-        "not a live AI commentary, because ANTHROPIC_API_KEY is not configured (or the Claude "
-        "request failed). It reflects only the stats shown above — not betting advice or a "
-        "guaranteed outcome."
-    )
-
-    return AnalystReportResponse(
-        match_summary=match_summary,
-        why_favorite_is_favored=why_favorite_is_favored,
-        why_upset_could_happen=why_upset_could_happen,
-        key_stat_to_watch=top_impact.reason,
-        upset_recipe=upset_recipe,
-        final_take=final_take,
-        confidence_note=confidence_note,
-        source="mock",
-    )
-
-
 def _claude_report(payload: dict) -> AnalystReportResponse:
     client = Anthropic()  # reads ANTHROPIC_API_KEY from the environment
     response = client.messages.parse(
@@ -156,21 +91,13 @@ def _claude_report(payload: dict) -> AnalystReportResponse:
     fields = response.parsed_output
     if fields is None:
         raise RuntimeError("Claude did not return a parsable structured analyst report.")
-    return AnalystReportResponse(**fields.model_dump(), source="claude")
+    return AnalystReportResponse(**fields.model_dump())
 
 
 def generate_analyst_report(match: Match, prediction: PredictionResponse) -> AnalystReportResponse:
-    """
-    Build the structured payload, then use Claude if ANTHROPIC_API_KEY is set
-    (falling back to the mock report on any API failure), or go straight to
-    the mock report if no key is configured at all.
-    """
+    """Build the structured payload and ask Claude to explain the prediction."""
     payload = _build_payload(match, prediction)
-
-    if not os.environ.get("ANTHROPIC_API_KEY"):
-        return _mock_report(match, prediction)
-
     try:
         return _claude_report(payload)
-    except (APIError, RuntimeError):
-        return _mock_report(match, prediction)
+    except (APIError, RuntimeError) as exc:
+        raise AnalystServiceUnavailable("Claude analyst report generation failed.") from exc

@@ -390,11 +390,6 @@ export default function DashboardPage() {
             <p className="text-xs italic text-text-muted">
               {picksAnalysis.result.portfolio_note}
             </p>
-            {picksAnalysis.result.source === "mock" && (
-              <p className="text-xs font-semibold text-danger">
-                Demo mode — configure ANTHROPIC_API_KEY for live AI analysis
-              </p>
-            )}
           </div>
         </Modal>
       )}

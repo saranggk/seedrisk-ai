@@ -1,7 +1,7 @@
 """
 Schema contract tests for SeedRisk's core architectural guarantee:
-Claude (or the mock generator) narrates the model's numbers, but can never
-compute or carry one of its own.
+Claude narrates the model's numbers, but can never compute or carry one of
+its own.
 
 WHY THIS EXISTS:
 analyst_generator.py and picks_analyst.py's docstrings both assert this in

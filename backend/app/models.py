@@ -107,10 +107,6 @@ class AnalystReportFields(BaseModel):
 class AnalystReportResponse(AnalystReportFields):
     """API response for POST /matches/{match_id}/analysis."""
 
-    # "claude" when ANTHROPIC_API_KEY is set and the call succeeded, "mock"
-    # otherwise — so the frontend can show a "demo mode" note when relevant.
-    source: Literal["claude", "mock"]
-
 
 # ---------------------------------------------------------------------------
 # Picks analysis models (Phase 8 — picks + Claude portfolio analysis)
@@ -132,9 +128,9 @@ class PicksAnalysisRequest(BaseModel):
 
 class PicksAnalysisFields(BaseModel):
     """
-    The prose fields written by Claude (or the mock generator) for a picks analysis.
-    No numeric fields — grade and stats are pre-computed in Python and cannot be
-    overridden here, same as how AnalystReportFields cannot override the model's numbers.
+    The prose fields written by Claude for a picks analysis. No numeric fields —
+    grade and stats are pre-computed in Python and cannot be overridden here,
+    same as how AnalystReportFields cannot override the model's numbers.
     """
 
     slate_summary: str
@@ -149,7 +145,6 @@ class PicksAnalysisResponse(PicksAnalysisFields):
     slate_grade: Literal["Aggressive", "Balanced", "Conservative"]
     picks_count: int
     expected_correct: float
-    source: Literal["claude", "mock"]
 
 
 # ---------------------------------------------------------------------------

@@ -4,14 +4,21 @@ SeedRisk AI backend entrypoint.
 Run with: uvicorn app.main:app --reload  (from the backend/ directory)
 """
 
+import os
+import sys
+
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 # Reads backend/.env (if present) into the environment, e.g. ANTHROPIC_API_KEY.
-# Safe to call even with no .env file — it's a no-op in that case, so the app
-# still runs fine using mock analyst mode.
 load_dotenv()
+
+# The Claude analyst layer (POST /matches/{id}/analysis, POST /picks/analysis)
+# has no mock fallback — without a key those endpoints would 502 on every
+# request, so fail loudly at startup instead of at first request.
+if not os.environ.get("ANTHROPIC_API_KEY"):
+    sys.exit("ANTHROPIC_API_KEY is not set. Copy backend/.env.example to backend/.env and add a key.")
 
 from app.routers import calibration, matches
 

@@ -86,8 +86,8 @@ export function getCalibration(): Promise<CalibrationResponse> {
 
 /**
  * Triggers the Phase 6 analyst layer for a match. This is a POST, not a GET,
- * because it's not idempotent data retrieval — it's an action that may call
- * out to Claude (or fall back to a mock report) each time it's invoked.
+ * because it's not idempotent data retrieval — it's an action that calls
+ * out to Claude each time it's invoked.
  */
 export function postMatchAnalysis(matchId: string): Promise<AnalystReportResponse> {
   return apiFetch<AnalystReportResponse>(`/matches/${matchId}/analysis`, { method: "POST" });
@@ -95,7 +95,7 @@ export function postMatchAnalysis(matchId: string): Promise<AnalystReportRespons
 
 /**
  * Send the user's slate of picks to the backend for portfolio analysis.
- * Grade and stats are computed server-side; Claude (or the mock) writes the prose.
+ * Grade and stats are computed server-side; Claude writes the prose.
  */
 export function postPicksAnalysis(
   picks: Partial<Record<string, PickChoice>>,

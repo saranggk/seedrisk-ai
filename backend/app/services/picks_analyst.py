@@ -5,7 +5,6 @@ Same architectural principle as analyst_generator.py:
 - All math (expected correct, contrarian count, slate grade) is computed in
   Python BEFORE Claude is called — Claude cannot change those numbers
 - Claude's job is only to write the four prose fields in PicksAnalysisFields
-- Falls back to a deterministic mock if ANTHROPIC_API_KEY is not set or fails
 """
 
 import json
@@ -14,6 +13,11 @@ import os
 from anthropic import Anthropic, APIError
 
 from app.models import Match, PickItem, PicksAnalysisFields, PicksAnalysisResponse, PredictionResponse
+
+
+class PicksAnalystServiceUnavailable(RuntimeError):
+    """Raised when the Claude picks-analysis call fails; routers turn this into a 502."""
+
 
 MODEL = os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-4-6")
 
@@ -85,74 +89,6 @@ def _grade(stats: dict) -> str:
     return "Balanced"
 
 
-def _mock_picks_report(enriched: list[dict], stats: dict) -> PicksAnalysisResponse:
-    grade = _grade(stats)
-    total = stats["total_picks"]
-    upset_count = stats["upset_picks"]
-
-    if grade == "Aggressive":
-        summary = (
-            f"You've picked {upset_count} upset{'s' if upset_count != 1 else ''} out of {total} "
-            f"match{'es' if total != 1 else ''} — an aggressive slate that goes against the model "
-            "more often than not. If even a couple land, you'll look very smart."
-        )
-    elif grade == "Conservative":
-        summary = (
-            f"You've backed the model's favorites in {total - upset_count} of {total} "
-            f"match{'es' if total != 1 else ''} — a conservative slate that stays close to "
-            "what the model expects. High floor, low ceiling."
-        )
-    else:
-        summary = (
-            f"You've split your {total} picks fairly evenly between upsets and favorites — "
-            "a balanced approach that mixes model alignment with a few calculated risks."
-        )
-
-    upset_picks = [p for p in enriched if p["user_pick"] == "upset"]
-    if upset_picks:
-        boldest = min(upset_picks, key=lambda p: p["upset_probability"])
-        boldest_str = (
-            f"{boldest['underdog']} over {boldest['favorite']} "
-            f"({boldest['risk_label']} risk, {round(boldest['upset_probability'] * 100)}% model upset probability). "
-            "This is your most contrarian call."
-        )
-    else:
-        boldest_str = "You didn't pick any upsets on this slate."
-
-    best = max(
-        enriched,
-        key=lambda p: p["upset_probability"] if p["user_pick"] == "upset"
-        else (1 - p["upset_probability"]),
-    )
-    if best["user_pick"] == "upset":
-        aligned_str = (
-            f"{best['underdog']} over {best['favorite']} "
-            f"({round(best['upset_probability'] * 100)}% model upset probability) — "
-            "the model's numbers are most supportive of an upset here."
-        )
-    else:
-        fav_pct = round((1 - best["upset_probability"]) * 100)
-        aligned_str = (
-            f"{best['favorite']} over {best['underdog']} "
-            f"({fav_pct}% model favorite probability) — "
-            "the model most strongly backs your call here."
-        )
-
-    return PicksAnalysisResponse(
-        slate_grade=grade,
-        slate_summary=summary,
-        boldest_pick=boldest_str,
-        best_aligned_pick=aligned_str,
-        portfolio_note=(
-            "This is a template summary generated from the model's pre-computed probabilities. "
-            "Configure ANTHROPIC_API_KEY for a live AI analysis."
-        ),
-        picks_count=stats["total_picks"],
-        expected_correct=stats["expected_correct"],
-        source="mock",
-    )
-
-
 def _claude_picks_report(enriched: list[dict], stats: dict) -> PicksAnalysisResponse:
     grade = _grade(stats)
     payload = {
@@ -184,7 +120,6 @@ def _claude_picks_report(enriched: list[dict], stats: dict) -> PicksAnalysisResp
         slate_grade=grade,
         picks_count=stats["total_picks"],
         expected_correct=stats["expected_correct"],
-        source="claude",
     )
 
 
@@ -192,11 +127,7 @@ def generate_picks_analysis(
     picks_with_data: list[tuple[PickItem, Match, PredictionResponse]],
 ) -> PicksAnalysisResponse:
     enriched, stats = _enrich_picks(picks_with_data)
-
-    if not os.environ.get("ANTHROPIC_API_KEY"):
-        return _mock_picks_report(enriched, stats)
-
     try:
         return _claude_picks_report(enriched, stats)
-    except (APIError, RuntimeError):
-        return _mock_picks_report(enriched, stats)
+    except (APIError, RuntimeError) as exc:
+        raise PicksAnalystServiceUnavailable("Claude picks analysis failed.") from exc

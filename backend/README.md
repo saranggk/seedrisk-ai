@@ -58,17 +58,15 @@ cp .env.example .env
 
 The backend loads `.env` automatically on startup (via `python-dotenv`) — no
 need to `export` it manually. `.env` is gitignored; never commit a real key.
+`ANTHROPIC_API_KEY` is required — the server refuses to start without it.
 
 **Model:** defaults to `claude-sonnet-4-6` — a grounded explanation task over
 structured data doesn't need Opus-level reasoning. Override it by setting
 `ANTHROPIC_MODEL` in `.env`.
 
-**Mock mode:** if `ANTHROPIC_API_KEY` is unset, or the Claude call fails for
-any reason (rate limit, network, bad key), the endpoint returns a fully
-deterministic report built directly from the same rule-based output — no LLM
-call is made, and the response includes `"source": "mock"` so the frontend
-can show a "demo mode" note. With a working key, responses include
-`"source": "claude"` instead.
+**No mock fallback:** if the Claude call fails (rate limit, network, bad
+key), `POST /matches/{id}/analysis` and `POST /picks/analysis` return a `502`
+rather than a fabricated report.
 
 **Testing it:**
 
@@ -82,8 +80,8 @@ curl -i -X POST http://127.0.0.1:8000/matches/M999/analysis   # 404
 `POST /picks/analysis` takes a list of `{match_id, choice}` picks (`choice` is
 `"favorite"` or `"upset"`), grades them against each match's pre-computed
 prediction, and returns a `slate_grade` (`Aggressive` / `Balanced` /
-`Conservative`) and `expected_correct` count computed in Python — Claude (or
-the mock) only writes the four prose fields (`slate_summary`, `boldest_pick`,
+`Conservative`) and `expected_correct` count computed in Python — Claude only
+writes the four prose fields (`slate_summary`, `boldest_pick`,
 `best_aligned_pick`, `portfolio_note`), same non-negotiable split as the
 analyst layer above. Unknown match IDs are silently skipped; a 422 is
 returned only if no valid picks remain. See

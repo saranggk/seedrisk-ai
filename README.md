@@ -68,7 +68,7 @@ A second Claude-backed endpoint, `POST /picks/analysis`, grades a user's whole s
 
 **Claude never computes or changes `favorite_win_probability`, `upset_probability`, `risk_label`, `top_factors`, `slate_grade`, or `expected_correct`** — those are decided before Claude is called. Claude's only job is to turn them into readable prose, grounded strictly in the supplied data. The response schemas don't even include a field where Claude could insert a number of its own.
 
-If `ANTHROPIC_API_KEY` is not set, or a call fails, both endpoints fall back to a deterministic mock report built from the same underlying data — so the app always works.
+`ANTHROPIC_API_KEY` is required — the backend refuses to start without it. If a Claude call fails at request time (rate limit, network), both endpoints return a `502` rather than fabricating a report.
 
 ---
 
@@ -81,11 +81,11 @@ cd backend
 python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
-# Optional: edit .env and paste your key from https://console.anthropic.com/
+# edit .env and paste your key from https://console.anthropic.com/
 uvicorn app.main:app --reload
 ```
 
-The backend starts at `http://127.0.0.1:8000`. The API key is only needed for live Claude reports — the app works without it.
+The backend starts at `http://127.0.0.1:8000`. `ANTHROPIC_API_KEY` is required — the server refuses to start without it.
 
 ### Frontend
 
@@ -101,7 +101,7 @@ Open `http://localhost:3000`. The frontend requires the backend to be running.
 
 ## ANTHROPIC_API_KEY
 
-Set it in `backend/.env` to enable live Claude analyst reports and picks analysis. Without it, both fall back to a deterministic mock and show a "Demo mode" notice. The response field `source` is `"claude"` when live and `"mock"` when using the fallback.
+Set it in `backend/.env` — required for the backend to start. It powers live Claude analyst reports and picks analysis; there's no mock fallback.
 
 ---
 
