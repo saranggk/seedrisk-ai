@@ -100,3 +100,23 @@ export interface AnalystReportResponse {
   // "claude" when ANTHROPIC_API_KEY was set and the call succeeded, "mock" otherwise.
   source: "claude" | "mock";
 }
+
+/**
+ * One probability-range bucket from the batch backtest calibration harness —
+ * how often the favorite actually won when the model predicted
+ * favorite_win_probability in [bin_low, bin_high) across real historical
+ * matches. `count` below a meaningful threshold means the observed rate is
+ * based on very little data (see lib/calibration.ts's MIN_BIN_SAMPLE_SIZE).
+ */
+export interface ReliabilityBin {
+  bin_low: number;
+  bin_high: number;
+  count: number;
+  mean_predicted_probability: number | null;
+  observed_favorite_win_rate: number | null;
+}
+
+/** API response for GET /calibration. */
+export interface CalibrationResponse {
+  reliability_bins: ReliabilityBin[];
+}

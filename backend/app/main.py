@@ -13,7 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 # still runs fine using mock analyst mode.
 load_dotenv()
 
-from app.routers import matches
+from app.routers import calibration, matches
 
 app = FastAPI(
     title="SeedRisk AI API",
@@ -34,6 +34,7 @@ app.add_middleware(
 )
 
 app.include_router(matches.router)
+app.include_router(calibration.router)
 
 
 @app.get("/health")

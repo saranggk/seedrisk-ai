@@ -12,7 +12,7 @@
  * independently-fetched, derived piece of data for the same match.
  */
 
-import type { AnalystReportResponse, Match, MatchWithPrediction, PickChoice, PicksAnalysisResponse, PredictionResponse } from "./types";
+import type { AnalystReportResponse, CalibrationResponse, Match, MatchWithPrediction, PickChoice, PicksAnalysisResponse, PredictionResponse } from "./types";
 
 // Configurable so the frontend can point at a different backend (e.g. a
 // deployed API) without code changes — see .env.example.
@@ -72,6 +72,16 @@ export function getMatch(matchId: string): Promise<Match> {
 
 export function getMatchPrediction(matchId: string): Promise<PredictionResponse> {
   return apiFetch<PredictionResponse>(`/matches/${matchId}/prediction`);
+}
+
+/**
+ * Fetches the batch backtest calibration harness's reliability bins — how
+ * often the favorite actually won historically at each predicted-probability
+ * range. Supplementary data: callers should treat a failure here as
+ * non-fatal (see lib/calibration.ts), unlike match/prediction fetches.
+ */
+export function getCalibration(): Promise<CalibrationResponse> {
+  return apiFetch<CalibrationResponse>("/calibration");
 }
 
 /**

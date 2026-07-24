@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { ApiError, getMatchesWithPredictions, postPicksAnalysis } from "@/lib/api";
-import type { MatchWithPrediction, PickChoice, PicksAnalysisResponse, RiskLabel } from "@/lib/types";
+import { ApiError, getCalibration, getMatchesWithPredictions, postPicksAnalysis } from "@/lib/api";
+import type { MatchWithPrediction, PickChoice, PicksAnalysisResponse, ReliabilityBin, RiskLabel } from "@/lib/types";
 import { RISK_BG_SOLID, RISK_BORDER } from "@/lib/riskColors";
 import { MatchCard } from "@/components/MatchCard";
 import { LoadingState } from "@/components/LoadingState";
@@ -94,6 +94,7 @@ export default function DashboardPage() {
   const [picks, setPicks] = useState<Partial<Record<string, PickChoice>>>({});
   const [picksAnalysis, setPicksAnalysis] = useState<PicksState>({ status: "idle" });
   const [showAnalysis, setShowAnalysis] = useState(false);
+  const [calibrationBins, setCalibrationBins] = useState<ReliabilityBin[]>([]);
 
   const fetchDashboardData = useCallback(() => {
     getMatchesWithPredictions()
@@ -110,6 +111,14 @@ export default function DashboardPage() {
   useEffect(() => {
     fetchDashboardData();
   }, [fetchDashboardData]);
+
+  useEffect(() => {
+    // Supplementary data: a failure here just leaves captions absent
+    // rather than surfacing a page-level error.
+    getCalibration()
+      .then((calibration) => setCalibrationBins(calibration.reliability_bins))
+      .catch(() => {});
+  }, []);
 
   const handleRetry = useCallback(() => {
     setState({ status: "loading" });
@@ -266,6 +275,7 @@ export default function DashboardPage() {
                     key={match.match_id}
                     match={match}
                     prediction={prediction}
+                    calibrationBins={calibrationBins}
                     pickProps={{
                       pickMode,
                       currentPick: picks[match.match_id] ?? null,

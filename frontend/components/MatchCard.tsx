@@ -1,8 +1,9 @@
 import Link from "next/link";
-import type { MatchWithPrediction, PickChoice, RiskLabel } from "@/lib/types";
+import type { MatchWithPrediction, PickChoice, ReliabilityBin, RiskLabel } from "@/lib/types";
 import { RISK_LEFT_BORDER, RISK_BG_TINT } from "@/lib/riskColors";
 import { RiskBadge } from "./RiskBadge";
 import { EngineEvalBar } from "./EngineEvalBar";
+import { CalibrationCaption } from "./CalibrationCaption";
 
 const CARD_TINT: Record<RiskLabel, string> = {
   Low: "bg-surface",
@@ -21,7 +22,8 @@ export function MatchCard({
   match,
   prediction,
   pickProps,
-}: MatchWithPrediction & { pickProps?: PickProps }) {
+  calibrationBins,
+}: MatchWithPrediction & { pickProps?: PickProps; calibrationBins: ReliabilityBin[] }) {
   const { favorite, underdog, round } = match;
   const leftBorder = RISK_LEFT_BORDER[prediction.risk_label];
   const tint = CARD_TINT[prediction.risk_label];
@@ -53,10 +55,17 @@ export function MatchCard({
       </div>
 
       {/* Engine-eval bar */}
-      <EngineEvalBar
-        favoriteWinProbability={prediction.favorite_win_probability}
-        upsetProbability={prediction.upset_probability}
-      />
+      <div className="flex flex-col gap-1">
+        <EngineEvalBar
+          favoriteWinProbability={prediction.favorite_win_probability}
+          upsetProbability={prediction.upset_probability}
+        />
+        <CalibrationCaption
+          favoriteWinProbability={prediction.favorite_win_probability}
+          riskLabel={prediction.risk_label}
+          bins={calibrationBins}
+        />
+      </div>
 
       {/* Top factors */}
       <div>

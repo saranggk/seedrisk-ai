@@ -150,3 +150,35 @@ class PicksAnalysisResponse(PicksAnalysisFields):
     picks_count: int
     expected_correct: float
     source: Literal["claude", "mock"]
+
+
+# ---------------------------------------------------------------------------
+# Calibration models (batch calibration harness exposed to the live API)
+# ---------------------------------------------------------------------------
+
+
+class ReliabilityBin(BaseModel):
+    """
+    One probability-range bucket from the batch backtest calibration harness:
+    how often the favorite actually won when the model predicted a
+    favorite_win_probability in [bin_low, bin_high) across real historical
+    matches. `count` is the number of historical matches scored into this
+    bin — low counts mean the observed rate is based on very little data.
+    """
+
+    bin_low: float
+    bin_high: float
+    count: int
+    mean_predicted_probability: float | None
+    observed_favorite_win_rate: float | None
+
+
+class CalibrationResponse(BaseModel):
+    """
+    API response for GET /calibration. Deliberately exposes only the overall
+    reliability_bins from data/calibration_report.json — not brier_score,
+    by_tour, by_risk_label, or scored_count, none of which the frontend's
+    calibration-caption display consumes.
+    """
+
+    reliability_bins: list[ReliabilityBin]

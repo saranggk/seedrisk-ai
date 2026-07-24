@@ -4,8 +4,8 @@ import type { ReactNode } from "react";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { ApiError, getMatch, getMatchPrediction } from "@/lib/api";
-import type { Match, PredictionResponse } from "@/lib/types";
+import { ApiError, getCalibration, getMatch, getMatchPrediction } from "@/lib/api";
+import type { Match, PredictionResponse, ReliabilityBin } from "@/lib/types";
 import { LoadingState } from "@/components/LoadingState";
 import { ErrorState } from "@/components/ErrorState";
 import { MatchNotFound } from "@/components/MatchNotFound";
@@ -14,6 +14,7 @@ import { PlayerComparisonTable } from "@/components/PlayerComparisonTable";
 import { FeatureContributionList } from "@/components/FeatureContributionList";
 import { AnalystReportSection } from "@/components/AnalystReportSection";
 import { EngineEvalBar } from "@/components/EngineEvalBar";
+import { CalibrationCaption } from "@/components/CalibrationCaption";
 
 type DetailState =
   | { status: "loading" }
@@ -24,6 +25,7 @@ type DetailState =
 export default function MatchDetailPage() {
   const { matchId } = useParams<{ matchId: string }>();
   const [state, setState] = useState<DetailState>({ status: "loading" });
+  const [calibrationBins, setCalibrationBins] = useState<ReliabilityBin[]>([]);
 
   const fetchDetail = useCallback(() => {
     Promise.all([getMatch(matchId), getMatchPrediction(matchId)])
@@ -44,6 +46,14 @@ export default function MatchDetailPage() {
   useEffect(() => {
     fetchDetail();
   }, [fetchDetail]);
+
+  useEffect(() => {
+    // Supplementary data: a failure here just leaves the caption absent
+    // rather than surfacing a page-level error.
+    getCalibration()
+      .then((calibration) => setCalibrationBins(calibration.reliability_bins))
+      .catch(() => {});
+  }, []);
 
   const handleRetry = useCallback(() => {
     setState({ status: "loading" });
@@ -66,7 +76,7 @@ export default function MatchDetailPage() {
           <ErrorState error={state.error} onRetry={handleRetry} backHref="/" />
         )}
         {state.status === "ready" && (
-          <MatchDetail match={state.match} prediction={state.prediction} />
+          <MatchDetail match={state.match} prediction={state.prediction} calibrationBins={calibrationBins} />
         )}
       </div>
     </main>
@@ -76,9 +86,11 @@ export default function MatchDetailPage() {
 function MatchDetail({
   match,
   prediction,
+  calibrationBins,
 }: {
   match: Match;
   prediction: PredictionResponse;
+  calibrationBins: ReliabilityBin[];
 }) {
   const { favorite, underdog, round } = match;
 
@@ -115,6 +127,13 @@ function MatchDetail({
               upsetProbability={prediction.upset_probability}
               size="large"
             />
+            <div className="mt-1.5">
+              <CalibrationCaption
+                favoriteWinProbability={prediction.favorite_win_probability}
+                riskLabel={prediction.risk_label}
+                bins={calibrationBins}
+              />
+            </div>
           </div>
           <div>
             <div className="mb-1.5 text-xs font-semibold uppercase tracking-widest text-text-muted">
